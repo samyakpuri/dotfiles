@@ -1,1 +1,0 @@
-NeoBundle 'zhaocai/GoldenView.Vim'
