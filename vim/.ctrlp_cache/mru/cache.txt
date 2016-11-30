@@ -1,0 +1,4 @@
+/home/spuri/Tutorials/task-01/Makefile
+/home/spuri/dotfiles/_vim/bundles.vim
+/home/spuri/Tutorials/task-02/main.c
+/home/spuri/.vim/bundle/Vundle.vim/doc/vundle.txt

@@ -1,1 +1,0 @@
-NeoBundle 'kshenoy/vim-signature'

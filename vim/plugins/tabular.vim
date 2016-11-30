@@ -1,1 +1,0 @@
-NeoBundle 'godlygeek/tabular'
