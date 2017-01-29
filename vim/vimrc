@@ -1,27 +1,68 @@
-" Identify platform
-silent function! OSX()
-  return has('macunix')
-endfunction
-silent function! LINUX()
-  return has('unix') && !has('macunix') && !has('win32unix')
-endfunction
-silent function! WINDOWS()
-  return (has('win16') || has('win32') || has('win64'))
-endfunction
-silent function! GUI()
-  return (has('gui_running'))
-endfunction
+set nocompatible              " be iMproved, required
+filetype off                  " required
 
-" Multiplatform compatibility
-if WINDOWS()
-  " On Windows, also use '.vim' instead of 'vimfiles'; this makes synchronization
-  " across (heterogeneous) systems easier.
-  set rtp=$HOME/.vim,$VIM/vimfiles,$VIMRUNTIME,$VIM/vimfiles/after,$HOME/.vim/after
-endif
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
 
-source $HOME/.vim/bundles.vim
-source $HOME/.vim/settings.vim
-source $HOME/.vim/map.vim
-source $HOME/.vim/plugins.vim
-source $HOME/.vim/functions.vim
-source $HOME/.vim/autocmd.vim
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'scrooloose/nerdtree'            " Nerdtree File explorer
+Plugin 'tpope/vim-fugitive'             " Git wrapper
+Plugin 'scrooloose/syntastic'           " Syntax checking plugin
+Plugin 'tpope/vim-surround'             " Parentheses, brackets, quotes, XML tags, and more
+Plugin 'altercation/vim-colors-solarized' " Solarized Colorscheme for Vim
+Plugin 'bling/vim-airline'              " Lean & mean status/tabline for vim that's light as air
+Plugin 'majutsushi/tagbar'              " An easy way to browse the tags
+Plugin 'scrooloose/nerdcommenter'       " Comment functions so powerfulno comment necessary. 
+Plugin 'airblade/vim-gitgutter'         " Shows a git diff in the 'gutter' (sign column).
+Plugin 'valloric/youcompleteme'         " A fast, as-you-type, fuzzy-search code completion engine
+Plugin 'easymotion/vim-easymotion'      " Provides a much simpler way to use some motion
+Plugin 'ervandew/supertab'              " Allows you to use <Tab> for all your insert completion needs
+Plugin 'tpope/vim-repeat'
+Plugin 'shougo/unite.vim'               " Search and display information from arbitrary sources
+Plugin 'raimondi/delimitmate'           " Provides automatic closing of quotes, parenthesis, brackets, etc.
+Plugin 'nathanaelkane/vim-indent-guides' " Visually displaying indent levels
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+
+
+" General
+set number				" Show line numbers
+set linebreak				" Break lines at word (requires Wrap lines)
+set showbreak=+++			" Wrap-broken line prefix
+set textwidth=100			" Line wrap (number of cols)
+set showmatch				" Highlight matching brace
+set visualbell				" Use visual bell (no beeping)
+ 
+set hlsearch				" Highlight all search results
+set smartcase				" Enable smart-case search
+set ignorecase				" Always case-insensitive
+set incsearch				" Searches for strings incrementally
+ 
+set autoindent				" Auto-indent new lines
+set shiftwidth=4			" Number of auto-indent spaces
+set smartindent				" Enable smart-indent
+set smarttab				" Enable smart-tabs
+set softtabstop=4			" Number of spaces per Tab
+ 
+" Advanced
+set ruler				" Show row and column ruler information
+ 
+set undolevels=1000			" Number of undo levels
+set backspace=indent,eol,start		" Backspace behaviour"" General
