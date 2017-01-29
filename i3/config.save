@@ -26,7 +26,7 @@ set $white    #f9f9f9
 # is used in the bar {} block below.
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 7
+font pango:DejaVu Sans Mono 8
 # Before i3 v4.8, we used to recommend this one as the default:
 # font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # The font above is very space-efficient, that is, it looks good, sharp and
@@ -34,7 +34,7 @@ font pango:DejaVu Sans Mono 7
 # X core fonts rendering does not support right-to-left and this being a bitmap
 # font, it doesn’t scale on retina/hidpi displays.
 
-font pango: Monospace 7
+font pango: Monospace 8
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -77,7 +77,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+g split h
+bindsym $mod+h split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -174,21 +174,13 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
 	position top    
-	status_command i3status -c ~/.i3/.i3status.conf
-    workspace_buttons no
+	status_command py3ststus -c ~/.i3/.i3status.conf
 	colors {
         	background          $grey
         	statusline          $lgrey
-      		separator	        $grey
-        	#separator          $lgrey
-    }
-}
-
-bar {
-    position bottom
-    strip_workspace_numbers yes
-    colors {
-		    #                   border	    background   text
+      		separator	    $grey
+        	#separator           $lgrey
+		# border	    background   text
         	focused_workspace   $grey       $lgrey       $red
         	active_workspace    $grey       $grey        $lgrey
         	inactive_workspace  $grey       $grey        $lgrey
@@ -198,7 +190,7 @@ bar {
 
 # Startup programs
 exec --no-startup-id nm-applet
-exec --no-startup-id feh --bg-fill ~/Pictures/wallpaper/anonymous-hacking-6573.jpg
+#exec --no-startup-id feh --bg-fill ~/Pictures/Dark-pattern.jpg
 
 
 # Custom KeyBinds
