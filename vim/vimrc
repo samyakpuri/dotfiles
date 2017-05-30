@@ -25,6 +25,12 @@ Plugin 'tpope/vim-repeat'
 Plugin 'shougo/unite.vim'               " Search and display information from arbitrary sources
 Plugin 'raimondi/delimitmate'           " Provides automatic closing of quotes, parenthesis, brackets, etc.
 Plugin 'nathanaelkane/vim-indent-guides' " Visually displaying indent levels
+Plugin 'benmills/vimux.vim'				"VIMUX
+Plugin 'auto-pairs/auto-pairs'
+Plugin 'vim-autoclose/vim-autoclose'
+Plugin 'closetag/closetag'
+Plugin 'tcomment/tcomment'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -43,7 +49,7 @@ filetype plugin indent on    " required
 
 
 " General
-set number				" Show line numbers
+set number					" Show line numbers
 set linebreak				" Break lines at word (requires Wrap lines)
 set showbreak=+++			" Wrap-broken line prefix
 set textwidth=100			" Line wrap (number of cols)
@@ -62,7 +68,11 @@ set smarttab				" Enable smart-tabs
 set softtabstop=4			" Number of spaces per Tab
  
 " Advanced
-set ruler				" Show row and column ruler information
+set ruler					" Show row and column ruler information
  
 set undolevels=1000			" Number of undo levels
 set backspace=indent,eol,start		" Backspace behaviour"" General
+
+syntax enable
+colorscheme molokai
+set background=dark
