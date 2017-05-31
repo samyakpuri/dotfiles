@@ -1,53 +1,3 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'scrooloose/nerdtree'            " Nerdtree File explorer
-Plugin 'tpope/vim-fugitive'             " Git wrapper
-Plugin 'scrooloose/syntastic'           " Syntax checking plugin
-Plugin 'tpope/vim-surround'             " Parentheses, brackets, quotes, XML tags, and more
-Plugin 'altercation/vim-colors-solarized' " Solarized Colorscheme for Vim
-Plugin 'bling/vim-airline'              " Lean & mean status/tabline for vim that's light as air
-Plugin 'majutsushi/tagbar'              " An easy way to browse the tags
-Plugin 'scrooloose/nerdcommenter'       " Comment functions so powerfulno comment necessary. 
-Plugin 'airblade/vim-gitgutter'         " Shows a git diff in the 'gutter' (sign column).
-Plugin 'valloric/youcompleteme'         " A fast, as-you-type, fuzzy-search code completion engine
-Plugin 'easymotion/vim-easymotion'      " Provides a much simpler way to use some motion
-Plugin 'ervandew/supertab'              " Allows you to use <Tab> for all your insert completion needs
-Plugin 'tpope/vim-repeat'
-Plugin 'shougo/unite.vim'               " Search and display information from arbitrary sources
-Plugin 'raimondi/delimitmate'           " Provides automatic closing of quotes, parenthesis, brackets, etc.
-Plugin 'nathanaelkane/vim-indent-guides' " Visually displaying indent levels
-Plugin 'benmills/vimux.vim'				"VIMUX
-Plugin 'auto-pairs/auto-pairs'
-Plugin 'vim-autoclose/vim-autoclose'
-Plugin 'closetag/closetag'
-Plugin 'tcomment/tcomment'
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-
-
 " General
 set number					" Show line numbers
 set linebreak				" Break lines at word (requires Wrap lines)
@@ -68,11 +18,164 @@ set smarttab				" Enable smart-tabs
 set softtabstop=4			" Number of spaces per Tab
  
 " Advanced
-set ruler					" Show row and column ruler information
+set ruler				" Show row and column ruler information
  
 set undolevels=1000			" Number of undo levels
 set backspace=indent,eol,start		" Backspace behaviour"" General
 
 syntax enable
-colorscheme molokai
-set background=dark
+"colorscheme molokai
+"set background=dark
+
+" give us 256 color schemes!
+set term=screen-256color
+
+" give us nice EOL (end of line) characters
+set list
+set listchars=tab:▸\ ,eol:¬
+
+"""" PLUGIN RELATED TWEAKS
+""
+"
+
+" [1]
+" Color scheme
+syntax enable
+" let g:solarized_termcolors=16
+let g:colarized_termtrans = 1
+let g:solarized_termcolors=256
+let g:solarized_visibility = "high"
+let g:solarized_contrast = "high"
+colorscheme solarized
+" set background=dark
+" Allow powerline symbols to show up
+let g:airline_powerline_fonts = 1
+
+" [2]
+map <silent> <C-n> :NERDTreeToggle<cr>
+nnoremap <C-t> :call ToggleRelativeOn()<cr>
+" Close vim if only NERDTree is open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
+" [3]
+" Allow moving around between Tmux windows
+nnoremap <silent> <C-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <C-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <C-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <C-l> :TmuxNavigateRight<cr>
+let g:tmux_navigator_no_mappings = 1
+let g:tmux_navigator_save_on_switch = 1
+"
+"Open a tmux pane with Node
+nnoremap <leader>node :VtrOpenRunner {'orientation': 'h', 'percentage': 50, 'cmd': 'node'}<cr>
+
+" [4]
+" Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+if executable('ag')
+  " Use Ag over Grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+  let g:ctrlp_working_path_mode = 'r'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+
+  let g:ctrlp_extensions = ['line']
+endif
+
+" [5]
+" Setup for NEOMAKE plugin ~~~~~~~
+" let g:neomake_scss_csslint_maker = ['sass-lint']
+" let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_open_list = 0
+" let g:neomake_warning_sign = {
+"       \ 'texthl': 'WarningMsg',
+"       \ }
+"
+" let g:neomake_error_sign = {
+"       \ 'texthl': 'ErrorMsg',
+"       \ }
+" autocmd! BufWritePost,BufEnter * Neomake
+"       ~~~~~~~~~~~~~~~~
+" configure syntastic syntax checking to check on open as well as save
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': ['javascript'], 'passive_filetypes': [] }
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+" " Syntastic will search for an .eslintrc in your project, otherwise it defaults
+autocmd FileType javascript let b:syntastic_checkers = findfile('.eslintrc', '.;') != '' ? ['eslint'] : ['standard']
+" these 2 lines check to see if eslint is installed via local npm and runs that before going global
+let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
+let b:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+" " Allow highlighting of HTML within Javascript (for React)
+let g:javascript_enable_domhtmlcss = 1
+let g:jsx_ext_required = 0
+
+" [6] Key mapping for Cosco.vim - space + ; to add semicolon or comma in Javascript or CSS
+autocmd FileType javascript,css nnoremap <silent> <Leader>; :call cosco#commaOrSemiColon()<CR>
+autocmd FileType javascript,css inoremap <silent> <Leader>; <c-o>:call cosco#commaOrSemiColon()<CR>
+
+" [7] Gist setup
+let g:gist_clip_command = 'pbcopy' "Using Gist will copy URL to clipboard automatically
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+
+" [8] Set Vim Wiki to my Dropbox directory
+let g:vimwiki_list = [{'path':'$HOME/Dropbox/vimwiki'}]
+
+" [9]
+" Set ultisnips triggers
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsEditSplit="vertical"
+
+" [10] make YCM compatible with UltiSnips (using supertab)
+let g:SuperTabDefaultCompletionType = '<C-n>'
+
+let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" omnifuncs
+augroup omnifuncs
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup end
+
+" tern
+"if exists('g:plugs["tern_for_vim"]')
+"  let g:tern_show_argument_hints = 'on_hold'
+"  let g:tern_show_signature_in_pum = 1
+"  let g:tern_map_keys = 1
+"
+"  autocmd FileType javascript setlocal omnifunc=tern#Complete
+"endif
+"
+"set up path to editorconfig
+let g:EditorConfig_exec_path = findfile('.editorconfig', '.;')
+
+" Not sure what the below code does...look into Tern docs etc and figure it out?
+" Found this snippet on a forum post that says it gets everything working
+" https://github.com/Valloric/YouCompleteMe/issues/570
+" autocmd FileType javascript setlocal omnifunc=tern#Complete
+
+" " Run commands that require an interactive shell
+" nnoremap <Leader>r :RunInInteractiveShell<space>
+
+runtime include/vundle.vim
+"
