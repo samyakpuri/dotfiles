@@ -11,13 +11,13 @@ alias la='ls -AF --color=auto'   # Compact view, show hidden
 alias ll='ls -lFh --color=auto'  # Long view, no hidden
 
 # Tmux alias for color for TERM
-alias tmux='TERM=xterm-256color \tmux'
+#alias tmux='TERM=xterm-256color \tmux'
 
 # Helpers
 alias grep='grep --color=auto' # Always highlight grep search term
 alias ping='ping -c 5'         # Pings with 5 packets, not unlimited
 alias df='df -h'               # Disk free, in gigabytes, not bytes
-alias du='du -h -c'            # Calculate total disk usage for a folder
+alias du='du -sh'            # Calculate total disk usage for a folder
 alias clr='clear;echo "Currently logged in on $(tty), as $(whoami) in directory $(pwd)."'
 alias svim="sudo vim" 	       # Run vim as super user
 alias Root='su -'
@@ -73,4 +73,14 @@ alias hgst='hg status'
 alias hgd='hg diff | $GIT_EDITOR -'
 alias hgo='hg outgoing'
 
+# aliases for Tmux
+alias tmux='tmux -2'
+alias ta='tmux attach -t'
+alias tnew='tmux new -s'
+alias tls='tmux ls'
+alias tkill='tmux kill-session -t'
 
+# # convenience aliases for editing configs
+alias ev='vim ~/.vimrc'
+alias et='vim ~/.tmux.conf'
+alias ez='vim ~/.zshrc'
