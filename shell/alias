@@ -32,18 +32,18 @@ alias cd..='cd ..'
 
 #pacaur
 
-alias pkg-search='pacaur -s'
-alias pkg-aur='pacaur -sa'
-alias pkg-repo='pacaur -Ssr'
-alias pkg-update='pacaur -Syyu'
-alias pkg-install='pacaur -S'
+alias pkg-search='pacaur -Ss --color=always'
+alias pkg-aur='pacaur -sa --color=always'
+alias pkg-repo='pacaur -Ssr --color=always'
+alias pkg-update='pacaur -Syyu --color=always'
+alias pkg-install='pacaur -S --color=always'
 
 #pacman
-alias pkg-orphans='sudo pacman -Rns $(pacman -Qtdq)'
-alias pkg-remove='sudo pacman -Rns'
+alias pkg-orphans='sudo pacman -Rns --color=always $(pacman -Qtdq)'
+alias pkg-remove='sudo pacman -Rns --color=always'
 
 #youtube-dl
-alias Y='youtube-dl -c -o "%(autonumber)s-%(title)s.%(ext)s" --autonumber-size 3'
+alias Y='youtube-dl -c -o "%(autonumber)03d-%(title)s.%(ext)s"'
 alias Ys='youtube-dl -c -o "%(title)s.%(ext)s" --no-playlist'
 
 # curl for useragents
