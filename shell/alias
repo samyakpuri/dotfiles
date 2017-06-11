@@ -84,3 +84,6 @@ alias tkill='tmux kill-session -t'
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
 alias ez='vim ~/.zshrc'
+
+# alias for emacs
+alias emacs='emacs -nw'

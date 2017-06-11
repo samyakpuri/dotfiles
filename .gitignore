@@ -1,3 +1,5 @@
 _vim/bundle/
 *~
 _vim/.netrwhist
+_emacs.d/auto-save-list
+_emacs.d/elpa
