@@ -87,3 +87,8 @@ alias ez='vim ~/.zshrc'
 
 # alias for emacs
 alias emacs='emacs -nw'
+
+# alias vim to nvim
+if type nvim > /dev/null 2>&1; then
+  alias vim='nvim'
+fi

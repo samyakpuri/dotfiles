@@ -43,9 +43,6 @@ set splitright
 " Buffers
 set history=500
 set hidden
-if exists("&undofile")
-    set undofile
-endif
 
 " Spelling
 set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
@@ -82,6 +79,7 @@ set nobackup
 set nowritebackup
 set noswapfile 
 set autoread
+set noundofile
 
 " }}}
 
@@ -242,6 +240,18 @@ nnoremap <silent> ,- :%s/\(self\.\)\?<C-R><C-W>(\(self, \)\?\([a-zA-Z]\+\), \?\(
 " Insert timestamp
 nnoremap <C-d> "=strftime("%-l:%M%p")<CR>P
 inoremap <C-d> <C-r>=strftime("%-l:%M%p")<CR>
+
+" Align blocks of text and keep them selected
+  vmap < <gv
+  vmap > >gv
+  nnoremap <leader>d "_d
+  vnoremap <leader>d "_d
+  vnoremap <c-/> :TComment<cr>
+  nnoremap <silent> <esc> :noh<cr>
+  nnoremap <leader>e :call <SID>SynStack()<CR>
+
+" Code formatiing
+noremap <silent> <leader>f :Neoformat<CR>
 
 " }}}
 
@@ -645,16 +655,27 @@ set secure
 
 " }}}
 
-" {{{ Include Vundle at runtime
+" {{{ Align blocks
 
-runtime include/vundle.vim
+" Align blocks of text and keep them selected
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 
-"}}} 
+" {{{ Include package manager
+
+runtime vimrc.bundles
+
+"}}}
 
 " {{{ Powerline for vim
 
 python3 from powerline.vim import setup as powerline_setup
 python3 powerline_setup()
 python3 del powerline_setup
+
 
 "}}}
