@@ -84,6 +84,7 @@ alias tkill='tmux kill-session -t'
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
 alias ez='vim ~/.zshrc'
+<<<<<<< HEAD
 
 # alias for emacs
 alias emacs='emacs -nw'
@@ -92,3 +93,5 @@ alias emacs='emacs -nw'
 if type nvim > /dev/null 2>&1; then
   alias vim='nvim'
 fi
+=======
+>>>>>>> parent of 7dd7e38... updated alias and gitignore
