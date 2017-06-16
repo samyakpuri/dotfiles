@@ -1,5 +1,135 @@
-" we dont want VI bindings
+scriptencoding utf-8
 
-set nocompatible
+if has('nvim')
+  " Load plugins
+  set rtp+=~/.vim
+endif
 
+" Basic Settings {{{
+" ============== 
 
+" Modelines
+set modelines=2
+set modeline
+
+" For clever completion with :find command
+set path+=**
+
+" Always use bash syntax for sh filetype
+let g:is_bash=1
+
+" Color Scheme
+colorscheme molokai
+
+" Search
+set ignorecase smartcase
+set grepprg=grep\ -IrsnH
+
+" Window display
+set showcmd ruler laststatus=2
+
+" Splits
+set splitright
+
+" Buffers
+set history=500
+set hidden
+
+if exists("&undofile")
+    set undofile
+endif
+
+" Spelling
+set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
+
+" Text display
+set listchars=trail:.,tab:>-,extends:>,precedes:<,nbsp:¬
+set list
+
+" Typing behaviour
+set backspace=indent,eol,start
+set showmatch
+set wildmode=full
+set wildmenu
+set complete-=i
+
+" Formatting
+set nowrap
+set tabstop=4 shiftwidth=4 softtabstop=4
+set foldlevelstart=2
+
+" Status line
+set statusline=%!MyStatusLine()
+
+" Session saving
+set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
+
+" Word splitting
+set iskeyword+=-
+
+" }}}
+
+" Source all vim files in .vim {{{
+" ============================
+
+" SourceConfig() {{{
+function! SourceConfig()
+	let file_list = split(globpath('$HOME/.vim', '*.vim'), '\n')
+	for file in  file_list
+		execute 'source ' fnameescape(file)
+	endfor
+endfunction
+" }}}
+call SourceConfig()
+
+" }}}
+
+" Syntax Highlighting {{{
+" ===================
+
+" This has to happen AFTER autocommands are defined, because I run au! when,
+" defining them, and syntax hilighting is done with autocommands.
+
+" Syntax hilighting
+syntax enable
+
+" }}}
+
+" Backups {{{
+" =======
+
+if has('win32')
+    " Windows filesystem
+    set directory=$HOME\VimBackups\swaps,$HOME\VimBackups,C:\VimBackups,.
+    set backupdir=$HOME\VimBackups\backups,$HOME\VimBackups,C:\VimBackups,.
+    if exists("&undodir")
+        set undodir=$HOME\VimBackups\undofiles,$HOME\VimBackups,C:\VimBackups,.
+    endif
+    if has("gui_running")
+      set guifont=Inconsolata:h12:cANSI
+    endif
+else
+    " POSIX filesystem
+    set directory=$HOME/.backups/swaps,$HOME/.backups,$HOME/tmp,.
+    set backupdir=$HOME/.backups/backups,$HOME/.backups,$HOME/tmp,.
+    if exists("&undodir")
+        set undodir=$HOME/.backups/undofiles,$HOME/.backups,$HOME/tmp,.
+    endif
+endif
+
+" }}}
+
+" do this so it's called after everything is cleared by `syntax enable` when
+" re-sourcing .vimrc
+call UpdateTaskDisplay()
+
+" Local Settings {{{
+
+if filereadable($HOME."/.local/vim/.vimrc")
+    source $HOME/.local/vim/.vimrc
+endif
+
+set exrc
+set secure
+
+" }}}
