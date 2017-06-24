@@ -81,4 +81,8 @@ unpatch () {
   find . -name "b" -type d -exec rm -rf {} \;
 }
 
+pkgsearch() {
+  pacaur -Ss --color=always $@ | less
+}
 
+alias pkg-search='pkgsearch'

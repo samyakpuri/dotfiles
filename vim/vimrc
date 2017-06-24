@@ -1,13 +1,15 @@
 scriptencoding utf-8
 
-if has('nvim')
-  " Load plugins
-  set rtp+=~/.vim
-endif
+" if has('nvim')
+"   " Load plugins
+"   set rtp+=~/.vim
+" endif
 
 " Basic Settings {{{
-" ============== 
+" ==============
 
+" Set leader to ,
+let mapleader= ","
 " Modelines
 set modelines=2
 set modeline
@@ -18,15 +20,15 @@ set path+=**
 " Always use bash syntax for sh filetype
 let g:is_bash=1
 
-" Color Scheme
-colorscheme molokai
-
 " Search
 set ignorecase smartcase
 set grepprg=grep\ -IrsnH
 
 " Window display
 set showcmd ruler laststatus=2
+
+" Set Numbering
+set number
 
 " Splits
 set splitright
@@ -74,10 +76,12 @@ set iskeyword+=-
 
 " SourceConfig() {{{
 function! SourceConfig()
-	let file_list = split(globpath('$HOME/.vim', '*.vim'), '\n')
-	for file in  file_list
-		execute 'source ' fnameescape(file)
-	endfor
+    let file_list = split(globpath('$HOME/.vim', '*.vim'), '\n')
+    for file in  file_list
+        if file != expand('$HOME/.vim/init.vim')
+            execute 'source ' fnameescape(file)
+        endif
+    endfor
 endfunction
 " }}}
 call SourceConfig()
@@ -133,3 +137,6 @@ set exrc
 set secure
 
 " }}}
+
+" Color Scheme
+color molokai

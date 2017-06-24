@@ -96,3 +96,17 @@ nnoremap \rex oif __FILE__ == $0end<ESC>O
 nnoremap <C-d> "=strftime("%-l:%M%p")<CR>P
 inoremap <C-d> <C-r>=strftime("%-l:%M%p")<CR>
 
+" set Terminal exit to esc
+if has('nvim')
+    tnoremap <ESC> <C-\><C-n>
+endif
+
+" Toggle NERDTree
+nnoremap <leader>f :NERDTreeToggle<CR>
+
+" vim-easy-align
+xmap ga <Plug>(EasyAlign)
+
+" fzf
+inoremap <leader>o <ESC>:Files<CR>
+nnoremap <leader>o <ESC>:Files<CR>
