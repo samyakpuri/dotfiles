@@ -78,3 +78,73 @@ let g:netrw_list_hide=netrw_gitignore#Hide()
 let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " }}}
+
+" Completor {{{
+" =========
+
+let g:completor_python_binary='/usr/bin/python3' " python competion for completer
+let g:completor_clang_binary='/usr/bin/clang' " c/c++ completion
+let g:completor_node_binary='~/node_modules/tern/bin/tern' " JS completion
+
+" }}}
+
+" Neomake {{{
+" =======
+
+let g:neomake_javascript_maker=['jshint', 'jscs']
+let g:neomake_json_maker=['jsonlint', 'jsonval']
+let g:neomake_ruby_maker=['rubocop','mri']
+let g:neomake_perl_maker=['perl','perlcritic','podchecker']
+let g:neomake_python_maker=['pylint','pep8','python']
+let g:neomake_cpp_maker=['gcc','cppcheck','cpplint','ycm','clang_tidy','clang_check']
+let g:neomake_c_maker=['gcc','make','cppcheck','clang_tidy','clang_check']
+let g:neomake_haml_maker=['haml_lint', 'haml']
+let g:neomake_html_maker=['jshint']
+let g:neomake_yaml_maker=['jsyaml']
+let g:neomake_sh_maker=['sh','shellcheck','checkbashisms']
+let g:neomake_vim_maker=['vimlint']
+let g:neomake_css_maker=['csslint','stylelint']
+
+" }}}
+
+" Airline {{{
+" =======
+
+let g:airline_powerline_fonts = 1
+if !exists('g:airline_symbols')
+      let g:airline_symbols = {}
+endif
+let g:airline_symbols.space = "\ua0"
+  let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline_theme = 'molokai'
+
+" }}}
+
+" Vim Table Mode {{{
+" ==============
+
+function! s:isAtStartOfLine(mapping)
+  let text_before_cursor = getline('.')[0 : col('.')-1]
+  let mapping_pattern = '\V' . escape(a:mapping, '\')
+  let comment_pattern = '\V' . escape(substitute(&l:commentstring, '%s.*$', '', ''), '\')
+  return (text_before_cursor =~? '^' . ('\v(' . comment_pattern . '\v)?') . '\s*\v' . mapping_pattern . '\v$')
+endfunction
+
+inoreabbrev <expr> <bar><bar>
+          \ <SID>isAtStartOfLine('\|\|') ?
+          \ '<c-o>:TableModeEnable<cr><bar><space><bar><left><left>' : '<bar><bar>'
+inoreabbrev <expr> __
+          \ <SID>isAtStartOfLine('__') ?
+          \ '<c-o>:silent! TableModeDisable<cr>' : '__'
+
+" }}}
+
+" Ultisnips {{{
+" =========
+
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" }}}

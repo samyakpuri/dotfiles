@@ -22,7 +22,7 @@ au BufWritePost * call UpdateTaskDisplay()
 au FileType swift,mustache,markdown,cpp,hpp,vim,sh,html,htmldjango,css,sass,scss,javascript,coffee,python,ruby,eruby setl expandtab list
 
 " Tabs Only
-au FileType c,h,make setl foldmethod=syntax noexpandtab nolist
+au FileType c,h,make setl foldmethod=synta noexpandtab nolist
 au FileType gitconfig,apache,sql setl noexpandtab nolist
 
 " Folding
@@ -30,10 +30,13 @@ au FileType html,htmldjango,css,sass,javascript,coffee,python,ruby,eruby setl fo
 au FileType json setl foldmethod=indent foldenable shiftwidth=4 softtabstop=4 tabstop=4 expandtab
 
 " Tabstop/Shiftwidth
-au FileType mustache,ruby,eruby,javascript,coffee,sass,scss setl softtabstop=4 shiftwidth=4 tabstop=4
-au FileType rst setl softtabstop=4 shiftwidth=4 tabstop=4
+au FileType mustache,ruby,eruby,javascript,coffee,sass,scss setl softtabstop=2 shiftwidth=2 tabstop=2
+au FileType rst setl softtabstop=3 shiftwidth=3 tabstop=3
 
 " Other
 au FileType python let b:python_highlight_all=1
 au FileType diary setl wrap linebreak nolist
 au FileType markdown setl linebreak
+
+" NERDTree create
+" au VimEnter * call StartUP()

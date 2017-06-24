@@ -31,7 +31,7 @@ alias cd..='cd ..'
 
 #pacaur
 
-alias pkg-search='pacaur -Ss --color=always'
+#alias pkg-search='pacaur -Ss --color=always $@ | less'
 alias pkg-aur='pacaur -sa --color=always'
 alias pkg-repo='pacaur -Ssr --color=always'
 alias pkg-update='pacaur -Syyu --color=always'

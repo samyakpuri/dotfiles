@@ -191,3 +191,18 @@ function! ExtendRight()
     vsplit
     exe "b " . l:shrink
 endfunction
+
+" Create NERDTree on StartUP
+
+function! StartUP()
+    if 0 == argc()
+        execute 'NERDTree' getcwd()
+    else
+        if argv(0) == '.'
+            execute 'NERDTree' getcwd()
+        else
+            execute 'NERDTree' getcwd() . '/' . argv(0)
+        endif
+    endif
+    execute 'NERDTreeToggle'
+endfunction
