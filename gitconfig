@@ -10,7 +10,7 @@
 
 [core]
   editor = vim
-  excludesfile = ~/.gitignore_global
+	excludesfile = /home/spuri/.gitignore_global
   autocrlf = input
 
 [help]
