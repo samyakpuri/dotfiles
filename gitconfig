@@ -47,8 +47,10 @@
   # Basic Commands
   co = checkout
   cop = "!f() { git checkout pr/$1; }; f"
+  com = checkout master
   ci = commit -S
   st = status -sb
+  s = status
   mt = mergeTool
   ba = branch
   baa = branch -a
