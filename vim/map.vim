@@ -104,9 +104,14 @@ endif
 " Toggle NERDTree
 nnoremap <leader>f :NERDTreeToggle<CR>
 
-" vim-easy-align
+" Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
+
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 
 " fzf
 inoremap <leader>o <ESC>:Files<CR>
 nnoremap <leader>o <ESC>:Files<CR>
+inoremap <leader>b <ESC>:Buffers<CR>
+nnoremap <leader>b <ESC>:Buffers<CR>

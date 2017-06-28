@@ -148,3 +148,17 @@ let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 " }}}
+
+" Auto Pair {{{
+" =========
+
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','<':'>', '%':'%'}
+
+" }}}
+
+" SuperTab {{{
+" ========
+
+let g:SuperTabDefaultCompletionType = "<tab>"
+
+" }}}
