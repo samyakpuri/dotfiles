@@ -143,6 +143,10 @@ Plug 'dhruvasagar/vim-table-mode'
 " Text outlining and task management for Vim based on Emacs' Org-Mode
 Plug 'jceb/vim-orgmode' 
 
+" vimscript for gist
+Plug 'mattn/webapi-vim'
+Plug 'mattn/gist-vim'
+
 " }}}
 
 " His Home-Row-ness the Pope of Tim {{{
