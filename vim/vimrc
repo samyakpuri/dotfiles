@@ -22,7 +22,8 @@ let g:is_bash=1
 
 " Search
 set ignorecase smartcase
-set grepprg=grep\ -IrsnH
+set grepprg=ack
+" set grepprg=grep\ -IrsnH
 
 " Window display
 set showcmd ruler laststatus=2
@@ -47,6 +48,9 @@ set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
 " Text display
 set listchars=trail:.,tab:>-,extends:>,precedes:<,nbsp:¬
 set list
+
+" set tags for programs
+set tags=./tags;
 
 " Typing behaviour
 set backspace=indent,eol,start
@@ -99,6 +103,9 @@ syntax enable
 
 " }}}
 
+" Do not higlight searches {{{
+set nohlsearch
+" }}}
 " Backups {{{
 " =======
 
@@ -114,10 +121,10 @@ if has('win32')
     endif
 else
     " POSIX filesystem
-    set directory=$HOME/.backups/swaps,$HOME/.backups,$HOME/tmp,.
-    set backupdir=$HOME/.backups/backups,$HOME/.backups,$HOME/tmp,.
+    set directory=$HOME/.backups/swaps//
+    set backupdir=$HOME/.backups/backups//
     if exists("&undodir")
-        set undodir=$HOME/.backups/undofiles,$HOME/.backups,$HOME/tmp,.
+        set undodir=$HOME/.backups/undofiles//
     endif
 endif
 
