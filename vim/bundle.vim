@@ -14,8 +14,11 @@ call plug#begin('$HOME/.vim/plugged')
 " qml syntax
 " Plug 'peterhoeg/vim-qml'
 
+" ruby highlighting
+Plug 'vim-ruby/vim-ruby'
+
 " ruby syntax
-Plug 'joker1007/vim-ruby-heredoc-syntax'
+" Plug 'joker1007/vim-ruby-heredoc-syntax'
 
 " Vim syntax file for scss
 Plug 'cakebaker/scss-syntax.vim'
@@ -78,7 +81,12 @@ Plug 'SirVer/ultisnips'
 " contains snippetsfiles for various programming languages
 Plug 'honza/vim-snippets'
 
-"" code completion engine
+" implements some of TextMate's snippets features
+Plug 'MarcWeber/vim-addon-mw-utils'
+Plug 'tomtom/tlib_vim'
+Plug 'garbas/vim-snipmate'
+
+" code completion engine
 " Plug 'Valloric/YouCompleteMe'
 
 " asynchronous code completion framework
