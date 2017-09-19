@@ -79,14 +79,6 @@ let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
 
 " }}}
 
-" Completor {{{
-" =========
-
-let g:completor_python_binary='/usr/bin/python3' " python competion for completer
-let g:completor_clang_binary='/usr/bin/clang' " c/c++ completion
-let g:completor_node_binary='~/node_modules/tern/bin/tern' " JS completion
-
-" }}}
 
 " Neomake {{{
 " =======
@@ -152,7 +144,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " Auto Pair {{{
 " =========
 
-let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','<':'>', '%':'%'}
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','<':'>'}
 
 " }}}
 
