@@ -111,7 +111,10 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 
 " fzf
-inoremap <leader>o <ESC>:Files<CR>
+" inoremap <leader>o <ESC>:Files<CR>
 nnoremap <leader>o <ESC>:Files<CR>
-inoremap <leader>b <ESC>:Buffers<CR>
+" inoremap <leader>b <ESC>:Buffers<CR>
 nnoremap <leader>b <ESC>:Buffers<CR>
+
+" Force saving files that require root permission 
+cnoremap w!! w !sudo tee > /dev/null 

@@ -17,6 +17,9 @@ call plug#begin('$HOME/.vim/plugged')
 " ruby highlighting
 Plug 'vim-ruby/vim-ruby'
 
+" Ruby on Rails development environment inside Vim.
+Plug 'smolnar/vim-rails-bundle'
+
 " ruby syntax
 " Plug 'joker1007/vim-ruby-heredoc-syntax'
 
@@ -82,15 +85,21 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 " implements some of TextMate's snippets features
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
+" Plug 'MarcWeber/vim-addon-mw-utils'
+" Plug 'tomtom/tlib_vim'
+" Plug 'garbas/vim-snipmate'
 
 " code completion engine
-" Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --tern-completer'}
+
+" Tern plugin for Vim
+Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+
+" Refactoring tool for Ruby in vim!Refactoring tool for Ruby in vim!
+Plug 'ecomba/vim-ruby-refactoring'
 
 " asynchronous code completion framework
-Plug 'maralla/completor.vim'
+" Plug 'maralla/completor.vim'
 
 " autocompletion library for python
 Plug 'davidhalter/jedi-vim'
@@ -114,7 +123,7 @@ Plug 'ervandew/supertab'
 
 
 " File Drawer
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' | Plug 'ryanoasis/vim-devicons'
+Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' 
 
 
 " fuzzy file finder and so much more
@@ -154,6 +163,9 @@ Plug 'jceb/vim-orgmode'
 " vimscript for gist
 Plug 'mattn/webapi-vim'
 Plug 'mattn/gist-vim'
+
+" Delete buffers and close files in Vim without closing your windows or messing up your layout
+Plug 'moll/vim-bbye'
 
 " }}}
 
