@@ -9,7 +9,7 @@
   user = samyakpuri
 
 [core]
-  editor = vim
+	editor = nvim
 	excludesfile = /home/spuri/.gitignore_global
   autocrlf = input
 
