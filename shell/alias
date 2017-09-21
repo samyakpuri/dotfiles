@@ -29,6 +29,9 @@ alias V='cd ~'
 alias cd.='cd ..'
 alias cd..='cd ..'
 
+#Use neovim instead of vim
+alias vim='nvim'
+
 #pacaur
 
 #alias pkg-search='pacaur -Ss --color=always $@ | less'
