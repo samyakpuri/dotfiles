@@ -30,7 +30,7 @@ alias cd.='cd ..'
 alias cd..='cd ..'
 
 #Use neovim instead of vim
-alias vim='vim'
+alias vim='nvim'
 
 #pacaur
 
