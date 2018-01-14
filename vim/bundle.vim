@@ -46,19 +46,19 @@ Plug 'gko/vim-coloresque'
 
 
 " Mustach support
-Plug 'mustache/vim-mustache-handlebars'
+" Plug 'mustache/vim-mustache-handlebars'
 
 " CoffeeScript support for vim
-Plug 'kchmck/vim-coffee-script'
+" Plug 'kchmck/vim-coffee-script'
 
 " CoffeeScript with React JSX
-Plug 'mtscout6/vim-cjsx'
+" Plug 'mtscout6/vim-cjsx'
 
 " pug / jade support
-Plug 'digitaltoad/vim-pug'
+" Plug 'digitaltoad/vim-pug'
 
 " Yet Another JavaScript Syntax
-Plug 'othree/yajs.vim'
+" Plug 'othree/yajs.vim'
 
 " }}}
 
@@ -90,16 +90,16 @@ Plug 'honza/vim-snippets'
 " Plug 'garbas/vim-snipmate'
 
 " code completion engine
-Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --tern-completer'}
+" Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --tern-completer'}
+
+" Code completion using deoplete
+Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 
 " Tern plugin for Vim
-Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
+" Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
 
 " Refactoring tool for Ruby in vim!Refactoring tool for Ruby in vim!
-Plug 'ecomba/vim-ruby-refactoring'
-
-" asynchronous code completion framework
-" Plug 'maralla/completor.vim'
+" Plug 'ecomba/vim-ruby-refactoring'
 
 " autocompletion library for python
 Plug 'davidhalter/jedi-vim'
@@ -127,9 +127,11 @@ Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 
 
 
 " fuzzy file finder and so much more
-Plug 'junegunn/fzf', { 'dir': '~/.vim/plugged/.fzf', 'do': './install --bin' }
-Plug 'junegunn/fzf.vim'
+" Plug 'junegunn/fzf', { 'dir': '~/.vim/plugged/.fzf', 'do': './install --bin' }
+" Plug 'junegunn/fzf.vim'
 
+" Dark powered asynchronous unite all interfaces for Neovim/Vim8
+Plug 'Shougo/denite.nvim'
 " }}}
 
 " Miscelaneous {{{
