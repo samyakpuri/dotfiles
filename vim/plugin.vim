@@ -157,5 +157,9 @@ let g:SuperTabDefaultCompletionType = "<tab>"
 " Deoplete {{{
 " ========
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_yarp = 1
 " }}}
+
+" Deoplete-Clang {{{
+" ==============
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
