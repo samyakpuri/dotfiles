@@ -30,6 +30,7 @@ set showcmd ruler laststatus=2
 
 " Set Numbering
 set number
+set relativenumber
 
 " Splits
 set splitright

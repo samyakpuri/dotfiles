@@ -34,8 +34,14 @@
 ! white
 *.color7:       #f8f8f2
 *.color15:      #f9f8f5
-URxvt.font: xft:DejaVuSansMono:size=11
-! URxvt.background: [70]#000000
-URxvt.transparent: true
-URxvt.shading: 20
-URxvt.scrollBar: false
+URxvt.font:                xft:DejaVuSansMono:size=11, xft:DejaVuSansMonoforpowerline:size=11
+!URxvt.background:          [70]#000000
+URxvt.transparent:         true
+URxvt.shading:             20
+URxvt.scrollBar:           false
+URxvt.perl-ext-common:     default,matcher,resize-font
+URxvt.perl-lib:            $HOME/.config/Scripts
+URxvt.url-launcher:        /usr/bin/xdg-open
+URxvt.matcher.button:      1
+URxvt.resize-font.smaller: C-Down
+URxvt.resize-font.bigger:  C-Up

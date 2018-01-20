@@ -22,7 +22,7 @@ au BufWritePost * call UpdateTaskDisplay()
 au FileType swift,mustache,markdown,cpp,hpp,vim,sh,html,htmldjango,css,sass,scss,javascript,coffee,python,ruby,eruby setl expandtab list
 
 " Tabs Only
-au FileType c,h,make setl foldmethod=synta noexpandtab nolist
+au FileType c,h,make setl foldmethod=syntax noexpandtab nolist
 au FileType gitconfig,apache,sql setl noexpandtab nolist
 
 " Folding

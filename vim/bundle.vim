@@ -95,6 +95,9 @@ Plug 'honza/vim-snippets'
 " Code completion using deoplete
 Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
 
+" C/C++/Objective-C/Objective-C++ source for deoplete.nvim
+Plug 'zchee/deoplete-clang'
+
 " Tern plugin for Vim
 " Plug 'ternjs/tern_for_vim', {'do': 'npm install'}
 
@@ -127,11 +130,11 @@ Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 
 
 
 " fuzzy file finder and so much more
-" Plug 'junegunn/fzf', { 'dir': '~/.vim/plugged/.fzf', 'do': './install --bin' }
-" Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.vim/plugged/.fzf', 'do': './install --bin' }
+Plug 'junegunn/fzf.vim'
 
 " Dark powered asynchronous unite all interfaces for Neovim/Vim8
-Plug 'Shougo/denite.nvim'
+" Plug 'Shougo/denite.nvim'
 " }}}
 
 " Miscelaneous {{{
