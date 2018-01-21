@@ -130,7 +130,7 @@ Plug 'ervandew/supertab'
 
 
 " File Drawer
-Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' 
+" Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] } | Plug 'Xuyuanp/nerdtree-git-plugin' 
 
 
 " fuzzy file finder and so much more
