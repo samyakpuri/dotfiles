@@ -41,6 +41,11 @@ Plug 'mitsuhiko/vim-jinja'
 " set the background of color values to the color
 Plug 'gko/vim-coloresque'
 
+" i3 syntax highlighting for vim
+Plug 'PotatoesMaster/i3-vim-syntax'
+
+" }}}
+
 " JS development {{{
 " ==============
 
@@ -60,7 +65,6 @@ Plug 'gko/vim-coloresque'
 " Yet Another JavaScript Syntax
 " Plug 'othree/yajs.vim'
 
-" }}}
 
 " }}}
 
