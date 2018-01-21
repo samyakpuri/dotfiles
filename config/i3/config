@@ -331,4 +331,4 @@ bindsym $mod+Pause exec $video
 bindsym $mod+Delete exec $stoprec
 bindsym XF86Launch1 exec $stoprec
 
-exec --no-startup-id VBoxClient-all
+exec --no-startup-id VBoxClient --clipboard --dragandrop
