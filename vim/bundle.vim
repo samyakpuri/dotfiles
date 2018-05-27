@@ -176,6 +176,9 @@ Plug 'mattn/gist-vim'
 " Delete buffers and close files in Vim without closing your windows or messing up your layout
 Plug 'moll/vim-bbye'
 
+" Easily adds brief author info and license headers
+Plug 'alpertuna/vim-header'
+
 " }}}
 
 " His Home-Row-ness the Pope of Tim {{{
@@ -241,6 +244,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 " }}}
+
 
 " Initialize plugin system
 call plug#end()

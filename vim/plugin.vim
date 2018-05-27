@@ -144,7 +144,7 @@ let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 " Auto Pair {{{
 " =========
 
-let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','<':'>'}
+let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
 
 " }}}
 
@@ -154,12 +154,27 @@ let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','<':'>'}
 let g:SuperTabDefaultCompletionType = "<tab>"
 
 " }}}
+
 " Deoplete {{{
 " ========
+
 let g:deoplete#enable_at_startup = 1
+
 " }}}
 
 " Deoplete-Clang {{{
 " ==============
+
 let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header = '/usr/lib/clang'
+
+" }}}
+
+" Vim-Headers {{{
+" ===========
+
+let g:header_field_author = 'Samyak Puri'
+let g:header_field_author_email = 'samyakpuri@hotmail.com' 
+let g:header_auto_add_header = 0
+
+" }}}
