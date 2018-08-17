@@ -97,8 +97,13 @@ Plug 'honza/vim-snippets'
 " Plug 'Valloric/YouCompleteMe', {'do': './install.py --clang-completer --tern-completer'}
 
 " Code completion using deoplete
-Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+endif 
 " C/C++/Objective-C/Objective-C++ source for deoplete.nvim
 Plug 'zchee/deoplete-clang'
 
