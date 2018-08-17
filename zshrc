@@ -105,7 +105,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Run on new shell
 have_fortune=`which fortune`
-if [ -e have_fortune ]; then
+if [ -n "${have_fortune}" ]; then
     echo ""
     fortune
     echo ""
