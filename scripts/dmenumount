@@ -4,6 +4,7 @@
 # Date              : 17.08.2018
 # Last Modified Date: 17.08.2018
 # Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+# Summary           : A script for mounting drives and creating symlinks to it in home dir, requires udisks2 to work
 
 pgrep -x dmenu && exit
 
@@ -16,7 +17,7 @@ chosen="$(echo "$drives" | dmenu -i -p "Select drive to mount: " | awk '{print $
 mp=$(udisksctl mount -b "$chosen" | awk '{print substr($4,1,length($4)-1)}')
 if [[ "$mp" =~ "/run/media" ]]; then
     link=$(basename "$mp")
-    ln -s "$mp" $HOME/$link
+    ln -s "$mp" $HOME/"$link"
 fi
 
 
