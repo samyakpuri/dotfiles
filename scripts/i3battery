@@ -5,4 +5,15 @@
 # Last Modified Date: 07.07.2018
 # Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
 
-acpi | cut -d " " -f3-5 | sed -e "s/,//g;s/Discharging/🔋/;s/Charging/🔌/;s/Full/⚡/;s/ 0*/ /g;s/ :/ /g"
+text=$(acpi | cut -d " " -f3-5 | sed -e "s/,//g;s/Discharging/🔋/;s/Charging/🔌/;s/Full/⚡/;s/ 0*/ /g;s/ :/ /g")
+
+if [ $(awk '{print $1}' <<< "$text") = '🔌' ];
+then
+    if [ $(awk '{print int(substr($2,1,length($2)-1))}' <<< "$text") -lt 15 ];
+    then 
+        notify-send --urgency=critical "Battery Low"\
+            "Plugin Charger"
+    fi
+fi
+
+echo $text
