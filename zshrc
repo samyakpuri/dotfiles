@@ -1,5 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# export PATH=$PATH:$HOME/.scripts
 
 # Path to your oh-my-zsh installation.
 ZSH=/usr/share/oh-my-zsh/
@@ -110,3 +110,6 @@ if [ -n "${have_fortune}" ]; then
     fortune
     echo ""
 fi
+
+# export BROWSER="firefox"
+# export TERMINAL="st"
