@@ -1,0 +1,23 @@
+#!/bin/bash
+# File              : weather
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 07.07.2018
+# Last Modified Date: 07.07.2018
+# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+
+location=""
+
+[[ $BLOCK_BUTTON = "1"  ]] && st -e w3m wttr.in
+
+ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` >/dev/null || exit
+
+if [[ "$location" != ""  ]]
+then
+	location="~${location// /+}"
+fi
+
+curl -s wttr.in/$location > ~/.weatherreport
+
+echo -n $(cat ~/.weatherreport | sed '16q;d' | sed -e 's/[]*m//g' | grep -o "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g")
+
+cat ~/.weatherreport | sed '13q;d' | sed -e 's/[]*m//g;s/[^0-9]/ /g;s/ /\n/g;/^s*$/d' | grep [0-9] | sort -n | sed -e 1b -e '$!d' | tr '\n' ' ' | awk '{print " ❄️",$1 "°","☀️",$2 "°"}'

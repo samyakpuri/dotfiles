@@ -1,0 +1,8 @@
+#!/bin/bash
+# File              : battery
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 07.07.2018
+# Last Modified Date: 07.07.2018
+# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+
+acpi | cut -d " " -f3-5 | sed -e "s/,//g;s/Discharging/🔋/;s/Charging/🔌/;s/Full/⚡/;s/ 0*/ /g;s/ :/ /g"
