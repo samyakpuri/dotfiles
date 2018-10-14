@@ -5,19 +5,24 @@
 # Last Modified Date: 07.07.2018
 # Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
 
-location=""
+location="passau"
 
-[[ $BLOCK_BUTTON = "1"  ]] && st -e w3m wttr.in
+[[ $BLOCK_BUTTON = "1"  ]] && st -e w3m wttr.in/${location}
 
 ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` >/dev/null || exit
 
 if [[ "$location" != ""  ]]
 then
-	location="~${location// /+}"
+    location="${location}?0QT"
 fi
 
-curl -s wttr.in/$location > ~/.weatherreport
+curl "wttr.in/${location}" > ~/.wttr
 
-echo -n $(cat ~/.weatherreport | sed '16q;d' | sed -e 's/[]*m//g' | grep -o "[0-9]*%" | sort -n | sed -e '$!d' | sed -e "s/^/☔ /g")
+sky=$(awk 'BEGIN{FS = "\n"; RS=""; OFS=":"; IGNORECASE=1} {sub(/[^a-zA-z]*/,"",$1); sub(/.*clear|sunny.*/,"<span foreground='"'#fff933'"'></span>",$1); sub(/.*cloudy|fog.*/,"<span foreground='"'#00b8e6'"'></span>",$1); print $1}' .wttr)
 
-cat ~/.weatherreport | sed '13q;d' | sed -e 's/[]*m//g;s/[^0-9]/ /g;s/ /\n/g;/^s*$/d' | grep [0-9] | sort -n | sed -e 1b -e '$!d' | tr '\n' ' ' | awk '{print " ❄️",$1 "°","☀️",$2 "°"}'
+temp=$(sed -e '2!d;s/^.*\( -[0-9].*\)/\1/;s/ //;s/^ [^0-9]*//;s/[[:space:]]*$//;s/ //' .wttr)
+
+sky=$(sed -e '5!d;s/[^0-9]*//;s/ mm//' .wttr | awk -v sky="$sky" '{ if ($1 > 0) { sub(/|/,"",sky); sub(/#00b8e6|#fff933/,"#0099cc",sky) } print sky }')
+
+echo -e "$(echo $sky | sed "s/'/\"/g" )  $temp"
+
