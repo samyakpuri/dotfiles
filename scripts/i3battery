@@ -7,7 +7,7 @@
 
 text=$(acpi | cut -d " " -f3-5 | sed -e "s/,//g;s/Discharging/🔋/;s/Charging/🔌/;s/Full/⚡/;s/ 0*/ /g;s/ :/ /g")
 
-if [ $(awk '{print $1}' <<< "$text") = '🔌' ];
+if [ $(awk '{print $1}' <<< "$text") = '🔋' ];
 then
     if [ $(awk '{print int(substr($2,1,length($2)-1))}' <<< "$text") -lt 15 ];
     then 
