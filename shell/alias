@@ -1,13 +1,24 @@
-
+#Generic shortcuts:
+alias music="ncmpcpp"
+alias clock="ncmpcpp -s clock"
+alias visualizer="ncmpcpp -s visualizer"
+alias news="newsbeuter"
+alias email="neomutt"
+alias files="ranger"
+alias chat="weechat"
+alias audio="ncpamixer"
+alias calender="calcurse"
+alias getmail="offlineimap && notmuch new"
+alias gm="offlineimap && notmuch new"
 
 # Filesystem
 alias ..='cd ..'            # Go up one directory
 alias ...='cd ../..'        # Go up two directories
 alias ....='cd ../../..'    # And for good measure
-alias ls='ls --color=auto'  # gimmie colors
-alias l='ls -lah --color=auto'   # Long view, show hidden
-alias la='ls -AF --color=auto'   # Compact view, show hidden
-alias ll='ls -lFh --color=auto'  # Long view, no hidden
+alias ls='ls --color=auto --group-directories-first'  # gimmie colors
+alias l='ls -lah --color=auto --group-directories-first'   # Long view, show hidden
+alias la='ls -AF --color=auto --group-directories-first'   # Compact view, show hidden
+alias ll='ls -lFh --color=auto --group-directories-first'  # Long view, no hidden
 
 # Tmux alias for color for TERM
 #alias tmux='TERM=xterm-256color \tmux'
@@ -17,7 +28,6 @@ alias grep='grep --color=auto' # Always highlight grep search term
 alias ping='ping -c 5'         # Pings with 5 packets, not unlimited
 alias df='df -h'               # Disk free, in gigabytes, not bytes
 alias du='du -sh'            # Calculate total disk usage for a folder
-alias clr='clear;echo "Currently logged in on $(tty), as $(whoami) in directory $(pwd)."'
 alias svim="sudo vim" 	       # Run vim as super user
 alias Root='su -'
 alias duu='for t in files links directories; do echo `find . -maxdepth 1 -type ${t:0:1} | wc -l` $t; done 2> /dev/null'
@@ -32,17 +42,11 @@ alias cd..='cd ..'
 #Use neovim instead of vim
 alias vim='nvim'
 
-#pacaur
-
-#alias pkg-search='pacaur -Ss --color=always $@ | less'
-alias pkg-aur='pacaur -sa --color=always'
-alias pkg-repo='pacaur -Ssr --color=always'
-alias pkg-update='pacaur -Syyu --color=always'
-alias pkg-install='pacaur -S --color=always'
-
-#pacman
-alias pkg-orphans='sudo pacman -Rns --color=always $(pacman -Qtdq)'
-alias pkg-remove='sudo pacman -Rns --color=always'
+#pacaur/pacman
+alias progs='pacman -Qet' #List Programs installed
+alias orphs='pacman -Qdt' #List prphan Programs
+alias p='pacaur'
+alias sp='sudo pacman'
 
 #youtube-dl
 alias Y='youtube-dl -c -o "%(autonumber)03d-%(title)s.%(ext)s"'
@@ -51,24 +55,6 @@ alias Ys='youtube-dl -c -o "%(title)s.%(ext)s" --no-playlist'
 # curl for useragents
 alias iecurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)\""
 alias ffcurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.8) Gecko/2009032609 Firefox/3.0.0 (.NET CLR 3.5.30729)\""
-
-# GIT ALIASES
-alias g=git
-alias ga='git add'
-alias gb='git branch'
-alias gba='git branch -a'
-alias gc='git commit -v'
-alias gl='git pull'
-alias gp='git push'
-alias gst='git status -sb'
-alias gsd='git svn dcommit'
-alias gsr='git svn rebase'
-alias gs='git stash'
-alias gsa='git stash apply'
-alias gr='git stash && git svn rebase && git svn dcommit && git stash pop' # git refresh
-alias gd='git diff | $GIT_EDITOR -'
-alias gmv='git mv'
-alias gho='$(git remote -v 2> /dev/null | grep github | sed -e "s/.*git\:\/\/\([a-z]\.\)*/\1/" -e "s/\.git.*//g" -e "s/.*@\(.*\)$/\1/g" | tr ":" "/" | tr -d "\011" | sed -e "s/^/open http:\/\//g" | uniq)'
 
 # HG ALIASES
 alias hgst='hg status'
@@ -86,6 +72,3 @@ alias tkill='tmux kill-session -t'
 alias ev='vim ~/.vimrc'
 alias et='vim ~/.tmux.conf'
 alias ez='vim ~/.zshrc'
-
-# alias for emacs
-alias emacs='emacs -nw'
