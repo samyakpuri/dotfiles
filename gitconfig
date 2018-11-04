@@ -1,16 +1,8 @@
 ; vim: ft=gitconfig
 
-[user]
-  name       = Samyak Puri
-  email      = samyakpuri@hotmail.com
-  signingkey = Samyak Puri
-
-[github]
-  user = samyakpuri
-
 [core]
 	editor = vim
-	excludesfile = /home/spuri/.gitignore_global
+	excludesfile = ~/.gitignore_global
   autocrlf = input
 
 [help]
