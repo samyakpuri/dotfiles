@@ -18,7 +18,7 @@ fi
 
 curl "wttr.in/${location}" > ~/.wttr
 
-sky=$(awk 'BEGIN{FS = "\n"; RS=""; OFS=":"; IGNORECASE=1} {sub(/[^a-zA-z]*/,"",$1); sub(/.*clear|sunny.*/,"<span foreground='"'#fff933'"'></span>",$1); sub(/.*cloudy|fog.*/,"<span foreground='"'#00b8e6'"'></span>",$1); print $1}' .wttr)
+sky=$(awk 'BEGIN{FS = "\n"; RS=""; OFS=":"; IGNORECASE=1} {sub(/[^a-zA-z]*/,"",$1); sub(/.*clear|sunny.*/,"<span foreground='"'#fff933'"'></span>",$1); sub(/.*cloudy|.*fog.*/,"<span foreground='"'#00b8e6'"'></span>",$1); print $1}' .wttr)
 
 temp=$(sed -e '2!d;s/^.*\( -[0-9].*\)/\1/;s/ //;s/^ [^0-9]*//;s/[[:space:]]*$//;s/ //' .wttr)
 
