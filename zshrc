@@ -1,9 +1,5 @@
 # If you come from bash you might have to change your $PATH.
-<<<<<<< Updated upstream
 # export PATH=$PATH:$HOME/.scripts
-=======
-export PATH=$HOME/bin:$HOME/.scripts:/usr/local/bin:$PATH
->>>>>>> Stashed changes
 
 # Path to your oh-my-zsh installation.
 ZSH=/usr/share/oh-my-zsh/
@@ -107,18 +103,5 @@ source $ZSH/oh-my-zsh.sh
 . ~/.shell/functions
 . ~/.shell/variables
 
-<<<<<<< Updated upstream
 # export BROWSER="firefox"
 # export TERMINAL="st"
-=======
-# Run on new shell
-have_fortune=`which fortune`
-if [ -n "${have_fortune}" ]; then
-    echo ""
-    fortune
-    echo ""
-fi
-
-export BROWSER="firefox"
-export TERMINAL="st"
->>>>>>> Stashed changes
