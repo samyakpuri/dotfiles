@@ -7,7 +7,7 @@
 # Summary           : A script for unmounting drives and removing symlinks to it in home dir, requires udisks2 to work
 
 
-declare -A drives="($(df -h --output=source,target | awk '/\/run\/media/{ n=split($2,a,"/"); print "["a[n]"]="$1}'))"
+declare -A drives="($(df -h --output=source,target | awk -F" {2,}" '/\/run\/media/{ n=split($2,a,"/"); print "["a[n]"]="$1}'))"
 
 chosen=$(echo "${!drives[@]}" | dmenu -i -p "Select drive to unmount: " | awk '{print $1}')
 [ -z "$chosen" ] && exit 1
