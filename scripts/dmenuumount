@@ -9,7 +9,6 @@
 
 declare -A drives="($(df -h --output=source,target | awk -F" {2,}" '/\/run\/media/{ n=split($2,a,"/"); print "["a[n]"]="$1}'))"
 
-chosen=$(echo "${!drives[@]}" | dmenu -i -p "Select drive to unmount: " | awk '{print $1}')
+chosen=$(echo "${!drives[@]}" | dmenu -i -p "Select drive to unmount: ")
 [ -z "$chosen" ] && exit 1
-udisksctl unmount -b "${drives[${chosen}]}"
-rm $HOME/"${chosen}"
+udisksctl unmount -b "${drives[${chosen}]}" && rm $HOME/"${chosen}" && notify-send "${chosen} Unmounted Successfully"
