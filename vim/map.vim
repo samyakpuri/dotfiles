@@ -2,17 +2,23 @@
 
 " Run shell command
 " ... and print output
-nnoremap <C-h> :.w !bash<CR>
+" nnoremap <C-h> :.w !bash<CR>
 " ... and append output
-nnoremap <C-l> yyp!!bash<CR>
+" nnoremap <C-l> yyp!!bash<CR>
 
 " Easy quickfix navigation
 nnoremap <C-n> :cn<CR>
 nnoremap <C-p> :cp<CR>
 
+" Shortcutting split navigation, saving a keypress:
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
 " Newlines
-nnoremap <C-j> o<ESC>k
-nnoremap <C-k> O<ESC>j
+nnoremap <M-j> o<ESC>k
+nnoremap <M-k> O<ESC>j
 
 " Easy header/source swap
 nnoremap [f :call SourceHeaderSwap()<CR>
@@ -38,9 +44,25 @@ nnoremap <F4> :retab<CR>:%s/\s\+$//e<CR><C-o>
 " De-fuckify syntax hilighting
 nnoremap <F3> :syn sync fromstart<CR>
 
+" Spell-check set to <leader>o, 'o' for 'orthography':
+map <leader>s :setlocal spell! spelllang=en_us<CR>
+
+" Check file in shellcheck:
+map <leader>s :!clear && shellcheck %<CR>
+
 " Editing vimrc
 nnoremap ,v :source $MYVIMRC<CR>
 nnoremap ,e :edit $MYVIMRC<CR>
+
+" Compile document, be it groff/LaTeX/markdown/etc.
+map <leader>c :w! \| !compiler <c-r>%<CR><CR>
+
+" Open corresponding .pdf/.html or preview
+map <leader>p :!opout <c-r>%<CR><CR>
+
+" Copy selected text to system clipboard (requires gvim installed):
+vnoremap <C-c> "*Y :let @+=@*<CR>
+map <C-p> "+P
 
 " Quickly change search hilighting
 nnoremap <silent> ; :set invhlsearch<CR>
@@ -117,4 +139,4 @@ nnoremap <leader>o <ESC>:Files<CR>
 nnoremap <leader>b <ESC>:Buffers<CR>
 
 " Force saving files that require root permission 
-cnoremap w!! w !sudo tee > /dev/null 
+cnoremap w!! w !sudo tee %

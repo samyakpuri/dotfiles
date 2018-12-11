@@ -33,7 +33,7 @@ set number
 set relativenumber
 
 " Splits
-set splitright
+set splitright splitbelow
 
 " Buffers
 set history=500
@@ -61,15 +61,16 @@ set wildmenu
 set complete-=i
 
 " Formatting
-set nowrap
+set wrap
 set tabstop=4 shiftwidth=4 softtabstop=4
 set foldlevelstart=2
+set tw=120 colorcolumn=+1
 
 " Status line
-set statusline=%!MyStatusLine()
+" set statusline=%!MyStatusLine()
 
 " Session saving
-set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
+" set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
 
 " Word splitting
 set iskeyword+=-
@@ -107,6 +108,7 @@ syntax enable
 " Do not higlight searches {{{
 set nohlsearch
 " }}}
+
 " Backups {{{
 " =======
 
@@ -133,7 +135,7 @@ endif
 
 " do this so it's called after everything is cleared by `syntax enable` when
 " re-sourcing .vimrc
-call UpdateTaskDisplay()
+" call UpdateTaskDisplay()
 
 " Local Settings {{{
 
