@@ -14,3 +14,11 @@ export HISTIGNORE="&:ls:ll:la:l.:pwd:exit:clear:clr:[bf]g"
 # Variables For i3
 export TERMINAL="st"
 export BROWSER="firefox"
+export BROWSER2="google-chrome-stable"
+export GPG_TTY=$(tty)
+
+# Start X automatically
+if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+  exec startx
+fi
+
