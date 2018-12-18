@@ -4,3 +4,5 @@ vim/autoload/
 .netrwhist
 *.swp
 .installed
+shell/shortcuts
+config/mpd/*
