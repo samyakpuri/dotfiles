@@ -97,11 +97,9 @@ if [[ ! -d $ZSH_CACHE_DIR ]]; then
   mkdir $ZSH_CACHE_DIR
 fi
 
+eval "$(dircolors ~/.mydircolors)"
 source $ZSH/oh-my-zsh.sh
 
-. ~/.shell/alias
-. ~/.shell/functions
-. ~/.shell/variables
-
-# export BROWSER="firefox"
-# export TERMINAL="st"
+for file in ~/.shell/*; do
+	source $file
+done
