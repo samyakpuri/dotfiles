@@ -1,28 +1,31 @@
-#!/bin/bash
-# File              : weather
-# Author            : Samyak Puri <samyakpuri@hotmail.com>
-# Date              : 07.07.2018
-# Last Modified Date: 07.07.2018
-# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+#!/bin/sh
+
+# i3blocks weather block using wttr.in
 
 location="passau"
 
-[[ $BLOCK_BUTTON = "1"  ]] && st -e w3m wttr.in/${location}
+[ "$BLOCK_BUTTON" = "1"  ] && st -e w3m wttr.in/${location}
 
-ping -q -w 1 -c 1 `ip r | grep default | cut -d ' ' -f 3` >/dev/null || exit
+ping -q -w 1 -c 1 "$(ip r | grep default | cut -d ' ' -f 3)" >/dev/null || exit
 
-if [[ "$location" != ""  ]]
+if [ "$location" != ""  ]
 then
     location="${location}?0QT"
 fi
 
-curl "wttr.in/${location}" > ~/.wttr
+curl "wttr.in/${location}" > /tmp/wttr
 
-sky=$(awk 'BEGIN{FS = "\n"; RS=""; OFS=":"; IGNORECASE=1} {sub(/[^a-zA-z]*/,"",$1); sub(/.*clear|sunny.*/,"<span foreground='"'#fff933'"'></span>",$1); sub(/.*cloudy|.*fog.*/,"<span foreground='"'#00b8e6'"'></span>",$1); print $1}' .wttr)
+(grep -F "mm" /tmp/wttr > /dev/null ) && [ ! $? ] && exit
 
-temp=$(sed -e '2!d;s/^.*\( -[0-9].*\)/\1/;s/ //;s/^ [^0-9]*//;s/[[:space:]]*$//;s/ //' .wttr)
+SUNNY=""
+CLOUDY=""
+RAINY=""
+STORM=""
+SNOW=""
+FOG=""
 
-sky=$(sed -e '5!d;s/[^0-9]*//;s/ mm//' .wttr | awk -v sky="$sky" '{ if ($1 > 0) { sub(/|/,"",sky); sub(/#00b8e6|#fff933/,"#0099cc",sky) } print sky }')
+icon=$(sed -r -e "1!d;s/^.\{15\}//;s/.*[cC]loudy|[oO]vercast.*/$CLOUDY/;s/.*[sS]unny|[cC]lear.*/$SUNNY/;s/.*[rR]ainy.*/$RAINY/;\
+s/.*[sS]now.*/$SNOW/;s/.*[fF]og.*/$FOG/" /tmp/wttr)
 
-echo -e "$(echo $sky | sed "s/'/\"/g" )  $temp"
-
+temp=$(sed -e '2!d;s/^.\{15\}//;s/[ \t]\+$//' /tmp/wttr)
+echo "$icon   $temp"
