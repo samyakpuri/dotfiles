@@ -1,0 +1,114 @@
+#!/usr/bin/env sh
+
+# Script based on https://gist.github.com/wandernauta/6800547 
+# for controlling spotify via command line or from other scripts
+# Media Keys can be used for controlling spotify
+# i3 Blocks can use this to display info
+
+# CONSTANTS
+SP_DEST="org.mpris.MediaPlayer2.spotify"
+SP_PATH="/org/mpris/MediaPlayer2"
+SP_MEMB="org.mpris.MediaPlayer2.Player"
+
+# UTILITY FUNCTIONS
+
+require() {
+  hash "$1" 2>/dev/null || {
+    echo >&2 "Error: '$1' is required, but was not found."; exit 1;
+  }
+}
+
+# COMMON REQUIRED BINARIES
+
+# We need dbus-send to talk to Spotify.
+require dbus-send
+
+# Assert standard Unix utilities are available.
+require grep
+require sed
+require cut
+require tr
+
+# 'SPECIAL' (NON-DBUS-ALIAS) COMMANDS
+
+sp_dbus() {
+  # Sends the given method to Spotify over dbus.
+  dbus-send --print-reply --dest="$SP_DEST" "$SP_PATH" "$SP_MEMB.$1" $(echo "$@" | cut -d' ' -f2- -s) > /dev/null
+}
+
+sp_metadata() {
+  # Prints the currently playing track in a parseable format.
+
+  dbus-send                                                                   \
+  --print-reply                                  `# We need the reply.`       \
+  --dest="$SP_DEST"                                                             \
+  "$SP_PATH"                                                                    \
+  org.freedesktop.DBus.Properties.Get                                         \
+  string:"$SP_MEMB" string:'Metadata'                                         \
+  | grep -Ev "^method"                           `# Ignore the first line.`   \
+  | grep -Eo '("(.*)")|(\b[0-9][a-zA-Z0-9.]*\b)' `# Filter interesting fiels.`\
+  | sed -E '2~2 a|'                              `# Mark odd fields.`         \
+  | tr -d '\n'                                   `# Remove all newlines.`     \
+  | sed -E 's/\|/\n/g'                           `# Restore newlines.`        \
+  | sed -E 's/(xesam:)|(mpris:)//'               `# Remove ns prefixes.`      \
+  | sed -E 's/^"//'                              `# Strip leading...`         \
+  | sed -E 's/"$//'                              `# ...and trailing quotes.`  \
+  | sed -E 's/"+/|/'                             `# Regard "" as seperator.`  \
+  | sed -E 's/ +/ /g'                            `# Merge consecutive spaces.`
+}
+
+sp_current() {
+  # Prints the currently playing track in a friendly format.
+  require column
+
+  sp_metadata \
+  | grep --color=never -E "(title)|(album)|(artist)" \
+  | sed 's/^\(.\)/\U\1/' \
+  | column -t -s'|'
+}
+
+sp_eval() {
+  # Prints the currently playing track as shell variables, ready to be eval'ed
+  require sort
+
+  sp_metadata \
+  | grep --color=never -E "(title)|(album)|(artist)|(trackid)|(trackNumber)" \
+  | sort -r \
+  | sed 's/^\([^|]*\)\|/\U\1/' \
+  | sed -E 's/\|/="/' \
+  | sed -E 's/$/"/' \
+  | sed -E 's/^/SPOTIFY_/'
+}
+
+# 'SIMPLE' (DBUS-ALIAS) COMMANDS
+alias sp_toggle="  sp_dbus PlayPause"
+alias sp_pause=" sp_dbus Pause"
+alias sp_next="  sp_dbus Next"
+alias sp_prev="  sp_dbus Previous"
+alias sp_seek=" sp_dbus Seek(10)"
+
+# DISPATCH
+
+# check if spotify is running if not exit
+SPOTIFY_PID="$(pidof -s spotify || pidof -s .spotify-wrapped)"
+if [ -z "$SPOTIFY_PID" ]; then
+  echo "Error: Spotify is not running."
+  exit 1
+fi
+
+# issue command
+
+subcommand="$1"
+
+if [ -z "$subcommand" ]; then
+  # No arguments given, print help.
+  sp-help
+else
+  # Arguments given, check if it's a command.
+  if type "sp_$subcommand" > /dev/null 2> /dev/null; then
+    # It is. Run it.
+    shift
+    eval "sp_$subcommand $*"
+fi
+fi
+
