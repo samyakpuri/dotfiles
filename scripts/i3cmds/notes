@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# Launches a ddropdown for taking notes
+
+vim -c 'cd ~/Documents/Uni/'
