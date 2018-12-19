@@ -45,7 +45,6 @@ alias vim='nvim'
 #pacaur/pacman
 alias progs='pacman -Qet' #List Programs installed
 alias orphs='pacman -Qdt' #List prphan Programs
-alias p='pacaur'
 alias sp='sudo pacman'
 
 #youtube-dl
@@ -57,18 +56,13 @@ alias iecurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows N
 alias ffcurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.9.0.8) Gecko/2009032609 Firefox/3.0.0 (.NET CLR 3.5.30729)\""
 
 # HG ALIASES
-alias hgst='hg status'
-alias hgd='hg diff | $GIT_EDITOR -'
-alias hgo='hg outgoing'
+# alias hgst='hg status'
+# alias hgd='hg diff | $GIT_EDITOR -'
+# alias hgo='hg outgoing'
 
 # aliases for Tmux
-alias tmux='tmux -2'
-alias ta='tmux attach -t'
-alias tnew='tmux new -s'
-alias tls='tmux ls'
-alias tkill='tmux kill-session -t'
-
-# # convenience aliases for editing configs
-alias ev='vim ~/.vimrc'
-alias et='vim ~/.tmux.conf'
-alias ez='vim ~/.zshrc'
+# alias tmux='tmux -2'
+# alias ta='tmux attach -t'
+# alias tnew='tmux new -s'
+# alias tls='tmux ls'
+# alias tkill='tmux kill-session -t'
