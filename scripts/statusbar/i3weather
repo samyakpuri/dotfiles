@@ -15,17 +15,18 @@ fi
 
 curl "wttr.in/${location}" > /tmp/wttr
 
-(grep -F "mm" /tmp/wttr > /dev/null ) && [ ! $? ] && exit
+grep -F "queries" /tmp/wttr > /dev/null && exit
 
 SUNNY=""
 CLOUDY=""
-RAINY=""
+RAINY="🌧"
 STORM=""
 SNOW=""
 FOG=""
 
-icon=$(sed -r -e "1!d;s/^.\{15\}//;s/.*[cC]loudy|[oO]vercast.*/$CLOUDY/;s/.*[sS]unny|[cC]lear.*/$SUNNY/;s/.*[rR]ainy.*/$RAINY/;\
+icon=$(sed -r -e "1!d;s/^.{,15}//;s/.*[cC]loudy|[oO]vercast.*/$CLOUDY/;s/.*[sS]unny|[cC]lear.*/$SUNNY/;s/.*[rR]ain|[dD]rizzle.*/$RAINY/;\
 s/.*[sS]now.*/$SNOW/;s/.*[fF]og.*/$FOG/" /tmp/wttr)
 
 temp=$(sed -e '2!d;s/^.\{15\}//;s/[ \t]\+$//' /tmp/wttr)
-echo "$icon   $temp"
+
+echo "$icon  $temp"
