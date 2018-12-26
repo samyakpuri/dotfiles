@@ -3,7 +3,7 @@
 # Shows the selected character in dunst if running 
 
 # Must have xclip installed to show menu/ needed for copy to clipboard
-xclip -h >/dev/null || exit
+command -v xclip >/dev/null || exit
 
 [ -z "$1" ] && printf "No input file\n Usage: dmenuunicode inputfile" && exit 1
 
