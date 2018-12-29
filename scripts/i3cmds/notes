@@ -2,4 +2,4 @@
 
 # Launches a ddropdown for taking notes
 
-vim -c 'cd ~/Documents/Uni/'
+echo "vim -c 'cd ~/Documents/Uni/'"
