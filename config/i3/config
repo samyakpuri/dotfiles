@@ -22,7 +22,8 @@ set $hibernate sudo -A systemctl suspend
 
 # #---Starting External Scripts---# #
 # Setting the background and colorscheme:
-exec --no-startup-id wal -i ~/.config/wall.png >/dev/null
+#exec --no-startup-id wal -i ~/.config/wall.png >/dev/null
+exec_always --no-startup-id feh --bg-center ~/.config/wall.png
 # Starts dunst for notifications:
 exec --no-startup-id dunst
 # Composite manager:
@@ -39,23 +40,23 @@ exec --no-startup-id nm-applet
 exec --no-startup-id mpd
 
 # Set Xresources colors:
-set_from_resource $darkblack    color0  #000000
-set_from_resource $black    color8  #000000
-set_from_resource $darkred  color1  #000000
-set_from_resource $red      color9  #000000
-set_from_resource $darkgreen    color2  #000000
-set_from_resource $green    color10 #000000
-set_from_resource $darkyellow   color3  #000000
-set_from_resource $yellow   color11 #000000
-set_from_resource $darkblue color4  #000000
-set_from_resource $blue     color12 #000000
-set_from_resource $darkmagenta  color5  #000000
-set_from_resource $magenta  color13 #000000
-set_from_resource $darkcyan color6  #000000
-set_from_resource $cyan     color14 #000000
-set_from_resource $darkwhite    color7  #000000
-set_from_resource $white    color15 #000000
-set $transparent        #00000090
+set_from_resource $darkblack    color0
+set_from_resource $black        color8
+set_from_resource $darkred      color1
+set_from_resource $red          color9
+set_from_resource $darkgreen    color2
+set_from_resource $green        color10
+set_from_resource $darkyellow   color3 
+set_from_resource $yellow       color11
+set_from_resource $darkblue     color4 
+set_from_resource $blue         color12
+set_from_resource $darkmagenta  color5 
+set_from_resource $magenta      color13
+set_from_resource $darkcyan     color6 
+set_from_resource $cyan         color14
+set_from_resource $darkwhite    color7 
+set_from_resource $white        color15
+set $transparent        #00000050
 
 #                        BORDER        BACKGROUND  TEXT      INDICATOR     CHILD_BORDER
 client.focused           $red          $red        $magenta  $darkmagenta  $darkblue
@@ -70,13 +71,13 @@ bar {
             background          $transparent
             statusline          $darkwhite
             separator           $cyan
-            focused_workspace   $blue       $darkblue   $darkblack
-            active_workspace    $blue       $blue       $darkwhite
-            inactive_workspace  $darkblack  $darkblack  $white
-            urgent_workspace    $darkblack  $darkblack  $white
+            focused_workspace   $blue         $darkblue     $darkblack
+            active_workspace    #00000000 #00000000 $darkwhite
+            inactive_workspace  #00000000 #00000000 $white
+            urgent_workspace    $darkred      $darkred      $white
         }
     status_command i3blocks
-	i3bar_command i3bar -t
+    i3bar_command i3bar -t
     position top
     mode dock
     modifier None
@@ -90,10 +91,10 @@ bindsym $mod+Shift+space        floating toggle
 bindsym $mod+space              focus mode_toggle
 
 bindsym $mod+Escape             workspace prev
-bindsym $mod+Shift+Escape       exec --no-startup-id dmenuprompt "Are you sure you want to leave i3?" "i3-msg exit"
+bindsym $mod+Shift+Escape       exec --no-startup-id prompt "Are you sure you want to leave i3?" "i3-msg exit"
 
 # bindsym $mod+BackSpace
-bindsym $mod+Shift+BackSpace    exec --no-startup-id dmenuprompt "Are you sure you want to reboot?" "$reboot"
+bindsym $mod+Shift+BackSpace    exec --no-startup-id prompt "Are you sure you want to reboot?" "$reboot"
 
 #bindsym $mod+grave
 #bindsym $mod+asciitilde
@@ -104,6 +105,7 @@ bindsym $mod+Shift+Delete   exec --no-startup-id mediactrl truemute ; exec $true
 # #---Letter Key Bindings---# #
 bindsym $mod+q              [con_id="__focused__" instance="^(?!math|dropdown).*$"] kill
 bindsym $mod+Shift+q        [con_id="__focused__" instance="^(?!math|dropdown).*$"] kill
+bindsym Ctrl+q		exec --no-startup-id /bin/false
 
 bindsym $mod+w              exec --no-startup-id $BROWSER
 bindsym $mod+Shift+w        exec --no-startup-id $BROWSER2
@@ -120,7 +122,8 @@ bindsym $mod+Shift+t        gaps inner current set 15; gaps outer current set 15
 bindsym $mod+y              exec $term -e calcurse
 bindsym $mod+Shift+y        exec --no-startup-id "bash ~/.scripts/i3resize left"
 
-bindsym $mod+u              [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
+bindsym $mod+u              exec --no-startup-id ddspawn notes
+# bindsym $mod+u              [instance="dropdown"] scratchpad show; [instance="dropdown"] move position center
 bindsym $mod+Shift+u        exec --no-startup-id "bash ~/.scripts/i3resize down"
 
 bindsym $mod+i              exec $term -e htop
@@ -132,7 +135,7 @@ bindsym $mod+Shift+o        exec --no-startup-id "bash ~/.scripts/i3resize right
 bindsym $mod+p              exec --no-startup-id mediactrl toggle
 bindsym $mod+Shift+p        exec --no-startup-id mediactrl pause
 
-bindsym $mod+a              [instance="math"] scratchpad show; [instance="math"] move position center
+bindsym $mod+a              exec --no-startup-id ddspawn dropdowncalc -f mono:pixelsize=24
 bindsym $mod+Shift+a        exec $term -e pulsemixer
 
 bindsym $mod+s              gaps inner current plus 5
@@ -167,7 +170,7 @@ bindsym $mod+z              gaps outer current plus 5
 bindsym $mod+Shift+z        gaps outer current minus 5
 
 bindsym $mod+x              exec --no-startup-id lockscreen
-bindsym $mod+Shift+x        exec --no-startup-id dmenuprompt "Are you sure you want to shutdown?" "$shutdown"
+bindsym $mod+Shift+x        exec --no-startup-id prompt "Are you sure you want to shutdown?" "$shutdown"
 
 bindsym $mod+c              exec --no-startup-id camtoggle
 ##bindsym $mod+Shift+c
@@ -239,38 +242,31 @@ bindsym $mod+Shift+8    move container to workspace $ws8
 bindsym $mod+Shift+9    move container to workspace $ws9
 bindsym $mod+Shift+0    move container to workspace $ws10
 
-# for_window [class="Pinentry"] sticky enable
-# for_window [class="sent"] border pixel 0px
 for_window [class="Blender"] move to workspace $ws6
-for_window [class="marble"] move to workspace $ws7
 for_window [title="GIMP Startup"] move workspace $ws5
 for_window [class="Gimp"] move workspace $ws5
-for_window [window_role="GtkFileChooserDialog"] resize shrink height 10 px
-# for_window [title="Default - Wine desktop"] floating enable
+for_window [window_role="GtkFileChooserDialog"] resize set 825 500
+for_window [window_role="GtkFileChooserDialog"] move position center
 
-# First I have a tmux window used for background scripts.
+# First I have a vim window for fast note taking
 # I'll later bind this to mod+u.
-for_window [instance="dropdown"] floating enable
-for_window [instance="dropdown"] resize set 625 400
-for_window [instance="dropdown"] move scratchpad
-for_window [instance="dropdown"] border pixel 3
-# Runs the tmuxinit script, which searches for an earlier tmux instance,
-# otherwise starts a new one (to prevent multiple dropdown sessions).
-exec --no-startup-id $term -n dropdown -e tmuxinit
+for_window [instance="notes"] floating enable
+for_window [instance="notes"] resize set 825 500
+for_window [instance="notes"] move scratchpad
+for_window [instance="notes"] border pixel 3
 
 # Then I have a window running R I use for basic arithmetic
 # I'll later bind this to mod+a.
-for_window [instance="math"] floating enable
-for_window [instance="math"] resize set 800 300
-for_window [instance="math"] move scratchpad
-for_window [instance="math"] border pixel 2
-exec --no-startup-id $term -n math -f mono:pixelsize=24 -e dropdowncalc
+for_window [instance="dropdowncalc"] floating enable
+for_window [instance="dropdowncalc"] resize set 800 300
+for_window [instance="dropdowncalc"] move scratchpad
+for_window [instance="dropdowncalc"] border pixel 2
 
 # Bindings to make the webcam float and stick.
-for_window [title="mpvfloat"] floating enable
-for_window [title="mpvfloat"] sticky enable
-for_window [title="mpvfloat"] border pixel 0
-no_focus [title="mpvfloat"]
+# for_window [title="mpvfloat"] floating enable
+# for_window [title="mpvfloat"] sticky enable
+# for_window [title="mpvfloat"] border pixel 0
+# no_focus [title="mpvfloat"]
 
 # #---Function Buttons---# #
 bindsym $mod+F1     exec --no-startup-id zathura ~/.config/i3/i3_guide.pdf
@@ -278,13 +274,13 @@ bindsym $mod+F2     restart
 bindsym $mod+F3     exec --no-startup-id displayselect
 bindsym $mod+F4     exec --no-startup-id $hibernate
 bindsym $mod+F5     exec --no-startup-id $netrefresh
-bindsym $mod+F6     exec --no-startup-id $term -e transmission-remote-cli
+# bindsym $mod+F6     exec --no-startup-id $term -e transmission-remote-cli
 # bindsym $mod+F7     exec --no-startup-id td-toggle
 bindsym $mod+F8     exec --no-startup-id ~/.config/mutt/etc/mailsync.sh
 bindsym $mod+F9     exec --no-startup-id dmenumount
 bindsym $mod+F10    exec --no-startup-id dmenuumount
 # bindsym $mod+F11    exec --no-startup-id dmenuarchwiki
-bindsym $mod+F12    exec $term -e sudo -A wifi-menu
+# bindsym $mod+F12    exec $term -e sudo -A wifi-menu
 
 # #---Arrow Keys---# #
 bindsym $mod+Left       focus left
@@ -331,8 +327,8 @@ bindsym Control+XF86AudioLowerVolume    exec --no-startup-id mediactrl down 1
 bindsym XF86AudioRaiseVolume			exec --no-startup-id mediactrl up 5
 bindsym Shift+XF86AudioRaiseVolume		exec --no-startup-id mediactrl up 10
 bindsym Control+XF86AudioRaiseVolume    exec --no-startup-id mediactrl up 1
-bindsym XF86PowerOff					exec --no-startup-id dmenuprompt "Are you sure you want to shutdown?" "$shutdown"
-bindsym XF86Eject			exec --no-startup-id dmenuumount
+bindsym XF86PowerOff					exec --no-startup-id prompt "Are you sure you want to shutdown?" "$shutdown"
+#bindsym XF86Eject			exec --no-startup-id dmenuumount
 bindsym XF86AudioNext       exec --no-startup-id mediactrl next
 bindsym XF86AudioPlay       exec --no-startup-id mediactrl toggle
 bindsym XF86AudioPrev       exec --no-startup-id mediactrl prev
