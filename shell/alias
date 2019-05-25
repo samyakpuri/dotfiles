@@ -48,8 +48,8 @@ alias orphs='pacman -Qdt' #List prphan Programs
 alias sp='sudo pacman'
 
 #youtube-dl
-alias Y='youtube-dl -c -o "%(autonumber)03d-%(title)s.%(ext)s"'
-alias Ys='youtube-dl -c -o "%(title)s.%(ext)s" --no-playlist'
+alias Y='youtube-dl --no-part -c -o "%(autonumber)03d-%(title)s.%(ext)s"'
+alias Ys='youtube-dl --no-part -c -o "%(title)s.%(ext)s" --no-playlist'
 
 # curl for useragents
 alias iecurl="curl -H \"User-Agent: Mozilla/5.0 (Windows; U; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)\""
