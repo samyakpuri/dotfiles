@@ -44,14 +44,11 @@ label=🌐
 #instance=wlan0
 interval=10
 
-[bandwidth]
-interval=5
-
 [battery]
 command=i3battery
 interval=5
 
 [time]
 label=🕓
-command=echo $(date '+%D %R') / IN $(TZ='Asia/Kolkata' date '+%R')
+command=echo $(date '+%d/%m/%y %R') / 🇮🇳 $(TZ='Asia/Kolkata' date '+%R')
 interval=30
