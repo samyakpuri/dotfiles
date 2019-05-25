@@ -152,3 +152,5 @@ set secure
 color molokai
 set background=dark
 hi Normal guibg=NONE ctermbg=NONE
+
+let g:vimwiki_ext2syntax = { '.md': 'markdown' }
