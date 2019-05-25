@@ -29,3 +29,5 @@ source $ZSH/oh-my-zsh.sh
 for file in ~/.shell/*; do
 	source $file
 done
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
