@@ -13,6 +13,9 @@
 	autoload -Uz compinit
 	autoload -U promptinit zcalc
 	autoload -U colors && colors
+	fpath=(${XDG_CONFIG_HOME}/zsh/functions ${XDG_CONFIG_HOME}/zsh/completions $fpath)
+	autoload -U $fpath[1]/*(.:t) 
+
 	_comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
 	if (( $#_comp_files )); then
 	compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
@@ -22,6 +25,9 @@
 	unset _comp_files
 	autoload -Uz bracketed-paste-url-magic
 	zle -N bracketed-paste bracketed-paste-url-magic
+
+	# http://onethingwell.org/post/24608988305/zmv
+	autoload -Uz zmv
 
 # }}}
 
@@ -107,9 +113,16 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
     alias vim="fuzzy_edit"
     alias e=vim
     alias edit=vim
-    alias grep="grep --line-number --ignore-case --color=auto"
+    alias grep="grep --line-number --ignore-case --color=auto --exlude-dir={.git}"
     alias pb="nc termbin.com 9999"
 	alias sys="sudo systemctl"
+	# Highlight with less
+	alias highlight="highlight --force -O xterm256 --style molokai"
+
+	alias ls="ls --color=always"
+	alias l="ls -lh"
+	alias ll='ls -lah'
+	alias less="less -R"
 
 	# Easy dir navigation
 	alias d="dirs -v"
@@ -127,9 +140,13 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 
 		alias ga="git add"
 		alias gb="git branch"
-		alias gc="git commit"
+		alias gc="git commit -m"
 		alias gco="git checkout"
+		alias gcb="git checkout -b"
+		alias gcom="git checkout master"
 		alias gs="git status -sb"
+		alias gca="git commit --amend"
+		alias gcl="git clone"
 		alias git="hub"
 		alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 
@@ -296,7 +313,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 
 
 	# Define prompts.
-	local ret_status="%(?:%{$fg[green]%} :%{$fg[red]%} )"
+	local ret_status="%(?:%{$fg[green]%}➜ :%{$fg[red]%}➜ )"
 	PROMPT='%{$fg[cyan]%}%c ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
 #}}}
 
@@ -334,9 +351,6 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 
 		[[ -w "$1" || ((! -f "$1") && (-w "$1:h" && -x "$1:h")) ]] && $EDITOR "$1"  && return 0;
 
-		clear
-		echo
-		cat ~/.ascii_art/skull
 		echo
 		echo "\tTo root or not to root that is the question...  "
 		echo
