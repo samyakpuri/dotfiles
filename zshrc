@@ -16,13 +16,6 @@
 	fpath=(${XDG_CONFIG_HOME}/zsh/functions ${XDG_CONFIG_HOME}/zsh/completions $fpath)
 	autoload -U $fpath[1]/*(.:t) 
 
-	_comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
-	if (( $#_comp_files )); then
-	compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-	else
-	compinit -i -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-	fi
-	unset _comp_files
 	autoload -Uz bracketed-paste-url-magic
 	zle -N bracketed-paste bracketed-paste-url-magic
 
@@ -33,88 +26,163 @@
 
 # {{{ General Options
 
-  setopt AUTO_CD
-  setopt AUTO_PUSHD
-  setopt PUSHD_IGNORE_DUPS
-  setopt PUSHD_SILENT
-  setopt PUSHD_TO_HOME
-  setopt NO_HUP
-  setopt NO_CHECK_JOBS
-  setopt IGNORE_EOF
-  setopt NO_BEEP
-  setopt NUMERIC_GLOB_SORT
-  setopt EXTENDED_GLOB
-  setopt GLOB_COMPLETE
-  setopt RC_EXPAND_PARAM
-  setopt COMPLETE_IN_WORD
-  setopt COMPLETE_ALIASES
-  setopt PROMPT_SUBST
-  unsetopt HASH_DIRS
-  unsetopt HASH_CMDS
-  unsetopt FLOW_CONTROL
-  unsetopt CLOBBER
+	setopt AUTO_CD
+	setopt AUTO_PUSHD
+	setopt PUSHD_IGNORE_DUPS
+	setopt PUSHD_SILENT
+	setopt PUSHD_TO_HOME
+	setopt NO_HUP
+	setopt NO_CHECK_JOBS
+	setopt IGNORE_EOF
+	setopt NO_BEEP
+	setopt NUMERIC_GLOB_SORT
+	setopt EXTENDED_GLOB
+	setopt GLOB_COMPLETE
+	setopt RC_EXPAND_PARAM
+	setopt PROMPT_SUBST
+	unsetopt HASH_DIRS
+	unsetopt HASH_CMDS
+	unsetopt FLOW_CONTROL
+	unsetopt CLOBBER
 
 # }}}
 
 # {{{ history options
 
-setopt BANG_HIST                 # Treat the '!' character specially during expansion.
-setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
-setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt SHARE_HISTORY             # Share history between all sessions.
-setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
-setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
-setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
-setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
-setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
-setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
-setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
-setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
+	setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+	setopt EXTENDED_HISTORY          # Write the history file in the ":start:elapsed;command" format.
+	setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+	setopt SHARE_HISTORY             # Share history between all sessions.
+	setopt HIST_EXPIRE_DUPS_FIRST    # Expire duplicate entries first when trimming history.
+	setopt HIST_IGNORE_DUPS          # Don't record an entry that was just recorded again.
+	setopt HIST_IGNORE_ALL_DUPS      # Delete old recorded entry if new entry is a duplicate.
+	setopt HIST_FIND_NO_DUPS         # Do not display a line previously found.
+	setopt HIST_IGNORE_SPACE         # Don't record an entry starting with a space.
+	setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
+	setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
+	setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
 
 #}}}
 
 #{{{ Completion
-    zstyle ':completion::complete:*' use-cache 1
-    zstyle ':completion:*' accept-exact '*(N)'
-    zstyle ':completion:*' rehash true
-    zstyle ':completion:*' use-cache on
-    zstyle ':completion::complete:*' cache-path "${XDG_CACHE_HOME}/zcompcache"
-    zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-    zstyle ':completion:*' verbose yes
-    zstyle ':completion:*:descriptions' format '%B%d%b'
-    zstyle ':completion:*:messages' format '%d'
-    zstyle ':completion:*' group-name ''
-    zstyle ':completion:*' auto-description 'specify: %d'
-    zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-    zstyle ':completion:*:default' menu 'select=0'
-    zstyle ':completion:*' file-sort modification reverse
-    zstyle ':completion:*' list-colors "=(#b) #([0-9]#)*=36=31"
-    zstyle ':completion:*:manuals' separate-sections true
-    zstyle ':completion:*:corrections' format '%B%d (errors %e)%b'
-    zstyle ':completion::*:(rm|vi):*' ignore-line true
-    zstyle ':completion:*' ignore-parents parent pwd
-    zstyle ':completion::approximate*:*' prefix-needed false
+	setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
+	setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
+	setopt PATH_DIRS           # Perform path search even on command names with slashes.
+	setopt AUTO_MENU           # Show completion menu on a successive tab press.
+	setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
+	setopt AUTO_PARAM_SLASH    # If completed parameter is a directory, add a trailing slash.
+	setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
+	setopt NO_COMPLETE_ALIASES # autocompletion CLI switches for aliases
+	unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
+
+	# Activate Bash auto-completion
+	autoload -U bashcompinit
+	bashcompinit
+
+	# Activate auto-completion
+	zmodload -i zsh/complist
+
+	# Use caching to make completion for commands such as dpkg and apt usable.
+	zstyle ':completion::complete:*' use-cache on
+	zstyle ':completion::complete:*' cache-path "${ZDOTDIR:-$HOME}/.zcompcache"
+
+	# autocomplete case-insensitive (all),partial-word and then substring
+	zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+	unsetopt CASE_GLOB
+
+	# Group matches and describe.
+	zstyle ':completion:*:*:*:*:*' menu select
+	zstyle ':completion:*:matches' group 'yes'
+	zstyle ':completion:*:options' description 'yes'
+	zstyle ':completion:*:options' auto-description '%d'
+	zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+	zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+	zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+	zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+	zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+	zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+	zstyle ':completion:*' group-name ''
+	zstyle ':completion:*' verbose yes
+
+	# Fuzzy match mistyped completions.
+	zstyle ':completion:*' completer _complete _match _approximate
+	zstyle ':completion:*:match:*' original only
+	zstyle ':completion:*:approximate:*' max-errors 1 numeric
+
+	# Increase the number of errors based on the length of the typed word. But make
+	# sure to cap (at 7) the max-errors to avoid hanging.
+	zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3>7?7:($#PREFIX+$#SUFFIX)/3))numeric)'
+
+	# Don't complete unavailable commands.
+	zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
+
+	# Array completion element sorting.
+	zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
+
+	# Directories
+	zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+	zstyle ':completion:*:cd:*' ignore-parents parent pwd # cd never selects the parent directory (e.g.: cd ../<TAB>)
+	zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
+	zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
+	zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
+	zstyle ':completion:*' squeeze-slashes true
+
+	# Ignore VCS directories
+	zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)(.svn|.git|.hg)'
+	zstyle ':completion:*:cd:*' ignored-patterns '(*/)(.svn|.git|.hg)'
+
+	# History
+	zstyle ':completion:*:history-words' stop yes
+	zstyle ':completion:*:history-words' remove-all-dups yes
+	zstyle ':completion:*:history-words' list false
+	zstyle ':completion:*:history-words' menu yes
+
+	# Environment Variables
+	zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
+
+	# Don't complete uninteresting users...
+	zstyle ':completion:*:*:*:users' ignored-patterns \
+	  adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
+	  dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
+	  hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
+	  mailman mailnull mldonkey mysql nagios \
+	  named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
+	  operator pcap postfix postgres privoxy pulse pvm quagga radvd \
+	  rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
+
+	# ... unless we really want to.
+	zstyle '*' single-ignored show
 
     #{{{ Ignore
+		zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
         zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~|*.o|*.class)"
         zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
         zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
     #}}}
+
+	_comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
+	if (( $#_comp_files )); then
+	compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+	else
+	compinit -i -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+	fi
+	unset _comp_files
+
 #}}}
 
 # {{{ Alias
 
-    alias clip="xclip -selection clipboard -i"
-    alias p="ping 9.9.9.9" # Check if internet working
-    alias ping="ping -c 5"
-    alias md="mkdir -p"
+	alias clip="xclip -selection clipboard -i"
+	alias p="ping 9.9.9.9" # Check if internet working
+	alias ping="ping -c 5"
+	alias md="mkdir -p"
 	alias rd="rmdir"
 	alias rm="rm -I"
-    alias vim="fuzzy_edit"
-    alias e=vim
-    alias edit=vim
-    alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
-    alias pb="nc termbin.com 9999"
+	alias vim="fuzzy_edit"
+	alias e=vim
+	alias edit=vim
+	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
+	alias pb="nc termbin.com 9999"
 	alias sys="sudo systemctl"
 	# Highlight with less
 	alias highlight="highlight --force -O xterm256 --style molokai"
@@ -143,38 +211,6 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 		alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 	# }}}
 
-	#{{{ Functions
-
-        function c()
-        {
-            if [[ $# -eq 1 ]];
-            then
-                cd "$@" &> /dev/null
-                if [[ $? -ne 0 ]];
-                then
-                    cd_fzf "$@";
-                fi
-
-            elif [[ $# -eq 0 ]];
-            then
-                cd ~ && clear
-            fi
-        }
-
-        function back_dir()
-        {
-            if [[ "$#" == 0 ]]; then
-                c ../
-            else
-                for i in {1..$1}
-                do
-                    c ../
-                done
-            fi
-        }
-
-	#}}}
-
 	#{{{ Global Alias
 
 		alias -g G='|& grep'
@@ -197,7 +233,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 		bindkey "^ " magic-space           # control-space to bypass completion
 		bindkey -M isearch " " magic-space # normal space during searches
 
-	#}}}
+#}}}
 
 # }}}
 
@@ -246,36 +282,36 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 
 	#}}}
 
-    autoload -U up-line-or-beginning-search
-    zle -N up-line-or-beginning-search
-    bindkey '\e[A' up-line-or-beginning-search
-    bindkey '\eOA' up-line-or-beginning-search
+	autoload -U up-line-or-beginning-search
+	zle -N up-line-or-beginning-search
+	bindkey '\e[A' up-line-or-beginning-search
+	bindkey '\eOA' up-line-or-beginning-search
 
-    autoload -U down-line-or-beginning-search
-    zle -N down-line-or-beginning-search
-    bindkey '\e[B' down-line-or-beginning-search
-    bindkey '\eOB' down-line-or-beginning-search
+	autoload -U down-line-or-beginning-search
+	zle -N down-line-or-beginning-search
+	bindkey '\e[B' down-line-or-beginning-search
+	bindkey '\eOB' down-line-or-beginning-search
 
-    bindkey '^O' clear-screen
-    bindkey -s '^Y' 'back_dir\n'
+	bindkey '^O' clear-screen
+	bindkey -s '^Y' 'back_dir\n'
 
-    bindkey '^r' history-incremental-search-backward
-    autoload -z edit-command-line
-    zle -N edit-command-line
-    bindkey '^E' edit-command-line
-    # bindkey -M viins '^E' insert-last-word
+	bindkey '^r' history-incremental-search-backward
+	autoload -z edit-command-line
+	zle -N edit-command-line
+	bindkey '^E' edit-command-line
+	# bindkey -M viins '^E' insert-last-word
 
-    # Bang! Previous Command Hotkeys
-    # print previous command but only the first nth arguments
-    # Alt+1, Alt+2 ...etc
-    # http://www.softpanorama.org/Scripting/Shellorama/bash_command_history_reuse.shtml#Bang_commands
-    bindkey -s '\e1' "!:0 \t"        # last command
-    bindkey -s '\e2' "!:0-1 \t"      # last command + 1st argument
-    bindkey -s '\e3' "!:0-2 \t"      # last command + 1st-2nd argument
-    bindkey -s '\e4' "!:0-3 \t"      # last command + 1st-3rd argument
-    bindkey -s '\e5' "!:0-4 \t"      # last command + 1st-4th argument
-    bindkey -s '\e`' "!:0- \t"       # all but the last argument
-    bindkey -s '\e9' "!:0 !:2* \t"   # all but the 1st argument (aka 2nd word)
+	# Bang! Previous Command Hotkeys
+	# print previous command but only the first nth arguments
+	# Alt+1, Alt+2 ...etc
+	# http://www.softpanorama.org/Scripting/Shellorama/bash_command_history_reuse.shtml#Bang_commands
+	bindkey -s '\e1' "!:0 \t"        # last command
+	bindkey -s '\e2' "!:0-1 \t"      # last command + 1st argument
+	bindkey -s '\e3' "!:0-2 \t"      # last command + 1st-2nd argument
+	bindkey -s '\e4' "!:0-3 \t"      # last command + 1st-3rd argument
+	bindkey -s '\e5' "!:0-4 \t"      # last command + 1st-4th argument
+	bindkey -s '\e`' "!:0- \t"       # all but the last argument
+	bindkey -s '\e9' "!:0 !:2* \t"   # all but the 1st argument (aka 2nd word)
 #}}}
 
 #{{{ Prompt
@@ -309,35 +345,35 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 #}}}
 
 #{{{ Misc
-    # Deactivate Software flow control
-    stty -ixon
+	# Deactivate Software flow control
+	stty -ixon
 
-    # Set proper terminal for SCREEN and TMUX
-    if [[ -z $TMUX ]]; then
-        if [ -e /usr/share/terminfo/x/xterm+256color ]; then
-            export TERM='xterm-256color'
-        else
-            export TERM='xterm'
-        fi
-    else
-        if [ -e /usr/share/terminfo/s/screen-256color ]; then
-            export TERM='screen-256color'
-        else
-            export TERM='screen'
-        fi
-    fi
+	# Set proper terminal for SCREEN and TMUX
+	if [[ -z $TMUX ]]; then
+		if [ -e /usr/share/terminfo/x/xterm+256color ]; then
+			export TERM='xterm-256color'
+		else
+			export TERM='xterm'
+		fi
+	else
+		if [ -e /usr/share/terminfo/s/screen-256color ]; then
+			export TERM='screen-256color'
+		else
+			export TERM='screen'
+		fi
+	fi
 
-    # Take me home to the place I belong, take me home, country roads...
-    if [[ `pwd` == "/" ]]
-    then
-        cd ~
-    fi
+	# Take me home to the place I belong, take me home, country roads...
+	if [[ `pwd` == "/" ]]
+	then
+		cd ~
+	fi
 #}}}
 
 #{{{ Global Functions
 
-    function fuzzy_edit()
-    {
+	function fuzzy_edit()
+	{
 		[[ "$#" -gt 1  ||  "$#" -eq 0 ]] && $EDITOR $* && return 0;
 
 		[[ -w "$1" || ((! -f "$1") && (-w "$1:h" && -x "$1:h")) ]] && $EDITOR "$1"  && return 0;
@@ -354,7 +390,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 			$EDITOR "$1"
 		fi
 		clear
-    }
+	}
 
 	# add sudo in front of current command
 	# https://www.reddit.com/r/zsh/comments/4b2lyj/send_a_simulated_keypress_from_zle_script_to/
@@ -366,4 +402,18 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 	bindkey "" sudo_
 #}}}
 
-# vim:fdm=marker
+#{{{ Plugins
+	LOC="/usr/share/zsh/plugins/zsh-"
+	LOC2="/usr/share/"
+	PLUGINS+=(autosuggestions syntax-highlighting history-substring-search fzf)
+
+	for plugin in $PLUGINS; do
+		if [[ -d $LOC$plugin ]]; then
+			source $LOC$plugin/zsh-$plugin.zsh
+		elif [[ -d $LOC2$plugin ]]; then
+			source $LOC2$plugin/*.zsh
+		fi
+	done
+
+	bindkey '^ ' autosuggest-accept
+#}}}
