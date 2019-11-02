@@ -113,7 +113,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
     alias vim="fuzzy_edit"
     alias e=vim
     alias edit=vim
-    alias grep="grep --line-number --ignore-case --color=auto --exlude-dir={.git}"
+    alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
     alias pb="nc termbin.com 9999"
 	alias sys="sudo systemctl"
 	# Highlight with less
@@ -124,20 +124,12 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 	alias ll='ls -lah'
 	alias less="less -R"
 
-	# Easy dir navigation
-	alias d="dirs -v"
-	alias 1='cd -'
-	alias 2='cd -2'
-	alias 3='cd -3'
-	alias 4='cd -4'
-	alias 5='cd -5'
-	alias 6='cd -6'
-	alias 7='cd -7'
-	alias 8='cd -8'
-	alias 9='cd -9'
+	#{{{ Directory Navigation
+		alias d='dirs -v'
+		for index ({1..9}) alias "$index"="cd +${index}"; unset index
+	#}}}
 
 	#{{{ Git Aliases
-
 		alias ga="git add"
 		alias gb="git branch"
 		alias gc="git commit -m"
@@ -149,7 +141,6 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 		alias gcl="git clone"
 		alias git="hub"
 		alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
-
 	# }}}
 
 	#{{{ Functions
@@ -158,7 +149,7 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
         {
             if [[ $# -eq 1 ]];
             then
-                cd "$@" &> /dev/null && l
+                cd "$@" &> /dev/null
                 if [[ $? -ne 0 ]];
                 then
                     cd_fzf "$@";
@@ -364,6 +355,15 @@ setopt HIST_VERIFY               # Don't execute immediately upon history expans
 		fi
 		clear
     }
+
+	# add sudo in front of current command
+	# https://www.reddit.com/r/zsh/comments/4b2lyj/send_a_simulated_keypress_from_zle_script_to/
+	sudo_ (){
+		BUFFER="sudo $BUFFER"
+		CURSOR=$#BUFFER
+	}
+	zle -N sudo_
+	bindkey "" sudo_
 #}}}
 
 # vim:fdm=marker
