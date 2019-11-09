@@ -1,0 +1,82 @@
+# Basic Binds
+super + Return
+	$TERMINAL
+super + d
+	dmenu_run
+super + m
+	$TERMINAL -e ncmpcpp
+super + n
+	$TERMINAL -e newsboat
+super + i
+	$TERMINAL -e htop
+control +q 
+	/bin/false
+super + w
+	$BROWSER
+super + shift + w
+	$BROWSER2
+super + v
+	$TERMINAL -e ncmpcpp -s visualizer
+super + d
+	dmenu_run
+super + shift + g
+	gimp
+super + x
+	lockscreen
+super + control + v
+	~/dmenutv
+super + shift + x
+	prompt "Are you sure you want to shutdown?" "shutdown -h now"
+super + F9
+	dmenumount
+super + F10 
+	dmenuumount
+
+# #---Media Keys---# #
+
+# For advancing forward/backward in an mpd song
+super + bracketleft
+	mediactrl back 10
+super + shift + bracketleft
+	mediactrl back 120
+super + bracketright
+	mediactrl forward 10
+super + shift+ bracketright
+	mediactrl forward 120
+
+# For screenshots and recording
+Print
+	exec --no-startup-id scrot
+shift + Print
+	exec --no-startup-id scrot -u
+
+# #---Extra XF86 Keys---# #
+# These are the extra media keys that some keyboards have.
+XF86AudioMute
+	mediactrl mute
+{_,shift +, control + }XF86AudioLowerVolume
+	mediactrl down {5,10,1}
+{_,shift +, control + }XF86AudioRaiseVolume
+	mediactrl up {5,10,1}
+XF86PowerOff
+	prompt "Are you sure you want to shutdown?" "shutdown -h now"
+XF86Audio{Next,Prev,Play,Stop}
+	mediactrl {next,prev,toggle,stop}
+XF86AudioPlay
+	mediactrl toggle
+XF86AudioPrev
+	mediactrl prev
+XF86AudioStop
+	mediactrl toggle
+XF86AudioRewind
+	mediactrl back 10
+XF86AudioForward
+	mediactrl forward 10
+XF86TouchpadToggle
+	toggletouchpad
+XF86Suspend
+	lockscreen
+XF86Display
+	arandr
+
+# vim: ft=sxhkdrc
