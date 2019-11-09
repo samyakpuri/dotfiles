@@ -1,156 +1,339 @@
-scriptencoding utf-8
+" \ \   / /_ _|  \/  |        / ___/ _ \| \ | |  ___|_ _/ ___|
+"  \ \ / / | || |\/| |       | |  | | | |  \| | |_   | | |  _
+"   \ V /  | || |  | |       | |__| |_| | |\  |  _|  | | |_| |
+"    \_/  |___|_|  |_|        \____\___/|_| \_|_|   |___\____|
 
-if has('nvim')
-  " Load plugins
-  set rtp+=~/.vim
+" Plugins {{{
+
+" Automatic installation of vim-plug
+if has ('nvim')
+	let s:plug=expand('$XDG_DATA_HOME/nvim/site/autoload/plug.vim')
+else
+	let s:plug=expand('$XDG_DATA_HOME/vim/autoload/plug.vim')
+	set rtp=$XDG_DATA_HOME/vim,/usr/share/vim/vimfiles,$VIMRUNTIME,/usr/share/vim/vimfiles/after
 endif
+if empty(glob(s:plug))
+	exec "!curl -fLo " . s:plug . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+endif
+
+unlet s:plug
+
+call plug#begin('$XDG_DATA_HOME/vim/plugged')
+
+" Syntax Highlighting {{{
+
+Plug 'lilydjwg/colorizer'               " colorize all text in the form #rgb, #rgba etc
+Plug 'PotatoesMaster/i3-vim-syntax'     " i3 syntax highlighting
+Plug 'octol/vim-cpp-enhanced-highlight' " Syntax highlighting C++11/14/17
+Plug 'hdima/python-syntax'              " Python syntax highlighting
+
+" }}}
+
+" Autocomplete/Programming/LSP {{{
+
+Plug 'jiangmiao/auto-pairs'         " Insert or delete brackets, parens, quotes in pair
+Plug 'majutsushi/tagbar'            " displays tags in a window
+Plug 'ludovicchabant/vim-gutentags' " Tags management
+" Plug 'veegee/vim-pic'               " 8, 16, and 32 bit PIC microcontroller assembler support
+" Plug 'jvirtanen/vim-octave'         " Octave syntax
+
+" Snippets
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" }}}
+
+" File Management/Git {{{
+" ===================
+
+" file system explorer
+Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+Plug 'junegunn/fzf.vim'               " Fuzzy file finder
+Plug 'christoomey/vim-tmux-navigator' " Move to and from Tmux panes and Vim panes
+Plug 'Xuyuanp/nerdtree-git-plugin'    " NERDTree showing git status flags
+Plug 'jreybert/vimagit'               " Ease your git workflow
+Plug 'airblade/vim-gitgutter'         " shows a git diff in the 'gutter' (sign column)
+Plug 'ryanoasis/vim-devicons'         " file type icons to Vim plugins
+
+" }}}
+
+" New text objects {{{
+" ================
+
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-function' " f F text objects
+Plug 'kana/vim-operator-user'    " User defed operators/actions
+Plug 'michaeljsmith/vim-indent-object'
+
+"}}}
+
+" tpope awesome plugins {{{
+" =====================
+
+Plug 'tpope/vim-commentary'    " Comment stuff out
+Plug 'tpope/vim-surround'      " surround items (){}[]<>
+Plug 'tpope/vim-rsi'           " Readline style insertion
+Plug 'tpope/vim-commentary'    " Comment stuff out
+Plug 'tpope/vim-repeat'        " Make . usable by plugins
+if has ('nvim')
+else
+	Plug 'tpope/vim-sensible'      " Sensible vim defaults
+endif
+
+" }}}
+
+" File Manipulation {{{
+" =================
+
+" Plug 'ggVGc/vim-fuzzysearch' " Fuzzy pattern building, in any buffer
+
+" }}}
+
+" Color and status {{{
+" ================
+
+Plug 'tomasr/molokai'                 " Molokai color scheme
+Plug 'JBakamovic/yaflandia'           " Color scheme accompaning cxxd
+Plug 'itchyny/lightline.vim'
+Plug 'itchyny/vim-gitbranch'
+
+
+"}}}
+
+" Language {{{
+" ========
+
+Plug 'ron89/thesaurus_query.vim' " For English, chinese, french, russian, german
+Plug 'rhysd/vim-grammarous'      " Powerful grammar checker
+
+"}}}
+
+" Embedded / Electronics {{{
+" ======================
+
+Plug 'glts/vim-radical'             " Convert decimal, hex, octal, binary
+Plug 'triglav/vim-visual-increment' " use inc dec num letter/ create seq
+Plug 'fidian/hexmode'               " edit binary files in a hex mode automatically
+
+
+" }}}
+
+" Misc {{{
+
+Plug 'junegunn/vim-easy-align' " align text along some common character
+Plug 'vimwiki/vimwiki'         " Personal Wiki for Vim
+Plug 'moll/vim-bbye'           " Delete buffers without messing layout
+Plug 'thaerkh/vim-workspace'   " Manage sessions/projects
+Plug 'kshenoy/vim-signature'   " gutter for marks
+
+"}}}
+
+call plug#end()
+
+" }}}
 
 " Basic Settings {{{
 " ==============
 
-" Set leader to ,
-let mapleader= ","
-" Modelines
-set modelines=2
-set modeline
+let mapleader=','
 
-" For clever completion with :find command
-set path+=**
+set encoding=utf-8             " Use utf-8 for encoding
+set modelines=2                " Set vim properties
+set path+=**                   " For clever completion
+set ignorecase scs nohlsearch  " Search
 
-" Always use bash syntax for sh filetype
-let g:is_bash=1
-
-" Search
-set ignorecase smartcase
-set grepprg=ack
-" set grepprg=grep\ -IrsnH
-
-" Window display
-set showcmd ruler laststatus=2
-
-" Set Numbering
-set number
-set relativenumber
-
-" Splits
-set splitright splitbelow
-
-" Buffers
-set history=500
-set hidden
-
-if exists("&undofile")
-    set undofile
-endif
-
-" Spelling
-set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
-
-" Text display
-set listchars=trail:.,tab:>-,extends:>,precedes:<,nbsp:¬
-set list
-
-" set tags for programs
-set tags=./tags;
+set list                       " Display hidden characters
+set listchars=tab:▸\ ,trail:.  " Show tabs, endofline, trailing space ,eol:¬
+set nu rnu                     " Display numbers
+set cursorline                 " Highlight line with cursor
+set ruler                      " show cursor position at all times
+set splitbelow splitright      " Sensible spliting
+set iskeyword+=-               " Word splitting
+set noswapfile undofile        " No swaps and yes undofiles
+set autoread autowrite         " Auto write on buffer changing
+set clipboard=unnamedplus      " Use system clipboard
+set noshowmode                 " Dont show mode in command bar
+set backspace=indent,eol,start " Allow backspace over everything
 
 " Typing behaviour
-set backspace=indent,eol,start
 set showmatch
-set wildmode=full
-set wildmenu
-set complete-=i
+set wmnu wim=list:full
 
 " Formatting
 set wrap
-set tabstop=4 shiftwidth=4 softtabstop=4
+set ts=4 sw=4 sts=4
+set noexpandtab
 set foldlevelstart=2
 set tw=120 colorcolumn=+1
+set smarttab
+set formatoptions=qrnj1
 
-" Status line
-" set statusline=%!MyStatusLine()
 
-" Session saving
-" set sessionoptions=blank,buffers,curdir,folds,help,tabpages,winsize,localoptions
-
-" Word splitting
-set iskeyword+=-
-
-" }}}
-
-" Source all vim files in .vim {{{
-" ============================
-
-" SourceConfig() {{{
-function! SourceConfig()
-    let file_list = split(globpath('$HOME/.vim', '*.vim'), '\n')
-    for file in  file_list
-    if file != expand('$HOME/.vim/init.vim')
-        execute 'source ' fnameescape(file)
-    endif
-    endfor
-endfunction
-" }}}
-call SourceConfig()
-
-" }}}
-
-" Syntax Highlighting {{{
-" ===================
-
-" This has to happen AFTER autocommands are defined, because I run au! when,
-" defining them, and syntax hilighting is done with autocommands.
-
-" Syntax hilighting
-syntax enable
-
-" }}}
-
-" Do not higlight searches {{{
-set nohlsearch
 " }}}
 
 " Backups {{{
 " =======
 
-if has('win32')
-    " Windows filesystem
-    set directory=$HOME\VimBackups\swaps,$HOME\VimBackups,C:\VimBackups,.
-    set backupdir=$HOME\VimBackups\backups,$HOME\VimBackups,C:\VimBackups,.
-    if exists("&undodir")
-        set undodir=$HOME\VimBackups\undofiles,$HOME\VimBackups,C:\VimBackups,.
-    endif
-    if has("gui_running")
-      set guifont=Inconsolata:h12:cANSI
-    endif
-else
-    " POSIX filesystem
-    set directory=$HOME/.backups/swaps//
-    set backupdir=$HOME/.backups/backups//
-    if exists("&undodir")
-        set undodir=$HOME/.backups/undofiles//
-    endif
-endif
+    set undodir=$XDG_DATA_HOME/vim/undo//
+    set directory=$XDG_DATA_HOME/vim/swap//
+    set backupdir=$XDG_DATA_HOME/vim/backup//
+	if has ('nvim')
+		set viminfo+='1000,n$XDG_DATA_HOME/nvim/nviminfo
+	else
+		set viminfo+='1000,n$XDG_DATA_HOME/vim/viminfo
+	endif
 
 " }}}
-
-" do this so it's called after everything is cleared by `syntax enable` when
-" re-sourcing .vimrc
-" call UpdateTaskDisplay()
 
 " Local Settings {{{
 
-if filereadable($HOME."/.local/vim/.vimrc")
-    source $HOME/.local/vim/.vimrc
-endif
+	if filereadable(".lvimrc")
+		source .lvimrc
+	endif
 
-set exrc
-set secure
+	set exrc
+	set secure
 
 " }}}
 
-" Color Scheme
-color molokai
-set background=dark
-hi Normal guibg=NONE ctermbg=NONE
+" Mappings {{{
+" ========
 
-let g:vimwiki_ext2syntax = { '.md': 'markdown' }
+" Self-explanatory convenience mappings
+imap jj <Esc>
+
+" Window movement {{{
+    nnoremap <C-h> <C-w>h
+    nnoremap <C-j> <C-w>j
+    nnoremap <C-k> <C-w>k
+    nnoremap <C-l> <C-w>l
+"}}}
+
+" vimrc shortcut
+nnoremap <leader>v :source $MYVIMRC<CR>
+nnoremap <leader>e :e $MYVIMRC<CR>
+
+" Fast switching to alt file
+nnoremap <BS> :buffer#<CR>
+
+" Easy saving
+inoremap <C-s> <ESC>:w<CR>i
+nnoremap <C-s> :w
+
+" Remove trailing whitespce
+nnoremap <F4> :%s/\s\+$//e<CR><C-o>
+
+" set Terminal exit to esc
+tnoremap <ESC> <C-\><C-n>
+
+" Toggle NERDTree
+nnoremap <leader>f :NERDTreeToggle<CR>
+
+" Start interactive EasyAlign
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" Force saving files that require root permission
+cnoremap w!! w !sudo tee %
+
+" Update Plugins
+command! PU PlugUpdate | PlugUpgrade
+
+" Better movement with wrapped lines
+inoremap j gj
+inoremap k gk
+
+" FZF {{{
+    nnoremap <leader>b :Buffers<CR>
+    nnoremap <leader>o :Files<CR>
+    nnoremap <leader>T :Tags<CR>
+    nnoremap <leader>t :BTags<CR>
+"}}}
+
+" Easy quickfix navigation {{{
+	nnoremap <C-n> :cn<CR>
+	nnoremap <C-p> :cp<CR>
+"}}}
+
+" }}}
+
+" Color Scheme {{{
+set background=dark
+color molokai
+" Set true colors
+set t_8f=[38;2;%lu;%lu;%lum
+set t_8b=[48;2;%lu;%lu;%lum
+set termguicolors
+"}}}
+
+" AutoCommands {{{
+" ============
+
+au!
+
+" Make the modification indicator [+] white on red background
+au ColorScheme * hi User1 gui=bold term=bold cterm=bold guifg=white guibg=red ctermfg=white ctermbg=red
+
+" Tweak the color of the fold display column
+au ColorScheme * hi FoldColumn cterm=bold ctermbg=233 ctermfg=146
+
+" Tabs Only
+au FileType c,h,make setl foldmethod=syntax
+
+" }}}
+
+" Plugin Config {{{
+" =============
+
+    " NERDTree {{{
+    " ========
+        " Get rid of objects in C projects
+        let NERDTreeIgnore=['\~$', '.o$', 'bower_components', 'node_modules', '__pycache__']
+        let NERDTreeWinSize=20
+    " }}}
+
+    " Ultisnips {{{
+    " =========
+        let g:UltiSnipsEditSplit="horizontal"
+    " }}}
+
+    " Vimwiki {{{
+    " =======
+        let g:vimwiki_list = [{'path': '~/notes/','syntax': 'markdown', 'ext': '.md'}]
+    " }}}
+
+	" Lightline {{{
+	" =========
+		let g:lightline = {
+		  \   'colorscheme': 'powerline',
+		  \   'active': {
+		  \     'left':[ [ 'mode', 'paste' ],
+		  \              [ 'gitbranch', 'readonly', 'filename', 'modified' ]
+		  \     ]
+		  \   },
+			\   'component': {
+			\     'lineinfo': ' %3l:%-2v',
+			\   },
+		  \   'component_function': {
+		  \     'gitbranch': 'gitbranch#head',
+		  \   }
+		  \ }
+
+		let g:lightline.separator = {
+			\   'left': '', 'right': ''
+		  \}
+
+		let g:lightline.subseparator = {
+			\   'left': '', 'right': ''
+		  \}
+
+	" }}}
+
+"}}}
+
+filetype plugin indent on   " Add filetype, plugin, and indent support
+syntax on                   " Turn on syntax highlighting
+" Transparent bg
+hi! Normal guibg=NONE ctermbg=NONE
+
+
+" vim: fdm=marker
