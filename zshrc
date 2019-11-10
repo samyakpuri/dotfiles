@@ -103,6 +103,7 @@
 	zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 	zstyle ':completion:*' group-name ''
 	zstyle ':completion:*' verbose yes
+	zstyle ":completion:*:commands" rehash 1
 
 	# Fuzzy match mistyped completions.
 	zstyle ':completion:*' completer _complete _match _approximate
@@ -184,6 +185,7 @@
 	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
 	alias pb="nc termbin.com 9999"
 	alias sys="sudo systemctl"
+	alias syu="systemctl --user"
 	# Highlight with less
 	alias highlight="highlight --force -O xterm256 --style molokai"
 
@@ -217,7 +219,7 @@
 		alias -g C='| wc -l'
 		alias -g H='| head'
 		alias -g L='| less'
-		alias -g N='&> /dev/null'i
+		alias -g N='&> /dev/null'
 
 		globalias() {
 		   if [[ $LBUFFER =~ ' [A-Z0-9]+$' ]]; then
@@ -395,11 +397,35 @@
 	# add sudo in front of current command
 	# https://www.reddit.com/r/zsh/comments/4b2lyj/send_a_simulated_keypress_from_zle_script_to/
 	sudo_ (){
-		BUFFER="sudo $BUFFER"
-		CURSOR=$#BUFFER
+		if [[ $BUFFER =~ "sudo" ]]
+		then
+			BUFFER=${BUFFER//sudo }
+			CURSOR=$
+		else
+			BUFFER="sudo $BUFFER"
+			CURSOR=$#BUFFER
+		fi
 	}
 	zle -N sudo_
 	bindkey "" sudo_
+
+	# Automatically expand all aliases:
+	# - don't forget the actual commands
+	# - don't confuse your pairing partner
+
+	preexec_functions=()
+
+	function expand_aliases {
+	  input_command=$1
+	  expanded_command=$2
+	  if [ $input_command != $expanded_command ]; then
+		print -nP $PROMPT
+		echo $expanded_command
+	  fi
+	}
+
+	preexec_functions+=expand_aliases
+
 #}}}
 
 #{{{ Plugins
@@ -411,9 +437,13 @@
 		if [[ -d $LOC$plugin ]]; then
 			source $LOC$plugin/zsh-$plugin.zsh
 		elif [[ -d $LOC2$plugin ]]; then
-			source $LOC2$plugin/*.zsh
+			for i in $LOC2$plugin/*.zsh; do
+				source $i
+			done
 		fi
 	done
 
 	bindkey '^ ' autosuggest-accept
 #}}}
+
+# vim: fdm=marker
