@@ -6,10 +6,11 @@
 " Plugins {{{
 
 " Automatic installation of vim-plug
+let s:data=$XDG_DATA_HOME
 if has ('nvim')
-	let s:plug=expand('$XDG_DATA_HOME/nvim/site/autoload/plug.vim')
+	let s:plug=expand(s:data.'/nvim/site/autoload/plug.vim')
 else
-	let s:plug=expand('$XDG_DATA_HOME/vim/autoload/plug.vim')
+	let s:plug=expand(s:data.'/vim/autoload/plug.vim')
 	set rtp=$XDG_DATA_HOME/vim,/usr/share/vim/vimfiles,$VIMRUNTIME,/usr/share/vim/vimfiles/after
 endif
 if empty(glob(s:plug))
@@ -39,6 +40,18 @@ Plug 'ludovicchabant/vim-gutentags' " Tags management
 
 " Snippets
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+
+" Language Server Protocol
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-vim-lsp'
+
+" vim support
+if !has('nvim')
+	Plug 'roxma/vim-hug-neovim-rpc'
+endif
 
 " }}}
 
@@ -153,10 +166,16 @@ set autoread autowrite         " Auto write on buffer changing
 set clipboard=unnamedplus      " Use system clipboard
 set noshowmode                 " Dont show mode in command bar
 set backspace=indent,eol,start " Allow backspace over everything
+set cot+=preview               " Preview for autocompletion
+set laststatus=2               " Always display statusbar
+set shortmess+=c               " Reduce message mess
+
+" Spelling
+set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
 
 " Typing behaviour
 set showmatch
-set wmnu wim=list:full
+set wmnu wim=full
 
 " Formatting
 set wrap
@@ -239,8 +258,8 @@ cnoremap w!! w !sudo tee %
 command! PU PlugUpdate | PlugUpgrade
 
 " Better movement with wrapped lines
-inoremap j gj
-inoremap k gk
+nnoremap j gj
+nnoremap k gk
 
 " FZF {{{
     nnoremap <leader>b :Buffers<CR>
@@ -294,12 +313,49 @@ au FileType c,h,make setl foldmethod=syntax
     " Ultisnips {{{
     " =========
         let g:UltiSnipsEditSplit="horizontal"
+		set cot+=menuone
     " }}}
 
+    " Auto Pair {{{
+    " =========
+        let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+    " }}}
+	
     " Vimwiki {{{
     " =======
         let g:vimwiki_list = [{'path': '~/notes/','syntax': 'markdown', 'ext': '.md'}]
     " }}}
+
+	" VIM LSP {{{
+	" =======
+
+		if executable('clangd')
+			au User lsp_setup call lsp#register_server({
+				\ 'name': 'clangd',
+				\ 'cmd': {server_info->['clangd', '-background-index']},
+				\ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+				\ })
+		endif
+
+		nnoremap <leader>e :LspHover<cr>
+		nnoremap <leader>d :LspDefinition<cr>
+
+	"}}}
+
+	" ncm2 {{{
+	" ====
+	
+		" enable ncm2 for all buffers
+		autocmd BufEnter * call ncm2#enable_for_buffer()
+
+		" Use <TAB> to select the popup menu:
+		inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+		inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+		" set completeopt to be what ncm2 expects
+		set completeopt=noinsert,menuone,noselect
+
+	" }}}
 
 	" Lightline {{{
 	" =========
