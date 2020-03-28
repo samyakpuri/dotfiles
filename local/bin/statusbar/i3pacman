@@ -12,8 +12,9 @@
 #     5) pamixer -d 5 ;;
 # esac
 
-[ "$BLOCK_BUTTON" = "1" ] && $TERMINAL -e sudo pacman -Syu && pacman -Qu | wc -l > ~/.pacupgrade && pkill -RTMIN+8 i3blocks
+[ "$BLOCK_BUTTON" = "1" ] && $TERMINAL -e "yay; pacman -Qu | wc -l > /tmp/pacupgrade; sudo pacman -Fy;
+sudo updatedb; printf 'Press any key to continue' ;read -n 1"; st -e "echo test; read -n 1" && pkill -RTMIN+8 i3blocks
 
-pacman -Qu | wc -l > ~/.pacupgrade && pkill -RTMIN+8 i3blocks
+pacman -Qu | wc -l > /tmp/pacupgrade && pkill -RTMIN+8 i3blocks
 
-cat ~/.pacupgrade
+cat /tmp/pacupgrade
