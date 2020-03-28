@@ -179,7 +179,7 @@
 	alias md="mkdir -p"
 	alias rd="rmdir"
 	alias rm="rm -I"
-	alias vim="fuzzy_edit"
+	alias vim=$EDITOR
 	alias e=vim
 	alias edit=vim
 	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
@@ -202,6 +202,9 @@
 	#{{{ Git Aliases
 		alias ga="git add"
 		alias gb="git branch"
+		alias gre="git restore"
+		alias gres="git restore --staged"
+		alias grea="git restore ."
 		alias gc="git commit -m"
 		alias gco="git checkout"
 		alias gcb="git checkout -b"
@@ -209,7 +212,11 @@
 		alias gs="git status -sb"
 		alias gca="git commit --amend"
 		alias gcl="git clone"
-		alias git="hub"
+		alias gst="git stash"
+		alias gstp="git stash push"
+		alias gstpo="git stash pop"
+		alias gpull="git pull"
+		alias gpush="git push"
 		alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 	# }}}
 
@@ -267,23 +274,27 @@
 	[[ -n “$key[Up]”  ]] && bindkey “$key[Up]” up-line-or-history
 	[[ -n “$key[Down]”  ]] && bindkey “$key[Down]” down-line-or-history
 	[[ -n “$key[Left]”  ]] && bindkey “$key[Left]” backward-char
-	[[ -n “$key[Right]”  ]] && bindkey “$key[Right]” forward-char
+	[[ -n “$key[Right]”  ]] && bindkey “$key[Right]” forward-word
+
+	bindkey '^A' beginning-of-line
+	bindkey '^E' end-of-line
 
 	# Finally, make sure the terminal is in application mode, when zle is
 	# active. Only then are the values from $terminfo valid.
 	if (( ${+terminfo[smkx]}  )) && (( ${+terminfo[rmkx]}  )); then
-	function zle-line-init () {
-	echoti smkx
-	}
-	function zle-line-finish () {
-	echoti rmkx
-	}
-	zle -N zle-line-init
-	zle -N zle-line-finish
+		function zle-line-init () {
+			echoti smkx
+		}
+		function zle-line-finish () {
+			echoti rmkx
+		}
+		zle -N zle-line-init
+		zle -N zle-line-finish
 	fi
 
 	#}}}
 
+	# 
 	autoload -U up-line-or-beginning-search
 	zle -N up-line-or-beginning-search
 	bindkey '\e[A' up-line-or-beginning-search
@@ -295,12 +306,11 @@
 	bindkey '\eOB' down-line-or-beginning-search
 
 	bindkey '^O' clear-screen
-	bindkey -s '^Y' 'back_dir\n'
 
 	bindkey '^r' history-incremental-search-backward
 	autoload -z edit-command-line
 	zle -N edit-command-line
-	bindkey '^E' edit-command-line
+	bindkey '^[e' edit-command-line
 	# bindkey -M viins '^E' insert-last-word
 
 	# Bang! Previous Command Hotkeys
@@ -313,7 +323,7 @@
 	bindkey -s '\e4' "!:0-3 \t"      # last command + 1st-3rd argument
 	bindkey -s '\e5' "!:0-4 \t"      # last command + 1st-4th argument
 	bindkey -s '\e`' "!:0- \t"       # all but the last argument
-	bindkey -s '\e9' "!:0 !:2* \t"   # all but the 1st argument (aka 2nd word)
+	bindkey -s '\e9' "!:* \t"   # all but the 1st argument (aka 2nd word)
 #}}}
 
 #{{{ Prompt
@@ -342,7 +352,7 @@
 
 
 	# Define prompts.
-	local ret_status="%(?:%{$fg[green]%}➜ :%{$fg[red]%}➜ )"
+	local ret_status="%(?:%{$fg[green]%}➜  :%{$fg[red]%}➜  )"
 	PROMPT='%{$fg[cyan]%}%c ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
 #}}}
 
@@ -373,26 +383,6 @@
 #}}}
 
 #{{{ Global Functions
-
-	function fuzzy_edit()
-	{
-		[[ "$#" -gt 1  ||  "$#" -eq 0 ]] && $EDITOR $* && return 0;
-
-		[[ -w "$1" || ((! -f "$1") && (-w "$1:h" && -x "$1:h")) ]] && $EDITOR "$1"  && return 0;
-
-		echo
-		echo "\tTo root or not to root that is the question...  "
-		echo
-		read option
-
-		if [[ "$option" == "y" ]];
-		then
-			sudo -e "$1"
-		else
-			$EDITOR "$1"
-		fi
-		clear
-	}
 
 	# add sudo in front of current command
 	# https://www.reddit.com/r/zsh/comments/4b2lyj/send_a_simulated_keypress_from_zle_script_to/
@@ -431,7 +421,7 @@
 #{{{ Plugins
 	LOC="/usr/share/zsh/plugins/zsh-"
 	LOC2="/usr/share/"
-	PLUGINS+=(autosuggestions syntax-highlighting history-substring-search fzf)
+	PLUGINS+=(autosuggestions syntax-highlighting history-substring-search)
 
 	for plugin in $PLUGINS; do
 		if [[ -d $LOC$plugin ]]; then
@@ -443,7 +433,10 @@
 		fi
 	done
 
-	bindkey '^ ' autosuggest-accept
+	source /usr/share/fzf/key-bindings.zsh
+	bindkey '\et' fzf-cd-widget
+
+	[[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 #}}}
 
 # vim: fdm=marker
