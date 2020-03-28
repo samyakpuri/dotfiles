@@ -1,0 +1,14 @@
+#!/bin/bash
+# File              : dmenuumount
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 17.08.2018
+# Last Modified Date: 17.08.2018
+# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+# Summary           : A script for unmounting drives and removing symlinks to it in home dir, requires udisks2 to work
+
+
+declare -A drives="($(df -h --output=source,target | awk -F" {2,}" '/\/run\/media/{ n=split($2,a,"/"); print "["a[n]"]="$1}'))"
+
+chosen=$(echo "${!drives[@]}" | dmenu -i -p "Select drive to unmount: ")
+[ -z "$chosen" ] && exit 1
+udisksctl unmount -b "${drives[${chosen}]}" && rm $HOME/"${chosen}" && notify-send "${chosen} Unmounted Successfully"

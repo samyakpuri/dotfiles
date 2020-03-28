@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Create/spawn a dropdown window
+
+[ -z "$1" ] && exit
+
+if ! xwininfo -tree -root | grep "(\"$1\""; then
+    i3-msg "exec --no-startup-id $TERMINAL -n $1 $(echo "$@" | cut -d ' ' -f2- -s) -e $($1)"
+    sleep .25 
+fi
+i3-msg "[instance=\"$1\"] scratchpad show; [instance=\"$1\"] move position center"

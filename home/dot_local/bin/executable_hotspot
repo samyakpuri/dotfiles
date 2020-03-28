@@ -1,0 +1,17 @@
+#!/bin/env sh
+
+function pingwait(){
+    while ! ping -c 1 "$1" &> /dev/null; do
+        sleep 5
+    done
+}
+
+sudo systemctl stop create_ap
+notify-send "Hostpot Stopped"
+
+pingwait "8.8.8.8"
+if [ "$(ip route list | grep -Po 'default.*dev \K\w')" == 'e' ]; then
+    sudo systemctl restart create_ap
+    pingwait "10.0.0.1"
+    notify-send "Hostpot Created"
+fi

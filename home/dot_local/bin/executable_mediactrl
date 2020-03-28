@@ -1,0 +1,28 @@
+#!/bin/bash
+# File              : Media Control
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 08.10.2018
+# Last Modified Date: 08.10.2018
+# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+
+# A general audio interface for LARBS.
+
+newvol="pkill -RTMIN+10 i3blocks"
+# Uncomment if i3mpdupdate isn't running:
+
+player="mpc"
+[ $(pidof -s spotify) ] && player="spotifycli"
+
+case "$1" in
+	"up") pamixer --allow-boost -i "$2" ; $newvol ;;
+	"down") pamixer --allow-boost -d "$2" ; $newvol ;;
+	"mute") pamixer --allow-boost -t ; $newvol ;;
+	"truemute") pamixer --allow-boost -m ; $newvol ;;
+	"toggle") "$player" toggle ;;
+	"pause") "$player" pause ; pauseallmpv ;;
+	"forward") "$player" seek +"$2" ;;
+	"back") "$player" seek -"$2" ;;
+	"next") "$player" next ;;
+	"prev") "$player" prev ;;
+	"replay") "$player" seek 0% ;;
+esac
