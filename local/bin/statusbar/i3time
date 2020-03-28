@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+if [[ "$BLOCK_BUTTON" -eq 1 ]]; then
+	notify-send "🇮🇳 $(TZ='Asia/Kolkata' date '+%R')"
+fi
+
+echo $(date '+%d/%m/%y %R')

@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# i3blocks weather block using wttr.in
+
+location="passau"
+
+[ "$BLOCK_BUTTON" = "1"  ] && st -e w3m wttr.in/${location}
+
+ping -q -w 1 -c 1 "$(ip r | grep default | cut -d ' ' -f 3)" >/dev/null || exit
+
+if [ "$location" != ""  ]
+then
+    location="${location}?format=1"
+fi
+
+output=$(curl "wttr.in/${location}") 
+
+echo "$output" | grep -q "query" && exit 1
+
+echo "$output"
