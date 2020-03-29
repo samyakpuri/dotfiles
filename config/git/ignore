@@ -39,6 +39,7 @@ Thumbs.db
 # P4 Merge Specific #
 #####################
 *.orig
+*.rej
 
 # IDE Files #
 #############
@@ -52,3 +53,7 @@ tags
 #================
 *~
 *.swp
+
+# Lock files
+#===========
+*.lock
