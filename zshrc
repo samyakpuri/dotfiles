@@ -173,54 +173,8 @@
 
 # {{{ Alias
 
-	alias clip="xclip -selection clipboard -i"
-	alias p="ping 9.9.9.9" # Check if internet working
-	alias ping="ping -c 5"
-	alias md="mkdir -p"
-	alias rd="rmdir"
-	alias rm="rm -I"
-	alias vim=$EDITOR
-	alias e=vim
-	alias edit=vim
-	# alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
-	alias grep="rg"
-	alias pb="nc termbin.com 9999"
-	alias sys="sudo systemctl"
-	alias syu="systemctl --user"
-	# Highlight with less
-	alias highlight="highlight --force -O xterm256 --style molokai"
-
-	alias ls="ls --color=always"
-	alias l="ls -lh"
-	alias ll='ls -lah'
-	alias less="less -R"
-	alias dirs="dirs -v"
-
-	#{{{ Directory Navigation
-		alias d='dirs -v'
-		for index ({1..9}) alias "$index"="cd +${index}"; unset index
-	#}}}
-
-	#{{{ Git Aliases
-		alias ga="git add"
-		alias gb="git branch"
-		alias gre="git restore"
-		alias gres="git restore --staged"
-		alias grea="git restore ."
-		alias gc="git commit -m"
-		alias gco="git checkout"
-		alias gcb="git checkout -b"
-		alias gcom="git checkout master"
-		alias gs="git status -sb"
-		alias gca="git commit --amend"
-		alias gcl="git clone"
-		alias gst="git stash"
-		alias gstp="git stash push"
-		alias gstpo="git stash pop"
-		alias gpull="git pull"
-		alias gpush="git push"
-		alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
-	# }}}
+	# Source common alias
+	[ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
 	#{{{ Global Alias
 
