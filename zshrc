@@ -182,7 +182,8 @@
 	alias vim=$EDITOR
 	alias e=vim
 	alias edit=vim
-	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
+	# alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
+	alias grep="rg"
 	alias pb="nc termbin.com 9999"
 	alias sys="sudo systemctl"
 	alias syu="systemctl --user"
@@ -193,6 +194,7 @@
 	alias l="ls -lh"
 	alias ll='ls -lah'
 	alias less="less -R"
+	alias dirs="dirs -v"
 
 	#{{{ Directory Navigation
 		alias d='dirs -v'
@@ -312,6 +314,9 @@
 	zle -N edit-command-line
 	bindkey '^[e' edit-command-line
 	# bindkey -M viins '^E' insert-last-word
+
+	# Fixing delete key
+	bindkey '^[[3~' vi-delete-char
 
 	# Bang! Previous Command Hotkeys
 	# print previous command but only the first nth arguments
