@@ -1,100 +1,23 @@
-#!/usr/bin/env python3
-#
-# Copyright (C) 2016 James Murphy
-# Licensed under the GPL version 2 only
-#
-# A battery indicator blocklet script for i3blocks
+#!/usr/bin/env sh
 
-import re
-from subprocess import check_output
-import gi
-import os
-gi.require_version('Notify', '0.7')
-from gi.repository import Notify
+battery=/sys/class/power_supply/BAT0
 
-Notify.init("Battery")
-noti=Notify.Notification.new("Battery Low")
-noti.set_urgency(2)
+capacity=$(cat "$battery"/capacity) || exit
+status=$(cat "$battery"/status)
 
-battery = check_output(['acpi'], universal_newlines=True).split(": ")[1].split(", ")
-state=battery[0]
-timeleft = battery[-1].strip()
-# check if it matches a time
-timeleft = re.match(r"(\d+):(\d+)", timeleft)
-if timeleft:
-    timeleft = " ({})".format(":".join(timeleft.groups()))
-else:
-    timeleft = ""
+if [ "$capacity" -ge 75 ]; then
+	color="#00ff00"
+elif [ "$capacity" -ge 50 ]; then
+	color="#ffffff"
+elif [ "$capacity" -ge 25 ]; then
+	color="#ffff00"
+else
+	color="#ff0000"
+	warn="❗"
+fi
 
-percentleft = int(battery[1].rstrip("%\n"))
+[ -z $warn ] && warn=" "
 
-# stands for charging
-FA_LIGHTNING = "<span color='yellow'><span font='FontAwesome'>\uf0e7</span></span>"
+[ "$status" = "Charging" ] && color="#ffffff"
 
-# stands for plugged in
-FA_PLUG = "<span font='FontAwesome'>\uf1e6</span>"
-
-# stands for using battery
-FA_BATTERY_FULL = "<span font='FontAwesome'>\uf240</span>"
-FA_BATTERY_2Q = "<span font='FontAwesome'>\uf241</span>"
-FA_BATTERY_HALF = "<span font='FontAwesome'>\uf242</span>"
-FA_BATTERY_Q = "<span font='FontAwesome'>\uf243</span>"
-FA_BATTERY_EMPTY = "<span font='FontAwesome'>\uf244</span>"
-
-# stands for unknown status of battery
-FA_QUESTION = "<span font='FontAwesome'>\uf128</span>"
-
-batstat=''
-
-def color(percent):
-    if percent < 10:
-        # exit code 33 will turn background red
-        batstat= FA_BATTERY_EMPTY + " "
-        return "#FFFFFF"
-    if percent < 20:
-        batstat= FA_BATTERY_Q + " "
-        return "#FF3300"
-    if percent < 30:
-        batstat= FA_BATTERY_Q + " "
-        return "#FF6600"
-    if percent < 40:
-        batstat= FA_BATTERY_HALF + " "
-        return "#FF9900"
-    if percent < 50:
-        batstat= FA_BATTERY_HALF + " "
-        return "#FFCC00"
-    if percent < 60:
-        batstat= FA_BATTERY_HALF + " "
-        return "#FFFF00"
-    if percent < 70:
-        batstat= FA_BATTERY_3Q + " "
-        return "#FFFF33"
-    if percent < 80:
-        batstat= FA_BATTERY_3Q + " "
-        return "#FFFF66"
-    batstat= FA_BATTERY_FULL + " "
-    return "#FFFFFF"
-
-if state == "Discharging":
-    pass
-elif state == "Full":
-    batstat = FA_PLUG + " "
-    timeleft = ""
-elif state == "Unknown":
-    batstat = FA_QUESTION + " " + FA_BATTERY_EMPTY + " "
-    timeleft = ""
-else:
-    batstat = FA_LIGHTNING + " " + FA_PLUG + " "
-form =  '<span color="{}">{}{}%</span>'
-batcolor=color(percentleft)
-fulltext = form.format(batcolor,batstat,percentleft)
-# fulltext += timeleft
-button = os.getenv("BLOCK_BUTTON")
-if button == '1':
-    noti=Notify.Notification.new("Left " + timeleft)
-    noti.show()
-
-if state == "Discharging" and percentleft < 25:
-    noti.show()
-print(fulltext)
-print(fulltext)
+printf "<span color='%s'>%s%s%s</span>\n" "$color" "$(echo "$status" | sed "s/,//;s/Discharging/🔋/;s/Not charging/🛑/;s/Charging/🔌/;s/Unknown/♻️/;s/Full/⚡/;s/ 0*/ /g;s/ :/ /g")" "$warn" "$(echo "$capacity" | sed -e 's/$/%/')"
