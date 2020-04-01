@@ -67,6 +67,18 @@ sp_current() {
   | column -t -s'|'
 }
 
+sp_display() {
+  # Prints title-artist for status bar
+  require tac
+  require paste
+
+  sp_metadata \
+  | grep -E "(title)|(artist)" \
+  | tac \
+  | cut -d'|' -f2 \
+  | paste -s -d'-'
+}
+
 sp_eval() {
   # Prints the currently playing track as shell variables, ready to be eval'ed
   require sort
@@ -80,12 +92,25 @@ sp_eval() {
   | sed -E 's/^/SPOTIFY_/'
 }
 
+sp_status() {
+	# Give current status (Paused|Palying)
+	
+  dbus-send                                                            \
+  --print-reply                                  `# We need the reply.`\
+  --dest="$SP_DEST"                                                    \
+  "$SP_PATH"                                                           \
+  org.freedesktop.DBus.Properties.Get                                  \
+  string:"$SP_MEMB" string:'PlaybackStatus'                            \
+  | awk '/string/ {print substr($3,2,length($3)-2)}'
+
+}
+
+
 # 'SIMPLE' (DBUS-ALIAS) COMMANDS
 alias sp_toggle="  sp_dbus PlayPause"
 alias sp_pause=" sp_dbus Pause"
 alias sp_next="  sp_dbus Next"
 alias sp_prev="  sp_dbus Previous"
-alias sp_seek=" sp_dbus Seek(10)"
 
 # DISPATCH
 
