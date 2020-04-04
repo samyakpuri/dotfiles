@@ -7,7 +7,6 @@
 #
 #############################################
 
-
 # {{{ ZSH Modules
 
 	autoload -Uz compinit
