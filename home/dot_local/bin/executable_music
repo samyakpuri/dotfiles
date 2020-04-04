@@ -1,0 +1,9 @@
+#!/bin/bash
+# File              : music
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 07.07.2018
+# Last Modified Date: 02.04.2020
+
+if [ $(pidof -s spotify) && ($(spotifycli status) = playing) ]; then
+	echo $(spotifycli display)
+elif [mpc ]

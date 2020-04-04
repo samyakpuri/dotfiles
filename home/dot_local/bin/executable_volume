@@ -1,0 +1,9 @@
+#!/bin/bash
+# File              : volume
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 07.07.2018
+# Last Modified Date: 04.04.2020
+
+[ $(pamixer --get-mute) = "true" ] && echo 🔇 && exit
+
+echo 🔊 $(pamixer --get-volume)%
