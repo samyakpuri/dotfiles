@@ -1,0 +1,14 @@
+#!/bin/env sh
+
+# This runs automatically when you run sx to start the graphical environment.
+
+# Determine the statusbar.
+export STATUSBAR="dwmblocks"
+
+# Source xprofile so commands are run. Separated out so display manager can use
+[ -f "$XDG_CONFIG_HOME/x11/xprofile" ] && source "$XDG_CONFIG_HOME/x11/xprofile"
+
+exec i3
+# while :; do
+# 	exec dwm
+# done
