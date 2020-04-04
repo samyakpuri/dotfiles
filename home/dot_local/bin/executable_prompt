@@ -1,11 +1,11 @@
 #!/bin/bash
-# File              : prompt
+# File              : dmenuprompt
 # Author            : Samyak Puri <samyakpuri@hotmail.com>
 # Date              : 27.05.2018
 # Last Modified Date: 27.05.2018
 # Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
-#Summary            : Gives a confirmation prompt before performing action
-#usage              : dmenupromt "what you want to ask" "action/script/cmd"
+# Summary            : Gives a confirmation prompt before performing action
+# Usage              : dmenupromt "what you want to ask" "action/script/cmd"
 
 [ $(echo -e 'No\nYes' | dmenu -i -p "$1" -nb darkred -sb red -sf white -nf grey -fn mono) \
     == "Yes" ] && $2
