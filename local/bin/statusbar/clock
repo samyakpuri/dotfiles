@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+echo "$(date '+%d/%m/%y %R')/🇮🇳 $(TZ='Asia/Kolkata' date '+%R')"

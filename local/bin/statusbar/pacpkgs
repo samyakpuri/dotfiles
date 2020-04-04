@@ -1,0 +1,9 @@
+#!/bin/sh
+# File              : pacman
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 07.07.2018
+# Last Modified Date: 02.04.2020
+
+pacman -Qu | wc -l > /tmp/pacupgrade && pkill -RTMIN+8 i3blocks
+
+cat /tmp/pacupgrade
