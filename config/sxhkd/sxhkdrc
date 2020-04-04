@@ -9,24 +9,18 @@ super + n
 	$TERMINAL -e newsboat
 super + i
 	$TERMINAL -e htop
-control +q 
-	/bin/false
 super + w
-	$BROWSER
-super + shift + w
-	$BROWSER2
+	brave
 super + v
 	$TERMINAL -e ncmpcpp -s visualizer
-super + d
-	dmenu_run
-super + shift + g
-	gimp
 super + x
 	lockscreen
 super + control + v
-	~/dmenutv
+	dmenutv
 super + shift + x
 	prompt "Are you sure you want to shutdown?" "shutdown -h now"
+super + F8
+	dmenuunicode ~/.config/unicode
 super + F9
 	dmenumount
 super + F10 
@@ -53,30 +47,24 @@ shift + Print
 # #---Extra XF86 Keys---# #
 # These are the extra media keys that some keyboards have.
 XF86AudioMute
-	mediactrl mute
+	pamixer --allow-boost -t; pkill -RTMIN+10 i3blocks
 {_,shift +, control + }XF86AudioLowerVolume
-	mediactrl down {5,10,1}
+	pamixer --allow-boost -d {5,10,1}; pkill -RTMIN+10 i3blocks
 {_,shift +, control + }XF86AudioRaiseVolume
-	mediactrl up {5,10,1}
+	pamixer --allow-boost -i {5,10,1}; pkill -RTMIN+10 i3blocks
 XF86PowerOff
 	prompt "Are you sure you want to shutdown?" "shutdown -h now"
 XF86Audio{Next,Prev,Play,Stop}
-	mediactrl {next,prev,toggle,stop}
-XF86AudioPlay
-	mediactrl toggle
-XF86AudioPrev
-	mediactrl prev
-XF86AudioStop
-	mediactrl toggle
-XF86AudioRewind
-	mediactrl back 10
-XF86AudioForward
-	mediactrl forward 10
+	mpc {next,prev,toggle,stop}
+XF86Audio{Rewind,Forward}
+	mpc seek {-,+} 10
 XF86TouchpadToggle
 	toggletouchpad
 XF86Suspend
 	lockscreen
 XF86Display
 	arandr
+XF86MonBrightness{Up,Down}
+	sudo brightnessctl s {+5%,5%-}
 
 # vim: ft=sxhkdrc
