@@ -5,9 +5,7 @@
 # Must have xclip installed to show menu/ needed for copy to clipboard
 command -v xclip >/dev/null || echo "xclip needed for this to function" && exit
 
-[ -z "$1" ] && printf "No input file\n Usage: dmenuunicode inputfile" && exit 1
-
-chosen=$(grep -v "#" "$1" | dmenu -i -l 10 -fn Monospace-18)
+chosen=$(grep -v "#" "$XDG_HOME_DATA/spuri/emoji" | dmenu -i -l 10 -fn Monospace-18)
 
 [ "$chosen" != "" ] || exit 1
 
