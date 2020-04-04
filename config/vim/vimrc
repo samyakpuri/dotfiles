@@ -243,7 +243,7 @@ nnoremap <BS> :buffer#<CR>
 
 " Easy saving
 inoremap <C-s> <ESC>:w<CR>i
-nnoremap <C-s> :w
+nnoremap <C-s> :w <CR>
 
 " Remove trailing whitespce
 nnoremap <F4> :%s/\s\+$//e<CR><C-o>
@@ -267,6 +267,9 @@ command! PU PlugUpdate | PlugUpgrade
 " Better movement with wrapped lines
 nnoremap j gj
 nnoremap k gk
+
+" Insert current date
+inoremap <leader>cd <C-r>=strftime('%d.%m.%Y')<CR>
 
 " FZF {{{
     nnoremap <leader>b :Buffers<CR>
