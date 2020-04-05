@@ -10,8 +10,8 @@
 # #---Basic Definitions---# #
 # Needed for i3-gaps
 for_window [class="^.*"] border pixel 2
-gaps inner 15
-gaps outer 15
+gaps inner 5
+gaps outer 5
 set $term --no-startup-id $TERMINAL
 set $mod Mod4
 set $stoprec --no-startup-id dmenurecord kill
@@ -19,20 +19,15 @@ set $netrefresh --no-startup-id sudo -A systemctl restart NetworkManager
 
 # #---Starting External Scripts---# #
 # Setting the background and colorscheme:
-#exec --no-startup-id wal -i ~/.config/wall.png >/dev/null
-exec_always --no-startup-id feh --bg-center ~/.config/wall.png
+exec_always --no-startup-id xwallpaper --zoom ~/.config/wall.png
 # Starts dunst for notifications:
 exec --no-startup-id dunst
 # Composite manager:
 exec --no-startup-id compton
-# Runs the key remapping scripts
-exec --no-startup-id ~/.scripts/remaps
 # Unclutter makes the mouse invisible after a brief period
 exec --no-startup-id unclutter
 # Run the script to update the mpd i3block on change.
 exec --no-startup-id i3mpdupdate
-# Network manager applet
-exec --no-startup-id nm-applet
 # mpd startup
 exec --no-startup-id mpd
 # sxhkd 
@@ -65,7 +60,7 @@ client.urgent            $darkred      $darkred    $black    $darkred      $dark
 client.background        $black
 
 bar {
-    font pango:mono 10
+    font pango:Hack 11
     colors {
             background          $transparent
             statusline          $darkwhite
@@ -75,6 +70,7 @@ bar {
             inactive_workspace  #00000000 #00000000 $white
             urgent_workspace    $darkred      $darkred      $white
         }
+	strip_workspace_numbers yes
     status_command i3blocks
     i3bar_command i3bar -t
     position top
@@ -129,7 +125,6 @@ bindsym $mod+Shift+k       move up 30
 bindsym $mod+Shift+l       move right 30
 
 bindsym $mod+b             bar mode toggle
-bindsym $mod+Shift+b       floating toggle; sticky toggle; exec --no-startup-id bottomleft
 
 bindsym $mod+apostrophe    split horizontal ;; exec $term
 bindsym $mod+slash         split vertical ;; exec $term
@@ -137,16 +132,16 @@ bindsym $mod+Shift+slash   kill
 bindsym $mod+F2            restart
 
 # #---Workspace Bindings---# #
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
-set $ws6 "6"
-set $ws7 "7"
-set $ws8 "8"
-set $ws9 "9"
-set $ws10 "10"
+set $ws1  "1:"
+set $ws2  "2:"
+set $ws3  "3:"
+set $ws4  "4:"
+set $ws5  "5"
+set $ws6  "6:"
+set $ws7  "7:"
+set $ws8  "8:"
+set $ws9  "9"
+set $ws10 "10:"
 
 workspace $ws1  output LVDS-1
 workspace $ws2  output LVDS-1
@@ -193,24 +188,24 @@ bindsym $mod+Shift+XF86Back    move container to workspace prev
 bindsym $mod+Shift+XF86Forward move container to workspace next
 
 
-for_window [class="Blender"] move to workspace $ws6
-for_window [title="GIMP Startup"] move workspace $ws5
-for_window [class="Gimp"] move workspace $ws5
 for_window [window_role="GtkFileChooserDialog"] resize set 825 500
 for_window [window_role="GtkFileChooserDialog"] move position center
+# assign [class="firefox"] $ws1
+assign [class="Spotify"] $ws10
+assign [title="cmus.*"] $ws10
+assign [title=".*Android Studio.*"] $ws7
 
-# First I have a vim window for fast note taking
-# I'll later bind this to mod+u.
-for_window [instance="notes"] floating enable
-for_window [instance="notes"] resize set 825 500
-for_window [instance="notes"] move scratchpad
-for_window [instance="notes"] border pixel 3
+# Make dropdown instances float and move to scratchpad
+for_window [instance="dropdown.*"] floating enable
+for_window [instance="dropdown.*"] move scratchpad
+for_window [instance="dropdown.*"] sticky on
 
-# Then I have a window running R I use for basic arithmetic
-# I'll later bind this to mod+a.
-for_window [instance="dropdowncalc"] floating enable
+# For Fast note taking
+for_window [instance="dropdownnotes"] resize set 825 500
+for_window [instance="dropdownnotes"] border pixel 3
+
+# Use as calculator
 for_window [instance="dropdowncalc"] resize set 800 300
-for_window [instance="dropdowncalc"] move scratchpad
 for_window [instance="dropdowncalc"] border pixel 2
 
 # #---Arrow Keys---# #

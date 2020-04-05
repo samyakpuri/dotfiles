@@ -1,3 +1,4 @@
+# vim: ft=config
 command=/usr/lib/i3blocks/$BLOCK_NAME
 separator_block_width=15
 markup=pango
@@ -12,43 +13,42 @@ command=cat ~/.recordingicon
 interval=once
 signal=9
 
-[mpd]
+[music]
 label=🎼
-command=i3mpd
+command=music
 interval=once
 signal=11
 
 [pacman]
 label=📦
-command=i3pacman
+command=pacpkgs
 interval=once
 signal=8
 
 [weather]
-command=i3weather
+command=weather
 interval=3600
 
 [mail]
 label=📬
-command=i3mail
+command=mailbox
 interval=180
 signal=12
 
 [volume]
 interval=once
-command=i3volume
+command=volume
 signal=10
 
-[iface]
-label=🌐
-#instance=wlan0
+[net]
+command=internet
 interval=10
 
 [battery]
-command=i3battery
+command=battery
 interval=5
 
 [time]
 label=🕓
-command=echo $(date '+%d/%m/%y %R') / 🇮🇳 $(TZ='Asia/Kolkata' date '+%R')
+command=clock
 interval=30
