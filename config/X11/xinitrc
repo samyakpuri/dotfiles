@@ -6,9 +6,9 @@
 export STATUSBAR="dwmblocks"
 
 # Source xprofile so commands are run. Separated out so display manager can use
-[ -f "$XDG_CONFIG_HOME/x11/xprofile" ] && source "$XDG_CONFIG_HOME/x11/xprofile"
+[ -f "$XDG_CONFIG_HOME/X11/xprofile" ] && source "$XDG_CONFIG_HOME/X11/xprofile"
 
 exec i3
 # while :; do
-# 	exec dwm
+#	exec dwm
 # done
