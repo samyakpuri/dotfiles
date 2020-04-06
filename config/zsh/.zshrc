@@ -288,6 +288,7 @@
 
 	autoload -Uz vcs_info add-zsh-hook
 	add-zsh-hook precmd vcs_info
+	setopt promptsubst
 
 	zstyle ':vcs_info:*' unstagedstr '%F{yellow}%{%G✗%}'
 	zstyle ':vcs_info:*' check-for-changes true
@@ -310,8 +311,8 @@
 
 
 	# Define prompts.
-	local ret_status="%(?:%{$fg[green]%}%{%G➜%}  :%{$fg[red]%}%{%G➜%}  )"
-	PROMPT='%{$fg[cyan]%}%c ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
+	local ret_status="%(?:%{$fg[green]%}%{%G➜%} :%{$fg[red]%}%{%G➜%} )"
+	export PROMPT='%{$fg[cyan]%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
 #}}}
 
 #{{{ Misc
