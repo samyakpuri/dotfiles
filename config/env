@@ -22,6 +22,7 @@ export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
 export INPUTRC="$XDG_CONFIG_HOME/inputrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
 export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line might break some DMs.
 export LESSHISTFILE="-"
 
@@ -54,3 +55,5 @@ export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
 export LESSCHARSET="utf-8"
 export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 
+# Z location
+export _Z_DATA="$XDG_DATA_HOME/z"
