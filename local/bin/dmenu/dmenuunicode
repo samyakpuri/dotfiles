@@ -3,9 +3,9 @@
 # Shows the selected character in dunst if running 
 
 # Must have xclip installed to show menu/ needed for copy to clipboard
-command -v xclip >/dev/null || echo "xclip needed for this to function" && exit
+command -v xclip >/dev/null || (echo "xclip needed for this to function" && exit)
 
-chosen=$(grep -v "#" "$XDG_HOME_DATA/spuri/emoji" | dmenu -i -l 10 -fn Monospace-18)
+chosen=$(grep -v "#" "$XDG_DATA_HOME/spuri/emoji" | dmenu -i -l 10 -fn Monospace-18)
 
 [ "$chosen" != "" ] || exit 1
 

@@ -8,4 +8,4 @@
 # Usage              : dmenupromt "what you want to ask" "action/script/cmd"
 
 [ $(echo -e 'No\nYes' | dmenu -i -p "$1" -nb darkred -sb red -sf white -nf grey -fn mono) \
-    == "Yes" ] && $2
+    = "Yes" ] && $2
