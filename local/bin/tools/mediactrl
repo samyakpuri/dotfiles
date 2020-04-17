@@ -1,28 +1,45 @@
-#!/bin/bash
+#!/bin/env sh
 # File              : Media Control
 # Author            : Samyak Puri <samyakpuri@hotmail.com>
 # Date              : 08.10.2018
-# Last Modified Date: 08.10.2018
-# Last Modified By  : Samyak Puri <samyakpuri@hotmail.com>
+# Last Modified Date: 02.04.2020
 
-# A general audio interface for LARBS.
+if [ "$(pidof -s i3blocks)" ]
+then
+	update="pkill -RTMIN+11 i3blocks"
+elif [ "$(pidof -s dwmblocks)" ]
+then
+	update="pkill -RTMIN+11 dwmblocks"
+else
+	update=""
+fi
 
-newvol="pkill -RTMIN+10 i3blocks"
 # Uncomment if i3mpdupdate isn't running:
 
-player="mpc"
-[ $(pidof -s spotify) ] && player="spotifycli"
+if [ $(pidof -s spotify) ]; then
+	toggle() { spotifycli toggle ; }
+	pause() { spotifycli pause; }
+	next() { spotifycli next; }
+	prev() { spotifycli prev; }
+	seek() { spotifycli prev; spotifycli prev; }
+else
+	toggle() { mpc toggle ;}
+	pause() { mpc pause; }
+	next() { mpc next; }
+	prev() { mpc prev; }
+	seek() { mpc seek $1; }
+fi
 
 case "$1" in
-	"up") pamixer --allow-boost -i "$2" ; $newvol ;;
-	"down") pamixer --allow-boost -d "$2" ; $newvol ;;
-	"mute") pamixer --allow-boost -t ; $newvol ;;
-	"truemute") pamixer --allow-boost -m ; $newvol ;;
-	"toggle") "$player" toggle ;;
-	"pause") "$player" pause ; pauseallmpv ;;
-	"forward") "$player" seek +"$2" ;;
-	"back") "$player" seek -"$2" ;;
-	"next") "$player" next ;;
-	"prev") "$player" prev ;;
-	"replay") "$player" seek 0% ;;
+	"up") pamixer --allow-boost -i "$2" ; $update ;;
+	"down") pamixer --allow-boost -d "$2" ; $update ;;
+	"mute") pamixer --allow-boost -t ; $update ;;
+	"truemute") pamixer --allow-boost -m ; $update ;;
+	"toggle") toggle ;; 
+	"pause") pause ; pauseallmpv ;;
+	"forward") seek +"$2" ;;
+	"back") seek -"$2" ;;
+	"next") next ;;
+	"prev") prev ;;
+	"replay") seek 0% ;;
 esac
