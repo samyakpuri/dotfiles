@@ -13,6 +13,6 @@ fi
 
 output=$(curl "wttr.in/${location}") 
 
-echo "$output" | grep -q "query" && exit 1
+echo "$output" | grep -q "query\|Unknown" && exit 1
 
 echo "$output"
