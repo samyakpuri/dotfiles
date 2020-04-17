@@ -1,20 +1,18 @@
 #!/bin/sh
 
 
-alias \
-	clip="xclip -selection clipboard -i" \
-	p="ping 9.9.9.9" \
-	ping="ping -c 5" \
-	md="mkdir -p" \
-	rd="rmdir" \
-	rm="rm -Iv"
+alias clip="xclip -selection clipboard -i"
+alias p="ping 9.9.9.9"
+alias ping="ping -c 5"
+alias md="mkdir -p"
+alias rd="rmdir"
+alias rm="rm -Iv"
 
 # Editor alias
-alias \
-	vim=$EDITOR \
-	e=vim \
-	edit=vim \
-	pb="nc termbin.com 9999" # pasting from terminal
+alias vim=$EDITOR
+alias e=vim
+alias edit=vim
+alias pb="nc termbin.com 9999" # pasting from terminal
 
 # alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
 alias grep="rg"
@@ -22,34 +20,33 @@ alias grep="rg"
 alias highlight="highlight --force -O xterm256 --style molokai"
 
 #{{{ Directory Navigation
-	alias \
-		ls="ls --color=always" \
-		l="ls -lh" \
-		ll='ls -lah' \
-		less="less -R" \
-		d='dirs -v' 
-	for index ({1..9}) alias "$index"="cd +${index}"; unset index
+    alias ls="ls --color=always"
+    alias l="ls -lh"
+    alias ll='ls -lah'
+    alias less="less -R"
+    alias d='dirs -v'
+    for index ({1..9}) alias "$index"="cd +${index}"; unset index
 #}}}
 
 #{{{ Git Aliases
-	alias \
-		g="git" \
-		ga="git add" \
-		gb="git branch" \
-		gre="git restore" \
-		gres="git restore --staged" \
-		grea="git restore ." \
-		gc="git commit -m" \
-		gco="git checkout" \
-		gcb="git checkout -b" \
-		gcom="git checkout master" \
-		gs="git status -sb" \
-		gca="git commit --amend" \
-		gcl="git clone" \
-		gst="git stash" \
-		gstp="git stash push" \
-		gstpo="git stash pop" \
-		gpull="git pull" \
-		gpush="git push" \
-		gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
+    alias g="git"
+    alias ga="git add"
+    alias gb="git branch"
+    alias gre="git restore"
+    alias gres="git restore --staged"
+    alias grea="git restore ."
+    alias gc="git commit -m"
+    alias gco="git checkout"
+    alias gcb="git checkout -b"
+    alias gcom="git checkout master"
+    alias gd="git diff"
+    alias gs="git status -sb"
+    alias gca="git commit --amend"
+    alias gcl="git clone"
+    alias gst="git stash"
+    alias gstp="git stash push"
+    alias gstpo="git stash pop"
+    alias gpull="git pull"
+    alias gpush="git push"
+    alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 # }}}
