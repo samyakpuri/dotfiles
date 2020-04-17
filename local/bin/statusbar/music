@@ -1,9 +1,14 @@
-#!/bin/bash
+#!/usr/bin/env sh
 # File              : music
 # Author            : Samyak Puri <samyakpuri@hotmail.com>
 # Date              : 07.07.2018
 # Last Modified Date: 02.04.2020
 
-if [ $(pidof -s spotify) && ($(spotifycli status) = playing) ]; then
-	echo $(spotifycli display)
-elif [mpc ]
+printf "🎼 "
+if [ $(pidof -s spotify) ]
+then
+    printf "$(spotifycli status | sed 's/Paused/<span color="gray" font_style="italic">/g;s/Playing/<span>/g')"
+	printf "%s</span>\n""$(spotifycli display)"
+else
+    mpc status | sed "/^vol/d" | tac | sed 's/.*paused.*/<span color="gray" font_style="italic">/g;s/.*playing.*/<span>/g' | tr -d '\n' | sed 's#$#</span>\n#g'
+fi
