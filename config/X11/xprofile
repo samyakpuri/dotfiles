@@ -1,10 +1,10 @@
 #!/bin/sh
 
-echo "xprofile" >> ~/log
 [ -f "$HOME/.config/env" ] && source "$HOME/.config/env"
 
 # gnome-keyring-daemon --start -- components=pkcs11,secrets,ssh >/dev/null 2>&1 &
 
+gebaard -b&
 sxhkd &
 remaps &		# Change caps lock to escape and menu to super
 setbg &			# set the background with the `setbg` script
