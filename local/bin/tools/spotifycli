@@ -76,7 +76,7 @@ sp_display() {
   | grep -E "(title)|(artist)" \
   | tac \
   | cut -d'|' -f2 \
-  | paste -s -d'-'
+  | sed 'N;s/\n/ - /'
 }
 
 sp_eval() {
