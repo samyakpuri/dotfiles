@@ -4,6 +4,4 @@
 # Date              : 07.07.2018
 # Last Modified Date: 02.04.2020
 
-pacman -Qu | wc -l > /tmp/pacupgrade && pkill -RTMIN+8 i3blocks
-
-cat /tmp/pacupgrade
+pacman -Qu | wc -l | sed "s/^/📦/;s/^📦0$//g"
