@@ -50,3 +50,12 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     alias gpush="git push"
     alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 # }}}
+
+#{{{ Trash-cli Aliases
+    alias trp="trash-put"
+    alias trp='trash-put'
+    alias tre='trash-empty'
+    alias trl='trash-list'
+    alias trr='trash-restore'
+    alias trm='trash-rm'
+#}}}
