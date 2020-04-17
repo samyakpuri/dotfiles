@@ -38,7 +38,6 @@
 	setopt EXTENDED_GLOB
 	setopt GLOB_COMPLETE
 	setopt RC_EXPAND_PARAM
-	setopt PROMPT_SUBST
 	unsetopt HASH_DIRS
 	unsetopt HASH_CMDS
 	unsetopt FLOW_CONTROL
@@ -290,6 +289,17 @@
 	add-zsh-hook precmd vcs_info
 	setopt promptsubst
 
+	# Updates editor information when the keymap changes.
+	function zle-keymap-select() {
+	  zle reset-prompt
+	  zle -R
+	}
+
+	zle -N zle-keymap-select
+
+	function vi_info() {
+	  echo "${${KEYMAP/vicmd/[% N]% }/(main|viins)/[% I]% }"
+	}
 	zstyle ':vcs_info:*' unstagedstr '%F{yellow}%{%G✗%}'
 	zstyle ':vcs_info:*' check-for-changes true
 	zstyle ':vcs_info:*' actionformats '%a'
@@ -311,8 +321,9 @@
 
 
 	# Define prompts.
-	local ret_status="%(?:%{$fg[green]%}%{%G➜%} :%{$fg[red]%}%{%G➜%} )"
-	export PROMPT='%{$fg[cyan]%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
+	local ret_status="%(?:%{%F{green}%}%{%G➜%} :%{%F{red}%}%{%G➜%} )"
+	export PROMPT='$(vi_info) %{$reset_color% %F{cyan}%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
+
 #}}}
 
 #{{{ Misc
