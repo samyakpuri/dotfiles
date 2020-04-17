@@ -12,26 +12,7 @@
 for_window [class="^.*"] border pixel 2
 gaps inner 5
 gaps outer 5
-set $term --no-startup-id $TERMINAL
 set $mod Mod4
-set $stoprec --no-startup-id dmenurecord kill
-set $netrefresh --no-startup-id sudo -A systemctl restart NetworkManager
-
-# #---Starting External Scripts---# #
-# Setting the background and colorscheme:
-exec_always --no-startup-id xwallpaper --zoom ~/.config/wall.png
-# Starts dunst for notifications:
-exec --no-startup-id dunst
-# Composite manager:
-exec --no-startup-id compton
-# Unclutter makes the mouse invisible after a brief period
-exec --no-startup-id unclutter
-# Run the script to update the mpd i3block on change.
-exec --no-startup-id i3mpdupdate
-# mpd startup
-exec --no-startup-id mpd
-# sxhkd 
-exec --no-startup-id sxhkd
 
 # Set Xresources colors:
 set_from_resource $darkblack    color0  #272822
@@ -83,7 +64,7 @@ bindsym $mod+Shift+space        floating toggle
 bindsym $mod+space              focus mode_toggle
 
 bindsym $mod+Escape             workspace prev
-bindsym $mod+Shift+Escape       exec --no-startup-id prompt "Are you sure you want to leave i3?" "i3-msg exit"
+bindsym $mod+Shift+Escape       exec --no-startup-id dmenuprompt "Are you sure you want to leave i3?" "i3-msg exit"
 
 # #---Letter Key Bindings---# #
 bindsym $mod+q              [con_id="__focused__" instance="^(?!math|dropdown).*$"] kill
@@ -95,24 +76,19 @@ bindsym $mod+Shift+t        gaps inner current set 15; gaps outer current set 15
 bindsym $mod+u              exec --no-startup-id ddspawn notes
 bindsym $mod+a              exec --no-startup-id ddspawn dropdowncalc -f mono:pixelsize=24
 
-bindsym $mod+Shift+y        exec --no-startup-id "bash ~/.scripts/i3resize left"
-bindsym $mod+Shift+u        exec --no-startup-id "bash ~/.scripts/i3resize down"
-bindsym $mod+Shift+i        exec --no-startup-id "bash ~/.scripts/i3resize up"
-bindsym $mod+Shift+o        exec --no-startup-id "bash ~/.scripts/i3resize right"
+bindsym $mod+Shift+y        exec --no-startup-id "i3resize left"
+bindsym $mod+Shift+u        exec --no-startup-id "i3resize down"
+bindsym $mod+Shift+i        exec --no-startup-id "i3resize up"
+bindsym $mod+Shift+o        exec --no-startup-id "i3resize right"
 bindsym $mod+o              sticky toggle
 
 bindsym $mod+s              gaps inner current plus 5
 bindsym $mod+Shift+s        gaps inner current minus 5
 bindsym $mod+z              gaps outer current plus 5
 bindsym $mod+Shift+z        gaps outer current minus 5
-bindsym $mod+Shift+d        gaps inner current set 0; gaps outer current set 0
-
-set $freeze Distraction-free mode (mod+shift+esc to exit)
-mode "$freeze" { bindsym $mod+Shift+Escape mode "default"
-}
+# bindsym $mod+Shift+d        gaps inner current set 0; gaps outer current set 0
 
 bindsym $mod+f             fullscreen toggle
-bindsym $mod+Shift+f       mode "$freeze"
 
 bindsym $mod+h             focus left
 bindsym $mod+j             focus down
@@ -195,6 +171,8 @@ assign [class="Spotify"] $ws10
 assign [title="cmus.*"] $ws10
 assign [title=".*Android Studio.*"] $ws7
 
+# Hamster
+for_window [class="[Hh]amster"] floating enable
 # Make dropdown instances float and move to scratchpad
 for_window [instance="dropdown.*"] floating enable
 for_window [instance="dropdown.*"] move scratchpad
