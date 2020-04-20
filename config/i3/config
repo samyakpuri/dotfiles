@@ -51,7 +51,7 @@ bar {
             inactive_workspace  #00000000 #00000000 $white
             urgent_workspace    $darkred      $darkred      $white
         }
-	strip_workspace_numbers yes
+    strip_workspace_numbers yes
     status_command i3blocks
     i3bar_command i3bar -t
     position top
@@ -72,9 +72,6 @@ bindsym $mod+Shift+q        [con_id="__focused__" instance="^(?!math|dropdown).*
 
 bindsym $mod+t              split toggle
 bindsym $mod+Shift+t        gaps inner current set 15; gaps outer current set 15
-
-bindsym $mod+u              exec --no-startup-id ddspawn notes
-bindsym $mod+a              exec --no-startup-id ddspawn dropdowncalc -f mono:pixelsize=24
 
 bindsym $mod+Shift+y        exec --no-startup-id "i3resize left"
 bindsym $mod+Shift+u        exec --no-startup-id "i3resize down"
@@ -164,34 +161,62 @@ bindsym $mod+Shift+XF86Back    move container to workspace prev
 bindsym $mod+Shift+XF86Forward move container to workspace next
 
 
+# Keybindings for Programs
+
+bindsym $mod+grave     exec --no-startup-id "dmenuunicode"
+bindsym $mod+w         exec --no-startup-id "$BROWSER"
+bindsym $mod+Shift+w   exec --no-startup-id "$TERMINAL -e nmtui"
+bindsym $mod+e         exec --no-startup-id "$TERMINAL -e lf"
+bindsym $mod+d         exec --no-startup-id "dmenu_run -p 'Run: '"
+bindsym $mod+Shift+d   exec --no-startup-id "hamster"
+bindsym $mod+Return    exec --no-startup-id "$TERMINAL"
+bindsym $mod+x         exec --no-startup-id "i3lock& ; mpc pause; pauseallmpv"
+bindsym $mod+m         exec --no-startup-id "$TERMINAL -e ncmpcpp"
+bindsym $mod+n         exec --no-startup-id "$TERMINAL -e newsboat"
+bindsym $mod+i         exec --no-startup-id "$TERMINAL -e htop"
+bindsym $mod+v         exec --no-startup-id "$TERMINAL -e ncmpcpp -s visualizer"
+bindsym $mod+Control+v exec --no-startup-id "dmenutv"
+bindsym $mod+Shift+x   exec --no-startup-id 'prompt 'Are you sure you want to shutdown?' 'shutdown -h now'"
+bindsym $mod+F9        exec --no-startup-id "dmenumount"
+bindsym $mod+F10       exec --no-startup-id "dmenuumount"
+
+# Media control
+bindsym $mod+p                  exec --no-startup-id "mediactrl toggle"
+bindsym $mod+Shift+p            exec --no-startup-id "mediactrl pause; pauseallmpv"
+bindsym $mod+bracketleft        exec --no-startup-id "mediactrl back 10"
+bindsym $mod+Shift+bracketleft  exec --no-startup-id "mediactrl back 120"
+bindsym $mod+bracketright       exec --no-startup-id "mediactrl forward 10"
+bindsym $mod+Shift+bracketright exec --no-startup-id "mediactrl forward 120"
+
+# Volume control
+bindsym $mod+Shift+a     exec --no-startup-id "$TERMINAL -e pulsemixer"
+bindsym $mod+minus       exec --no-startup-id "mediactrl down 5"
+bindsym $mod+Shift+minus exec --no-startup-id "mediactrl down 10"
+bindsym $mod+equal       exec --no-startup-id "mediactrl up 5"
+bindsym $mod+Shift+equal exec --no-startup-id "mediactrl up 10"
+
+# #---Extra XF86 Keys---# #
+# These are the extra media keys that some keyboards have.
+bindsym XF86AudioMute                exec --no-startup-id "mediactrl mute"
+bindsym XF86AudioLowerVolume         exec --no-startup-id "mediactrl down 5"
+bindsym Shift+XF86AudioLowerVolume   exec --no-startup-id "mediactrl down 10"
+bindsym Control+XF86AudioLowerVolume exec --no-startup-id "mediactrl down 1"
+bindsym XF86AudioRaiseVolume         exec --no-startup-id "mediactrl up 5"
+bindsym Shift+XF86AudioRaiseVolume   exec --no-startup-id "mediactrl up 10"
+bindsym Control+XF86AudioRaiseVolume exec --no-startup-id "mediactrl up 1"
+bindsym XF86PowerOff                 exec --no-startup-id "prompt 'Are you sure you want to shutdown?' 'shutdown -h now'"
+bindsym XF86AudioNext                exec --no-startup-id "mediactrl next"
+bindsym XF86AudioPrev                exec --no-startup-id "mediactrl prev"
+bindsym XF86AudioPlay                exec --no-startup-id "mediactrl toggle"
+bindsym XF86AudioStop                exec --no-startup-id "mediactrl stop"
+bindsym XF86AudioRewind              exec --no-startup-id "mediactrl seek -10"
+bindsym XF86AudioForward             exec --no-startup-id "mediactrl seek +10"
+bindsym XF86MonBrightnessUp          exec --no-startup-id "sudo brightnessctl s +5%"
+bindsym XF86MonBrightnessDown        exec --no-startup-id "sudo brightnessctl s 5%-"
+
+
 for_window [window_role="GtkFileChooserDialog"] resize set 825 500
 for_window [window_role="GtkFileChooserDialog"] move position center
-# assign [class="firefox"] $ws1
-assign [class="Spotify"] $ws10
-assign [title="cmus.*"] $ws10
-assign [title=".*Android Studio.*"] $ws7
 
 # Hamster
 for_window [class="[Hh]amster"] floating enable
-# Make dropdown instances float and move to scratchpad
-for_window [instance="dropdown.*"] floating enable
-for_window [instance="dropdown.*"] move scratchpad
-for_window [instance="dropdown.*"] sticky on
-
-# For Fast note taking
-for_window [instance="dropdownnotes"] resize set 825 500
-for_window [instance="dropdownnotes"] border pixel 3
-
-# Use as calculator
-for_window [instance="dropdowncalc"] resize set 800 300
-for_window [instance="dropdowncalc"] border pixel 2
-
-# #---Arrow Keys---# #
-bindsym $mod+Left       focus left
-bindsym $mod+Down       focus down
-bindsym $mod+Up         focus up
-bindsym $mod+Right      focus right
-bindsym $mod+Shift+Left     move left
-bindsym $mod+Shift+Down     move down
-bindsym $mod+Shift+Up       move up
-bindsym $mod+Shift+Right    move right
