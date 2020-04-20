@@ -13,6 +13,7 @@ for_window [class="^.*"] border pixel 2
 gaps inner 5
 gaps outer 5
 set $mod Mod4
+font pango:Hack Nerd Font 14
 
 # Set Xresources colors:
 set_from_resource $darkblack    color0  #272822
@@ -41,7 +42,7 @@ client.urgent            $darkred      $darkred    $black    $darkred      $dark
 client.background        $black
 
 bar {
-    font pango:Hack 11
+    font pango:Hack Nerd Font 12
     colors {
             background          $transparent
             statusline          $darkwhite
@@ -107,14 +108,14 @@ bindsym $mod+F2            restart
 # #---Workspace Bindings---# #
 set $ws1  "1:"
 set $ws2  "2:"
-set $ws3  "3:"
-set $ws4  "4:"
-set $ws5  "5"
-set $ws6  "6:"
-set $ws7  "7:"
-set $ws8  "8:"
-set $ws9  "9"
-set $ws10 "10:"
+set $ws3  "3:"
+set $ws4  "4:"
+set $ws5  "5:"
+set $ws6  "6:"
+set $ws7  "7:"
+set $ws8  "8:🎵"
+set $ws9  "9:"
+set $ws10 "10:"
 
 workspace $ws1  output LVDS-1
 workspace $ws2  output LVDS-1
@@ -171,7 +172,7 @@ bindsym $mod+d         exec --no-startup-id "dmenu_run -p 'Run: '"
 bindsym $mod+Shift+d   exec --no-startup-id "hamster"
 bindsym $mod+Return    exec --no-startup-id "$TERMINAL"
 bindsym $mod+x         exec --no-startup-id "i3lock& ; mpc pause; pauseallmpv"
-bindsym $mod+m         exec --no-startup-id "$TERMINAL -e ncmpcpp"
+bindsym $mod+m         exec --no-startup-id "$TERMINAL -n ncmpcpp -e ncmpcpp"
 bindsym $mod+n         exec --no-startup-id "$TERMINAL -e newsboat"
 bindsym $mod+i         exec --no-startup-id "$TERMINAL -e htop"
 bindsym $mod+v         exec --no-startup-id "$TERMINAL -e ncmpcpp -s visualizer"
@@ -215,8 +216,12 @@ bindsym XF86MonBrightnessUp          exec --no-startup-id "sudo brightnessctl s 
 bindsym XF86MonBrightnessDown        exec --no-startup-id "sudo brightnessctl s 5%-"
 
 
+# Window placement
 for_window [window_role="GtkFileChooserDialog"] resize set 825 500
 for_window [window_role="GtkFileChooserDialog"] move position center
 
-# Hamster
 for_window [class="[Hh]amster"] floating enable
+assign[class="[Bb]rave-browser"] ""
+assign[class="ncmpcpp"] "🎵"
+assign[class="[Ss]potify"] "🎵"
+
