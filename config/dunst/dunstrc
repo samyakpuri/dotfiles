@@ -1,16 +1,16 @@
 [global]
     monitor = 0
     follow = keyboard
-    geometry = "350x5-0+24"
+    geometry = "300x5-0+24"
     indicate_hidden = yes
-    shrink = yea
+    # shrink = yes
     transparency = 20
     notification_height = 0
     separator_height = 2
     padding = 5
     horizontal_padding = 8
     frame_width = 3
-    frame_color = "#aaaaaa"
+    frame_color = "#282828"
 
     # Define a color for the separator.
     # possible values are:
@@ -24,7 +24,7 @@
     sort = yes
 
     idle_threshold = 120
-    font = Monospace 14
+    font = Hack Nerd Font Mono 10
     line_height = 0
     markup = full
 
@@ -38,7 +38,8 @@
     #   %n  progress value if set without any extra characters
     #   %%  Literal %
     # Markup is allowed
-    format = "<b>%s</b>\n\n%b"
+    format = "<b>%a:</b> %s\n%b"
+    # format = "<b>%s</b>\n\n%b"
 
     alignment = center
     show_age_threshold = 60
@@ -54,7 +55,7 @@
     sticky_history = yes
     history_length = 20
     dmenu = /usr/bin/dmenu -p dunst:
-    browser = /usr/bin/firefox -new-tab
+    browser = /usr/bin/brave
 
     # Always run rule-defined scripts, even if the notification is suppressed
     always_run_script = true
