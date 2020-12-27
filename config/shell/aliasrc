@@ -1,12 +1,15 @@
 #!/bin/sh
 
-
 alias clip="xclip -selection clipboard -i"
 alias p="ping 9.9.9.9"
 alias ping="ping -c 5"
 alias md="mkdir -p"
 alias rd="rmdir"
 alias rm="rm -Iv"
+
+mcd () {
+    mkdir -p "$@" && cd "$@"
+}
 
 # Editor alias
 alias vim=$EDITOR
@@ -59,3 +62,5 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     alias trr='trash-restore'
     alias trm='trash-rm'
 #}}}
+
+# vim: fdm=marker

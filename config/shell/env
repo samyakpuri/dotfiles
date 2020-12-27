@@ -3,11 +3,11 @@
 # This file is run by zsh on login/startup to set basic variables.
 
 # Adds `~/.local/bin` to $PATH
-export PATH="$PATH:$(du "$HOME/.local/bin/" | cut -f2 | tr '\n' ':' | sed 's/:*$//')"
+export PATH="$PATH:$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 |grep -v cron| tr '\n' ':' | sed 's/:*$//'):$HOME/.local/bin"
 
 # Default programs:
 export EDITOR="nvim"
-export TERMINAL="st"
+export TERMINAL="alacritty"
 export BROWSER="brave"
 
 # ~/ Clean-up:
@@ -23,14 +23,13 @@ export INPUTRC="$XDG_CONFIG_HOME/inputrc"
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export GNUPGHOME="$XDG_DATA_HOME/gnupg"
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
-export XAUTHORITY="$XDG_RUNTIME_DIR/Xauthority" # This line might break some DMs.
 export LESSHISTFILE="-"
 
 # Other program settings:
 #export BIB="$HOME/dox/latex/uni.bib"
 #export REFER="$HOME/dox/referbib"
 #export DICS="/usr/share/stardict/dic/"
-export SUDO_ASKPASS="$HOME/.local/bin/dnemu/dmenupass"
+export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
 
 # History Variables
 export HISTCONTROL=erasedups  # Ignore duplicate entries in history
@@ -57,3 +56,14 @@ export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 
 # Z location
 export _Z_DATA="$XDG_DATA_HOME/z"
+
+# Python startup
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
+
+# Xsession variables
+export USERXSESSION="$XDG_CACHE_HOME/x11/xsession"
+export USERXSESSIONRC="$XDG_CACHE_HOME/x11/xsessionrc"
+export ALTUSERXSESSION="$XDG_CACHE_HOME/x11/Xsession"
+export ERRFILE="$XDG_CACHE_HOME/x11/xsession-errors"
+export ICEAUTHORITY="$XDG_CACHE_HOME"/ICEauthority
