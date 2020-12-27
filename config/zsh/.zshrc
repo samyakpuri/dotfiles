@@ -288,44 +288,44 @@
 
 #{{{ Prompt
 
-    autoload -Uz vcs_info add-zsh-hook
-    add-zsh-hook precmd vcs_info
-    setopt promptsubst
+#     autoload -Uz vcs_info add-zsh-hook
+#     add-zsh-hook precmd vcs_info
+#     setopt promptsubst
 
-    # Updates editor information when the keymap changes.
-    function zle-keymap-select() {
-      zle reset-prompt
-      zle -R
-    }
+#     # Updates editor information when the keymap changes.
+#     function zle-keymap-select() {
+#       zle reset-prompt
+#       zle -R
+#     }
 
-    zle -N zle-keymap-select
+#     zle -N zle-keymap-select
 
-    function vi_info() {
-      echo "${${KEYMAP/vicmd/[% N]% }/(main|viins)/[% I]% }"
-    }
-    zstyle ':vcs_info:*' unstagedstr '%F{yellow}%{%G✗%}'
-    zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' actionformats '%a'
-    zstyle ':vcs_info:*' formats '%F{blue}%s:%F{7}(%b)%u%m'
-    zstyle ':vcs_info:git*+set-message:*' hooks git-ahead
-    zstyle ':vcs_info:*' enable git
+#     function vi_info() {
+#       echo "${${KEYMAP/vicmd/[% N]% }/(main|viins)/[% I]% }"
+#     }
+#     zstyle ':vcs_info:*' unstagedstr '%F{yellow}%{%G✗%}'
+#     zstyle ':vcs_info:*' check-for-changes true
+#     zstyle ':vcs_info:*' actionformats '%a'
+#     zstyle ':vcs_info:*' formats '%F{blue}%s:%F{7}(%b)%u%m'
+#     zstyle ':vcs_info:git*+set-message:*' hooks git-ahead
+#     zstyle ':vcs_info:*' enable git
 
-    +vi-git-ahead()
-    {
-        set -- git rev-list --left-right HEAD...@{u} --count 2> /dev/null
-        ahead=$1
-        behind=$2
-        if [[ -n $ahead ]]; then
-        hook_com[misc]+='%{%G⇡%}'
-        else
-        hook_com[misc]+='%{%G⇣%}'
-        fi
-    }
+#     +vi-git-ahead()
+#     {
+#         set -- git rev-list --left-right HEAD...@{u} --count 2> /dev/null
+#         ahead=$1
+#         behind=$2
+#         if [[ -n $ahead ]]; then
+#         hook_com[misc]+='%{%G⇡%}'
+#         else
+#         hook_com[misc]+='%{%G⇣%}'
+#         fi
+#     }
 
 
-    # Define prompts.
-    local ret_status="%(?:%{%F{green}%}%{%G➜%} :%{%F{red}%}%{%G➜%} )"
-    export PROMPT='$(vi_info) %{$reset_color% %F{cyan}%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
+#     # Define prompts.
+#     local ret_status="%(?:%{%F{green}%}%{%G➜%} :%{%F{red}%}%{%G➜%} )"
+#     export PROMPT='$(vi_info) %{$reset_color% %F{cyan}%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
 
 #}}}
 
@@ -394,11 +394,12 @@
 #{{{ Plugins
     LOC="/usr/share/zsh/plugins/zsh-"
     LOC2="/usr/share/"
-    PLUGINS+=(autosuggestions syntax-highlighting history-substring-search)
+    PLUGINS+=(autosuggestions syntax-highlighting history-substring-search you-should-use fzf)
 
     for plugin in $PLUGINS; do
         if [[ -d $LOC$plugin ]]; then
-            source $LOC$plugin/zsh-$plugin.zsh
+            [[ -f $L$LOC$plugin/zsh-$plugin.plugin.zsh ]] && source $LOC$plugin/zsh-$plugin.plugin.zsh
+            [[ -f $L$LOC$plugin/$plugin.plugin.zsh ]] && source $LOC$plugin/$plugin.plugin.zsh
         elif [[ -d $LOC2$plugin ]]; then
             for i in $LOC2$plugin/*.zsh; do
                 source $i
@@ -406,9 +407,9 @@
         fi
     done
 
-    source /usr/share/fzf/key-bindings.zsh
     bindkey '\et' fzf-cd-widget
 
+    unset LOC LOC2 PLUGINS
     [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 #}}}
 
@@ -439,3 +440,6 @@
     # Add autosuggest_partial_wordwise to IGNORE
     ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)
 #}}}
+
+source $XDG_CONFIG_HOME/broot/launcher/bash/br
+eval "$(starship init zsh)"
