@@ -4,6 +4,7 @@
 	editor = vim
 	excludesfile = ~/.config/git/ignore
   autocrlf = input
+	pager = diff-so-fancy | less --tabs=2 -RFXS --patter '^(Date|added|deleted|modified): '
 
 [help]
   autocorrect=-1
@@ -115,3 +116,7 @@
 [user]
 	email = samyakpuri@hotmail.com
 	name = Samyak Puri
+[pull]
+	rebase = false
+[colors]
+	ui = true
