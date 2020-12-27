@@ -175,9 +175,6 @@ set formatoptions=qrnj1
 set nobackup
 set nowritebackup
 
-" Set title with filename
-" set title titlestring=
-
 " }}}
 
 " Backups {{{
@@ -186,10 +183,9 @@ set nowritebackup
     set undodir=$XDG_DATA_HOME/vim/undo//
     set directory=$XDG_DATA_HOME/vim/swap//
     set backupdir=$XDG_DATA_HOME/vim/backup//
+    set viminfo+='1000,n$XDG_DATA_HOME/vim/viminfo
     if has ('nvim')
         set viminfo+='1000,n$XDG_DATA_HOME/nvim/nviminfo
-    else
-        set viminfo+='1000,n$XDG_DATA_HOME/vim/viminfo
     endif
 
 " }}}
@@ -257,11 +253,13 @@ set nowritebackup
     inoremap <leader>cd <C-r>=strftime('%d.%m.%Y')<CR>
 
     " No arrow keys
-     noremap  <Up> ""
-     noremap  <Down> ""
-     noremap  <Left> ""
-     noremap  <Right> ""
+     noremap  <Up> <Nop>
+     noremap  <Down> <Nop>
+     noremap  <Left> <Nop>
+     noremap  <Right> <Nop>
 
+    " Make exit easy
+     cnoremap Q q
     " FZF {{{
         nnoremap <leader>b :Buffers<CR>
         nnoremap <leader>o :Files<CR>
@@ -458,7 +456,7 @@ autocmd BufWritePre * %s/\s\+$//e
         " Shell {{{
         " =====
 
-            map <leader>b i#!/bin/sh<CR><CR>
+            " map <leader>b i#!/bin/sh<CR><CR>
             autocmd FileType sh inoremap ,f ()<Space>{<CR><Tab><++><CR>}<CR><CR><++><Esc>?()<CR>
             autocmd FileType sh inoremap ,i if<Space>[<Space>];<Space>then<CR><++><CR>fi<CR><CR><++><Esc>?];<CR>hi<Space>
             autocmd FileType sh inoremap ,ei elif<Space>[<Space>];<Space>then<CR><++><CR><Esc>?];<CR>hi<Space>
@@ -497,7 +495,6 @@ autocmd BufWritePre * %s/\s\+$//e
         \ 'coc-prettier',
         \ 'coc-clangd',
         \ 'coc-jedi',
-        \ 'coc-vimtex'
         \ ]
 
         " From Coc Readme
