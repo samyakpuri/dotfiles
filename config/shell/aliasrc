@@ -22,7 +22,7 @@ alias grep="rg"
 # Highlight with less
 alias highlight="highlight --force -O xterm256 --style molokai"
 
-#{{{ Directory Navigation
+# {{{ Directory Navigation
     alias ls="ls --color=always"
     alias l="ls -lh"
     alias ll='ls -lah'
@@ -31,7 +31,7 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     for index ({1..9}) alias "$index"="cd +${index}"; unset index
 #}}}
 
-#{{{ Git Aliases
+# {{{ Git Aliases
     alias g="git"
     alias ga="git add"
     alias gb="git branch"
@@ -54,7 +54,7 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 # }}}
 
-#{{{ Trash-cli Aliases
+# {{{ Trash-cli Aliases
     alias trp="trash-put"
     alias trp='trash-put'
     alias tre='trash-empty'
@@ -62,5 +62,8 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     alias trr='trash-restore'
     alias trm='trash-rm'
 #}}}
+
+# VSCode alias
+alias code='code --extensions-dir "$XDG_DATA_HOME/vscode"'
 
 # vim: fdm=marker
