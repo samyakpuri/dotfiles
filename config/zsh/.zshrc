@@ -410,7 +410,7 @@
     bindkey '\et' fzf-cd-widget
 
     unset LOC LOC2 PLUGINS
-    [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
+    [[ -r "/usr/share/z.lua/z.lua.plugin.zsh" ]] && source /usr/share/z.lua/z.lua.plugin.zsh
 #}}}
 
 # {{{ ZSH Autocompletion
@@ -443,4 +443,3 @@
 
 source $XDG_CONFIG_HOME/broot/launcher/bash/br
 eval "$(starship init zsh)"
-
