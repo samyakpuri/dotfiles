@@ -63,7 +63,7 @@
 
 #}}}
 
-#{{{ Completion
+# {{{ Completion
     setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
     setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
     setopt PATH_DIRS           # Perform path search even on command names with slashes.
@@ -204,8 +204,8 @@
 
 # }}}
 
-#{{{ Key bindings
-    #{{{ Special keys
+# {{{ Key bindings
+    # {{{ Special keys
 
     # create a zkbd compatible hash;
     # to add other keys to this hash, see: man 5 terminfo
@@ -267,7 +267,7 @@
     bindkey '^r' history-incremental-search-backward
     autoload -z edit-command-line
     zle -N edit-command-line
-    bindkey '^[e' edit-command-line
+    bindkey '^X^E' edit-command-line
     # bindkey -M viins '^E' insert-last-word
 
     # Fixing delete key
@@ -286,7 +286,7 @@
     bindkey -s '\e9' "!:* \t"   # all but the 1st argument (aka 2nd word)
 #}}}
 
-#{{{ Prompt
+# {{{ Prompt
 
 #     autoload -Uz vcs_info add-zsh-hook
 #     add-zsh-hook precmd vcs_info
@@ -329,7 +329,7 @@
 
 #}}}
 
-#{{{ Misc
+# {{{ Misc
     # Deactivate Software flow control
     stty -ixon
 
@@ -355,7 +355,7 @@
     fi
 #}}}
 
-#{{{ Global Functions
+# {{{ Global Functions
 
     # add sudo in front of current command
     # https://www.reddit.com/r/zsh/comments/4b2lyj/send_a_simulated_keypress_from_zle_script_to/
@@ -391,7 +391,7 @@
 
 #}}}
 
-#{{{ Plugins
+# {{{ Plugins
     LOC="/usr/share/zsh/plugins/zsh-"
     LOC2="/usr/share/"
     PLUGINS+=(autosuggestions syntax-highlighting history-substring-search you-should-use fzf)
@@ -413,7 +413,7 @@
     [[ -r "/usr/share/z/z.sh" ]] && source /usr/share/z/z.sh
 #}}}
 
-#{{{ ZSH Autocompletion
+# {{{ ZSH Autocompletion
     # Remove forward-char widgets from ACCEPT
     ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#forward-char}")
     ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=("${(@)ZSH_AUTOSUGGEST_ACCEPT_WIDGETS:#vi-forward-char}")
