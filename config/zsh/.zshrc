@@ -284,6 +284,11 @@
     bindkey -s '\e5' "!:0-4 \t"      # last command + 1st-4th argument
     bindkey -s '\e`' "!:0- \t"       # all but the last argument
     bindkey -s '\e9' "!:* \t"   # all but the 1st argument (aka 2nd word)
+
+    # CTRL+D to exit shell
+    exit_zsh() { exit }
+    zle -N exit_zsh
+    bindkey '^D' exit_zsh
 #}}}
 
 # {{{ Prompt
@@ -327,7 +332,7 @@
 #     local ret_status="%(?:%{%F{green}%}%{%G➜%} :%{%F{red}%}%{%G➜%} )"
 #     export PROMPT='$(vi_info) %{$reset_color% %F{cyan}%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
 
-#}}}
+# }}}
 
 # {{{ Misc
     # Deactivate Software flow control
