@@ -30,7 +30,8 @@ export LESSHISTFILE="-"
 #export BIB="$HOME/dox/latex/uni.bib"
 #export REFER="$HOME/dox/referbib"
 #export DICS="/usr/share/stardict/dic/"
-export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
+# export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
+export SUDO_ASKPASS="ssh-askpass"
 
 # History Variables
 export HISTCONTROL=erasedups  # Ignore duplicate entries in history

@@ -5,8 +5,9 @@ from glob import glob
 
 #qtile import
 from libqtile.config import Screen
-from libqtile import bar, widget, hook
+from libqtile import bar, widget
 from libqtile import qtile
+from libqtile.lazy import lazy
 
 from colors import colors
 from keybindings import terminal
@@ -18,6 +19,7 @@ wallpaper = glob(wallpaper)[0]
 text_size = 14
 icon_size = 14
 
+# Set Automatically the number of screens
 def get_num_screens():
     output = [l for l in subprocess.check_output(["xrandr"]).decode("utf-8").splitlines()]
     return [l.split()[0] for l in output if " connected " in l]
@@ -90,7 +92,7 @@ def init_widgets_screen(primary = False):
             widget.Sep(
             linewidth = 0,
             foreground = colors[1],
-            padding = 20,
+            padding = 10,
             size_percent = 50,
             ),
         ])
@@ -110,7 +112,7 @@ def init_widgets_screen(primary = False):
                 display_format = " {updates}",
                 padding = 5,
                 update_interval = 1800,
-                mouse_callbacks = {'Button1': lambda qtile: qtile.cmd_spawn(terminal + ' -t update -e paru')},
+                mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn(terminal + ' -t update -e paru')},
             ),
             widget.Sep(
                 linewidth = 0,
@@ -127,7 +129,7 @@ def init_widgets_screen(primary = False):
                 fontsize = text_size,
                 limit_max_volume = "True",
                 update_interval = 0.1,
-                mouse_callbacks = {'Button3':  lambda qtile:  qtile.cmd_spawn(terminal + '-t pulsemixer -e pulsemixer')},
+                mouse_callbacks = {'Button3': lambda: qtile.cmd_spawn(terminal + ' -t pulsemixer -e pulsemixer')},
                 foreground = colors[1],
             ),
             widget.Sep(
@@ -162,7 +164,23 @@ def init_widgets_screen(primary = False):
             widget.Clock(
                 format = "%H:%M",
                 fontsize = text_size,
-                mouse_callback  = {'Button1': lambda qtile:  qtile.cmd_spawn("notify-send  \"🇮🇳 \t $(TZ = 'Asia/Kolkata' date '+%R')\"")},
+                foreground = colors[1],
+            ),
+            widget.Sep(
+                linewidth = 0,
+                padding = 5,
+                size_percent = 50,
+            ),
+            widget.TextBox(
+                text = "🇮🇳 ",
+                fontsize =  text_size,
+                padding = 2,
+                foreground = colors[8],
+            ),
+            widget.Clock(
+                timezone = 'Asia/Kolkata',
+                format = "%H:%M",
+                fontsize = text_size,
                 foreground = colors[1],
             ),
             widget.Sep(
