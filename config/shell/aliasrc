@@ -63,7 +63,4 @@ alias highlight="highlight --force -O xterm256 --style molokai"
     alias trm='trash-rm'
 #}}}
 
-# VSCode alias
-alias code='code --extensions-dir "$XDG_DATA_HOME/vscode"'
-
 # vim: fdm=marker
