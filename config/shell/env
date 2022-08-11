@@ -2,9 +2,6 @@
 
 # This file is run by zsh on login/startup to set basic variables.
 
-# Adds `~/.local/bin` to $PATH
-export PATH="$PATH:$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 |grep -v cron| tr '\n' ':' | sed 's/:*$//'):$HOME/.local/bin"
-
 # Default programs:
 export EDITOR="nvim"
 export TERMINAL="alacritty"
@@ -17,6 +14,15 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+# Add custom locations to $PATH
+
+source ${XDG_CONFIG_HOME}/shell/path_functions
+
+scripts=""
+[ -d ${HOME}]/.local/bin/scripts ] && scripts=$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 |grep -v cron| tr '\n' ' ' | sed 's/:*$//')
++path.prepend PATH ${HOME}/.local/bin ${scripts} ${XDG_CONFIG_HOME}/emacs/bin
+
+# XDG config variables for programs
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
 export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
 export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
@@ -32,6 +38,8 @@ export LESSHISTFILE="-"
 #export DICS="/usr/share/stardict/dic/"
 # export SUDO_ASKPASS="$HOME/.local/bin/scripts/dmenu/dmenupass"
 export SUDO_ASKPASS="ssh-askpass"
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 
 # History Variables
 export HISTCONTROL=erasedups  # Ignore duplicate entries in history
@@ -64,6 +72,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
 
 # Xsession variables
+export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
 export USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
 export ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"

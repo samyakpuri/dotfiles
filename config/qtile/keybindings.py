@@ -29,7 +29,7 @@ keys = [
     Key([mod], "comma", lazy.prev_screen(), desc="Move focus to prev monitor"),
 
     # Super + Shift
-    Key([mod, shift], "x", lazy.shutdown(),desc="Quit qtile"),
+    Key([mod, shift], "F4", lazy.shutdown(), desc="Quit qtile"),
     Key([mod], "F2", lazy.restart(), desc="Restart qtile"),
 
     # Qtile Layout Keys
@@ -79,26 +79,26 @@ keys = [
     ),
 
     # Flip Layout For Monadtall/Monadwide
-    Key([mod, "shift"], "f", lazy.layout.flip(), desc="Monadtall Flip sides"),
+    Key([mod, shift], "f", lazy.layout.flip(), desc="Monadtall Flip sides"),
 
     # Flip Layout For Bsp
-    Key([mod, "mod1"], "k", lazy.layout.flip_up(), desc="BSP change to up"),
-    Key([mod, "mod1"], "j", lazy.layout.flip_down(), desc="BSP change to down"),
-    Key([mod, "mod1"], "l", lazy.layout.flip_right(), desc="BSP change to right"),
-    Key([mod, "mod1"], "h", lazy.layout.flip_left(), desc="BSP change to left"),
+    Key([mod, alt], "k", lazy.layout.flip_up(), desc="BSP change to up"),
+    Key([mod, alt], "j", lazy.layout.flip_down(), desc="BSP change to down"),
+    Key([mod, alt], "l", lazy.layout.flip_right(), desc="BSP change to right"),
+    Key([mod, alt], "h", lazy.layout.flip_left(), desc="BSP change to left"),
 
     # Move Windows Up Or Down Bsp Layout
-    Key([mod, "shift"], "k", lazy.layout.shuffle_up(), desc="BSP Move window up"),
-    Key([mod, "shift"], "j", lazy.layout.shuffle_down(), desc="BSP Move window down"),
-    Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="BSP Move window left"),
-    Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="BSP Move window right"),
+    Key([mod, shift], "k", lazy.layout.shuffle_up(), desc="BSP Move window up"),
+    Key([mod, shift], "j", lazy.layout.shuffle_down(), desc="BSP Move window down"),
+    Key([mod, shift], "h", lazy.layout.shuffle_left(), desc="BSP Move window left"),
+    Key([mod, shift], "l", lazy.layout.shuffle_right(), desc="BSP Move window right"),
 
     # Move Windows Up Or Down Monadtall/Monadwide Layout
-    Key([mod, "shift"], "Up", lazy.layout.shuffle_up(), desc="Monadtall move window Up"),
-    Key([mod, "shift"], "Down", lazy.layout.shuffle_down(), desc="Monadtall move window Down"),
-    Key([mod, "shift"], "Left", lazy.layout.swap_left(), desc="Monadtall move window Left"),
-    Key([mod, "shift"], "Right", lazy.layout.swap_right(), desc="Monadtall move window Right"),
+    Key([mod, shift], "Up", lazy.layout.shuffle_up(), desc="Monadtall move window Up"),
+    Key([mod, shift], "Down", lazy.layout.shuffle_down(), desc="Monadtall move window Down"),
+    Key([mod, shift], "Left", lazy.layout.swap_left(), desc="Monadtall move window Left"),
+    Key([mod, shift], "Right", lazy.layout.swap_right(), desc="Monadtall move window Right"),
 
     # Toggle Floating Layout
-    Key([mod, "shift"], "space", lazy.window.toggle_floating(), desc="Toggle floating"),
+    Key([mod, shift], "space", lazy.window.toggle_floating(), desc="Toggle floating"),
 ]
