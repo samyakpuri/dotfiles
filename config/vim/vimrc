@@ -277,8 +277,8 @@ set nowritebackup
 " Color Scheme {{{
 
     set background=dark
-    color molokai
-    " color codedark
+    " color molokai
+    color codedark
     " Set true colors
     set t_8f=[38;2;%lu;%lu;%lum
     set t_8b=[48;2;%lu;%lu;%lum
@@ -592,4 +592,4 @@ syntax on                   " Turn on syntax highlighting
 hi! Normal guibg=NONE ctermbg=NONE
 
 
-" vim: fdm=marker
+" vim: fdm=marker foldlevel=0

@@ -1,8 +1,6 @@
 # Basic Binds
 super + grave
     dmenuunicode
-super + w
-	brave
 super + shift + w
     $TERMINAL -t nmtui -e nmtui
 super + e
@@ -10,7 +8,7 @@ super + e
 super + i
 	$TERMINAL -t htop -e htop
 super + d
-	dmenu_run -p 'Run: '
+	rofi -show drun
 super + Return
 	$TERMINAL
 super + m
@@ -21,24 +19,16 @@ super + x
 	lockscreen
 super + control + v
 	dmenutv
+super + b
+	brave
 super + shift + x
 	prompt "Are you sure you want to shutdown?" "shutdown -h now"
+super + F1
+	thunar
 super + F9
 	dmenumount
 super + F10
 	dmenuumount
-
-# #---Media Keys---# #
-
-# For advancing forward/backward in an mpd song
-super + bracketleft
-	mediactrl back 10
-super + shift + bracketleft
-	mediactrl back 120
-super + bracketright
-	mediactrl forward 10
-super + shift+ bracketright
-	mediactrl forward 120
 
 # For screenshots and recording
 Print
@@ -57,9 +47,7 @@ XF86AudioMute
 XF86PowerOff
 	prompt "Are you sure you want to shutdown?" "shutdown -h now"
 XF86Audio{Next,Prev,Play,Stop}
-	mpc {next,prev,toggle,stop}
-XF86Audio{Rewind,Forward}
-	mpc seek {-,+} 10
+	playerctl {next,previous,play-pause,stop}
 XF86TouchpadToggle
 	toggletouchpad
 XF86Suspend

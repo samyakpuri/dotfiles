@@ -70,10 +70,20 @@ cursor_warp = False
 auto_fullscreen = True
 focus_on_window_activation = "focus"
 
+# Disable floating for mpv
+@hook.subscribe.client_new
+def disable_floating(window):
+    rules = [
+        Match(wm_class="mpv")
+    ]
+
+    if any(window.match(rule) for rule in rules):
+        window.togroup(qtile.current_group.name)
+        window.cmd_disable_floating()
 
 @hook.subscribe.screen_change
 def restart_on_randr(_):
-	qtile.cmd_reload_config()
+	qtile.restart()
 
 
 
