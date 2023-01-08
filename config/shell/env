@@ -72,7 +72,7 @@ export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
 export IPYTHONDIR="$XDG_CONFIG_HOME/jupyter"
 
 # Xsession variables
-export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
+# export XAUTHORITY="$XDG_RUNTIME_DIR"/Xauthority
 export USERXSESSION="$XDG_CACHE_HOME/X11/xsession"
 export USERXSESSIONRC="$XDG_CACHE_HOME/X11/xsessionrc"
 export ALTUSERXSESSION="$XDG_CACHE_HOME/X11/Xsession"
