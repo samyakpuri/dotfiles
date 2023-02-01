@@ -1,0 +1,595 @@
+" \ \   / /_ _|  \/  |        / ___/ _ \| \ | |  ___|_ _/ ___|
+"  \ \ / / | || |\/| |       | |  | | | |  \| | |_   | | |  _
+"   \ V /  | || |  | |       | |__| |_| | |\  |  _|  | | |_| |
+"    \_/  |___|_|  |_|        \____\___/|_| \_|_|   |___\____|
+
+" Plugins {{{
+
+" Automatic installation of vim-plug
+let s:data=$XDG_DATA_HOME
+if has ('nvim')
+    let s:plug=expand(s:data.'/nvim/site/autoload/plug.vim')
+else
+    let s:plug=expand(s:data.'/vim/autoload/plug.vim')
+    set rtp=$XDG_DATA_HOME/vim,/usr/share/vim/vimfiles,$VIMRUNTIME,/usr/share/vim/vimfiles/after
+endif
+if empty(glob(s:plug))
+    exec "!curl -fLo " . s:plug . " --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+endif
+
+unlet s:plug
+
+call plug#begin('$XDG_DATA_HOME/vim/plugged')
+
+" Syntax Highlighting {{{
+
+    Plug 'rrethy/vim-hexokinase', { 'do': 'make hexokinase' }
+    Plug 'PotatoesMaster/i3-vim-syntax'     " i3 syntax highlighting
+    Plug 'octol/vim-cpp-enhanced-highlight' " Syntax highlighting C++11/14/17
+    Plug 'hdima/python-syntax'              " Python syntax highlighting
+    Plug 'baskerville/vim-sxhkdrc'          " sxhkd syntax highlighting
+    Plug 'vim-pandoc/vim-pandoc-syntax'     " pandoc syntax module
+
+" }}}
+
+" Autocomplete/Programming/LSP {{{
+
+    Plug 'majutsushi/tagbar'            " displays tags in a window
+    Plug 'ludovicchabant/vim-gutentags' " Tags management
+    " Plug 'veegee/vim-pic'               " 8, 16, and 32 bit PIC microcontroller assembler support
+    " Plug 'jvirtanen/vim-octave'         " Octave syntax
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" }}}
+
+" File Management/Git {{{
+" ===================
+
+    Plug 'scrooloose/nerdtree', {'on': 'NERDTreeToggle'}
+    Plug 'ryanoasis/vim-devicons'         " file type icons to Vim plugins
+    Plug 'Xuyuanp/nerdtree-git-plugin'    " NERDTree showing git status flags
+    Plug 'junegunn/fzf.vim'               " Fuzzy file finder
+    Plug 'jreybert/vimagit'               " Ease your git workflow
+    Plug 'airblade/vim-gitgutter'         " shows a git diff in the 'gutter' (sign column)
+
+" }}}
+
+" New text objects {{{
+" ================
+
+    " Plug 'kana/vim-textobj-user'     " Needed by vim-textobj-function
+    " Plug 'kana/vim-textobj-function' " f F text objects
+    " Plug 'kana/vim-operator-user'    " User defed operators/actions
+    " Plug 'michaeljsmith/vim-indent-object'
+
+"}}}
+
+" tpope awesome plugins {{{
+" =====================
+
+    Plug 'tpope/vim-fugitive'     " A Git wrapper so awesome, it should be illegal
+    Plug 'tpope/vim-surround'     " surround items (){}[]<>
+    Plug 'tpope/vim-rsi'          " Readline style insertion
+    Plug 'tpope/vim-commentary'   " Comment stuff out
+    Plug 'tpope/vim-repeat'       " Make . usable by plugins
+    if has ('nvim')
+    else
+        Plug 'tpope/vim-sensible' " Sensible vim defaults
+    endif
+
+" }}}
+
+" Color and status {{{
+" ================
+
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
+    Plug 'tomasiser/vim-code-dark'
+    Plug 'tomasr/molokai'                 " Molokai color scheme
+    " Plug 'itchyny/lightline.vim'
+    " Plug 'itchyny/vim-gitbranch'
+
+
+"}}}
+
+" Language {{{
+" ========
+
+    Plug 'ron89/thesaurus_query.vim' " For English, chinese, french, russian, german
+    Plug 'rhysd/vim-grammarous'      " Powerful grammar checker
+
+"}}}
+
+" Embedded / Electronics {{{
+" ======================
+
+    Plug 'glts/vim-radical'             " Convert decimal, hex, octal, binary
+    Plug 'triglav/vim-visual-increment' " use inc dec num letter/ create seq
+    Plug 'fidian/hexmode'               " edit binary files in a hex mode automatically
+
+
+" }}}
+
+" Misc {{{
+
+    " Plug 'jiangmiao/auto-pairs'       " Insert or delete brackets, parens, quotes in pair.
+    Plug 'junegunn/vim-easy-align'    " align text along some common character
+    Plug 'dhruvasagar/vim-table-mode' " An awesome automatic table creator
+    Plug 'vimwiki/vimwiki'            " Personal Wiki for Vim
+    Plug 'moll/vim-bbye'              " Delete buffers without messing layout
+    Plug 'easymotion/vim-easymotion'  " Vim motion on speed!
+    " Plug 'kshenoy/vim-signature'   " gutter for marks
+
+"}}}
+
+call plug#end()
+
+" }}}
+
+" Basic Settings {{{
+" ==============
+
+let mapleader=','
+
+set encoding=utf-8             " Use utf-8 for encoding
+set modelines=2                " Set vim properties
+set path+=**                   " For clever completion
+set ignorecase scs nohlsearch  " Search
+
+set list                       " Display hidden characters
+set listchars=tab:▸\ ,trail:.  " Show tabs, endofline, trailing space ,eol:¬
+set nu rnu                     " Display numbers
+set cursorline                 " Highlight line with cursor
+set ruler                      " show cursor position at all times
+set splitbelow splitright      " Sensible spliting
+set iskeyword+=-               " Word splitting
+set noswapfile undofile        " No swaps and yes undofiles
+set autoread autowrite         " Auto write on buffer changing
+set clipboard+=unnamedplus      " Use system clipboard
+" set noshowmode                 " Dont show mode in command bar
+set backspace=indent,eol,start " Allow backspace over everything
+set cot+=preview               " Preview for autocompletion
+set laststatus=2               " Always display statusbar
+set shortmess+=c               " Reduce message mess
+
+" For completion using omnifunc
+set completeopt=menu,menuone,noselect,noinsert
+
+" Spelling
+set dictionary+=/usr/share/dict/words thesaurus+=$HOME/.thesaurus
+
+" Typing behaviour
+set showmatch
+set wmnu wim=full
+
+" Formatting
+set wrap
+set ts=4 sw=4 sts=4
+set expandtab
+set foldlevelstart=2
+set tw=120 colorcolumn=+1
+set smarttab
+set formatoptions=qrnj1
+
+" No backup files
+set nobackup
+set nowritebackup
+
+" }}}
+
+" Backups {{{
+" =======
+
+    set undodir=$XDG_DATA_HOME/vim/undo//
+    set directory=$XDG_DATA_HOME/vim/swap//
+    set backupdir=$XDG_DATA_HOME/vim/backup//
+    set viminfo+='1000,n$XDG_DATA_HOME/vim/viminfo
+    if has ('nvim')
+        set viminfo+='1000,n$XDG_DATA_HOME/nvim/nviminfo
+    endif
+
+" }}}
+
+" Local Settings {{{
+
+    if filereadable(".lvimrc")
+        source .lvimrc
+    endif
+
+    set exrc
+    set secure
+
+" }}}
+
+" Mappings {{{
+" ========
+
+    " Self-explanatory convenience mappings
+    imap jj <Esc>
+
+    " Window movement {{{
+        nnoremap <C-h> <C-w>h
+        nnoremap <C-j> <C-w>j
+        nnoremap <C-k> <C-w>k
+        nnoremap <C-l> <C-w>l
+    " }}}
+
+    " vimrc shortcut
+    nnoremap <leader>v :source $MYVIMRC<CR>
+    nnoremap <leader>e :e $MYVIMRC<CR>
+
+    " Fast switching to alt file
+    nnoremap <BS> :buffer#<CR>
+
+    " Easy saving
+    inoremap <C-s> <ESC>:w<CR>a
+    nnoremap <C-s> :w <CR>
+
+    " Remove trailing whitespce
+    nnoremap <F4> :%s/\s\+$//e<CR><C-o>
+
+    " set Terminal exit to esc
+    tnoremap <ESC> <C-\><C-n>
+
+    " Start interactive EasyAlign
+    xmap ga <Plug>(EasyAlign)
+    nmap ga <Plug>(EasyAlign)
+
+    " Force saving files that require root permission
+    cnoremap w!! w !sudo tee > /dev/null %
+
+    " Update Plugins
+    command! PU PlugUpdate | PlugUpgrade
+
+    " Better movement with wrapped lines
+    nnoremap j gj
+    nnoremap k gk
+
+    " Fix indenting visual block
+    vmap < <gv
+    vmap > >gv
+
+    " Insert current date
+    inoremap <leader>cd <C-r>=strftime('%d.%m.%Y')<CR>
+
+    " No arrow keys
+     noremap  <Up> <Nop>
+     noremap  <Down> <Nop>
+     noremap  <Left> <Nop>
+     noremap  <Right> <Nop>
+
+    " Make exit easy
+     cnoremap Q q
+    " FZF {{{
+        nnoremap <leader>b :Buffers<CR>
+        nnoremap <leader>o :Files<CR>
+        nnoremap <leader>T :Tags<CR>
+        nnoremap <leader>t :BTags<CR>
+    "}}}
+
+    " Easy quickfix navigation {{{
+        " nnoremap <C-n> :cn<CR>
+        " nnoremap <C-p> :cp<CR>
+    "}}}
+
+" }}}
+
+" Color Scheme {{{
+
+    set background=dark
+    " color molokai
+    color codedark
+    " Set true colors
+    set t_8f=[38;2;%lu;%lu;%lum
+    set t_8b=[48;2;%lu;%lu;%lum
+    set termguicolors
+
+"}}}
+
+" AutoCommands {{{
+" ============
+
+au!
+
+" Make the modification indicator [+] white on red background
+au ColorScheme * hi User1 gui=bold term=bold cterm=bold guifg=white guibg=red ctermfg=white ctermbg=red
+
+" Tweak the color of the fold display column
+au ColorScheme * hi FoldColumn cterm=bold ctermbg=233 ctermfg=146
+
+" Write files on buffer exit
+au FocusLost * :wa
+
+" Fix tex file type set
+autocmd BufRead,BufNewFile *.tex set filetype=tex
+" autocmd BufRead,BufNewFile /tmp/calcurse*,~/.calcurse/notes/* set filetype=markdown
+
+autocmd FileType tex,latex,markdown setlocal spell spelllang=en_au
+
+" Remove trailing whitespace on save
+autocmd BufWritePre * %s/\s\+$//e
+
+
+" }}}
+
+" Plugin Config {{{
+" =============
+
+    " NERDTree {{{
+    " ========
+        " Get rid of objects in C projects
+        let NERDTreeIgnore=['\~$', '.o$', 'bower_components', 'node_modules', '__pycache__']
+        let NERDTreeWinSize=20
+    " }}}
+
+    " Ultisnips {{{
+    " =========
+        " let g:UltiSnipsEditSplit="horizontal"
+        " set cot+=menuone
+    " }}}
+
+    " Auto Pair {{{
+    " =========
+        " let g:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`'}
+        " au FileType md let b:AutoPairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"', '`':'`','*':'*'}
+    " }}}
+
+    " Vimwiki {{{
+    " =======
+        let g:vimwiki_list = [{'path': '~/docs/Notes/'}]
+    " }}}
+
+    " VIM LSP {{{
+    " =======
+
+        " if executable('clangd')
+        "     au User lsp_setup call lsp#register_server({
+        "         \ 'name': 'clangd',
+        "         \ 'cmd': {server_info->['clangd', '-background-index']},
+        "         \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+        "         \ })
+        " endif
+        " if executable('texlab')
+        "     au User lsp_setup call lsp#register_server({
+        "         \ 'name': 'texlab',
+        "         \ 'cmd': {server_info->['texlab']},
+        "         \ 'whitelist': ['tex'],
+        "         \ })
+        " endif
+        " if executable('pyls')
+        "     " pip install python-language-server
+        "     au User lsp_setup call lsp#register_server({
+        "         \ 'name': 'pyls',
+        "         \ 'cmd': {server_info->['pyls']},
+        "         \ 'allowlist': ['python'],
+        "         \ })
+        " endif
+
+        " nnoremap ge :LspHover<cr>
+        " nnoremap gd :LspDefinition<cr>
+        " nnoremap <F2> <plug>(lsp-rename)
+        " " set omnifunc+=lsp#complete
+        " inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+        " inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+        " inoremap <expr> <cr>    pumvisible() ? "\<C-y>" : "\<cr>"
+        " " Set ultisnips triggers
+        " let g:UltiSnipsExpandTrigger="<tab>"
+        " let g:UltiSnipsJumpForwardTrigger="<c-tab>"
+        " let g:UltiSnipsJumpBackwardTrigger="<c-s-tab>"
+
+    "}}}
+
+    " Lightline {{{
+    " =========
+        " let g:lightline = {
+        "   \   'colorscheme': 'powerline',
+        "   \   'active': {
+        "   \     'left':[ [ 'mode', 'paste' ],
+        "   \              [ 'gitbranch', 'readonly', 'filename', 'modified' ]
+        "   \     ]
+        "   \   },
+        "     \   'component': {
+        "     \     'lineinfo': ' %3l:%-2v',
+        "     \   },
+        "   \   'component_function': {
+        "   \     'gitbranch': 'FugitiveHead',
+        "   \   }
+        "   \ }
+    " }}}
+
+    " Git Gutter {{{
+    " ==========
+
+        highlight GitGutterAdd guifg=#009900 ctermfg=Green
+        highlight GitGutterChange guifg=#bbbb00 ctermfg=Yellow
+        highlight GitGutterDelete guifg=#ff2222 ctermfg=Red
+        nmap ) <Plug>(GitGutterNextHunk)
+        nmap ( <Plug>(GitGutterPrevHunk)
+        let g:gitgutter_enabled = 1
+        let g:gitgutter_map_keys = 0
+        let g:gitgutter_highlight_linenrs = 1
+
+    " }}}
+
+    " Vim-airline {{{
+    " ===========
+
+        let g:airline#extensions#wordcount#enabled = 1
+        let g:airline#extensions#hunks#non_zero_only = 1
+        let g:airline_theme = 'codedark'
+
+    " }}}
+
+    " Vim Hexokinase {{{
+    " ==============
+
+        let g:Hexokinase_refreshEvents = ['InsertLeave']
+
+        let g:Hexokinase_optInPatterns = [
+        \     'full_hex',
+        \     'triple_hex',
+        \     'rgb',
+        \     'rgba',
+        \     'hsl',
+        \     'hsla',
+        \     'colour_names'
+        \ ]
+
+        let g:Hexokinase_highlighters = ['backgroundfull']
+
+        " Reenable hexokinase on enter
+        autocmd VimEnter * HexokinaseTurnOn
+
+    " }}}
+
+    " Code Generation {{{
+    " ===============
+
+        " Guide navigation
+        noremap <leader><Tab> <Esc>/<++><Enter>"_c4l
+        inoremap <leader><Tab> <Esc>/<++><Enter>"_c4l
+        vnoremap <leader><Tab> <Esc>/<++><Enter>"_c4l
+
+        " general insert commands
+        inoremap ;g <++>
+
+        " Shell {{{
+        " =====
+
+            " map <leader>b i#!/bin/sh<CR><CR>
+            autocmd FileType sh inoremap ,f ()<Space>{<CR><Tab><++><CR>}<CR><CR><++><Esc>?()<CR>
+            autocmd FileType sh inoremap ,i if<Space>[<Space>];<Space>then<CR><++><CR>fi<CR><CR><++><Esc>?];<CR>hi<Space>
+            autocmd FileType sh inoremap ,ei elif<Space>[<Space>];<Space>then<CR><++><CR><Esc>?];<CR>hi<Space>
+            autocmd FileType sh inoremap ,sw case<Space>""<Space>in<CR><++>)<Space><++><Space>;;<CR><++><CR>esac<CR><CR><++><Esc>?"<CR>i
+            autocmd FileType sh inoremap ,ca )<Space><++><Space>;;<CR><++><Esc>?)<CR>i
+
+        " }}}
+
+        " Markdown {{{
+        " ========
+
+            autocmd FileType markdown noremap <leader>r i---<CR>title:<Space><++><CR>author:<Space>"Samyak Puri"<CR>geometry:<CR>-<Space>top=30mm<CR>-<Space>left=20mm<CR>-<Space>right=20mm<CR>-<Space>bottom=30mm<CR>header-includes:<Space>\|<CR><Tab>\usepackage{float}<CR>\let\origfigure\figure<CR>\let\endorigfigure\endfigure<CR>\renewenvironment{figure}[1][2]<Space>{<CR><Tab>\expandafter\origfigure\expandafter[H]<CR><BS>}<Space>{<CR><Tab>\endorigfigure<CR><BS>}<CR><BS>---<CR><CR>
+            autocmd FileType markdown inoremap ,i ![](<++>){#fig:<++>}<Space><CR><CR><++><Esc>kkF]i
+            autocmd FileType markdown inoremap ,a [](<++>)<Space><++><Esc>F]i
+            autocmd FileType markdown inoremap ,1 #<Space><CR><CR><++><Esc>2k<S-a>
+            autocmd FileType markdown inoremap ,2 ##<Space><CR><CR><++><Esc>2k<S-a>
+            autocmd FileType markdown inoremap ,3 ###<Space><CR><CR><++><Esc>2k<S-a>
+            autocmd FileType markdown inoremap ,4 ####<Space><CR><CR><++><Esc>2k<S-a>
+            autocmd FileType markdown inoremap ,5 #####<Space><CR><CR><++><Esc>2k<S-a>
+            autocmd FileType markdown inoremap ,u +<Space><CR><++><Esc>1k<S-a>
+            autocmd FileType markdown inoremap ,o 1.<Space><CR><++><Esc>1k<S-a>
+            autocmd FileType markdown inoremap ,f +@fig:
+
+        " }}}
+
+    " }}}
+
+    " COC Settings {{{
+    " ============
+
+        " prettier command for coc
+        command! -nargs=0 Prettier :CocCommand prettier.formatFile
+        let g:coc_global_extensions = [
+        \ 'coc-snippets',
+        \ 'coc-pairs',
+        \ 'coc-prettier',
+        \ 'coc-clangd',
+        \ 'coc-jedi',
+        \ ]
+
+        " From Coc Readme
+        set updatetime=300
+
+        " Use tab for trigger completion with characters ahead and navigate.
+        " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+        inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ coc#refresh()
+        inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+        function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~# '\s'
+        endfunction
+
+        " Use <c-space> to trigger completion.
+        inoremap <silent><expr> <c-space> coc#refresh()
+
+        " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+        " Coc only does snippet and additional edit on confirm.
+        inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+        " Or use `complete_info` if your vim support it, like:
+        " inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+        " Use `[g` and `]g` to navigate diagnostics
+        nmap <silent> [g <Plug>(coc-diagnostic-prev)
+        nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+        " Remap keys for gotos
+        nmap <silent> gd <Plug>(coc-definition)
+        nmap <silent> gy <Plug>(coc-type-definition)
+        nmap <silent> gi <Plug>(coc-implementation)
+        nmap <silent> gr <Plug>(coc-references)
+
+        function! s:show_documentation()
+        if (index(['vim','help'], &filetype) >= 0)
+          execute 'h '.expand('<cword>')
+        else
+          call CocAction('doHover')
+        endif
+        endfunction
+
+        " Remap for rename current word
+        nmap <rn> <Plug>(coc-rename)
+
+        " Remap for format selected region
+        xmap <leader>f  <Plug>(coc-format-selected)
+        nmap <leader>f  <Plug>(coc-format-selected)
+
+        augroup mygroup
+        autocmd!
+        " Setup formatexpr specified filetype(s).
+        autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+        " Update signature help on jump placeholder
+        autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+        augroup end
+
+        " Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+        xmap <leader>a  <Plug>(coc-codeaction-selected)
+        nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+        " Remap for do codeAction of current line
+        nmap <leader>ac  <Plug>(coc-codeaction)
+        " Fix autofix problem of current line
+        nmap <leader>qf  <Plug>(coc-fix-current)
+
+        " Create mappings for function text object, requires document symbols feature of languageserver.
+        xmap if <Plug>(coc-funcobj-i)
+        xmap af <Plug>(coc-funcobj-a)
+        omap if <Plug>(coc-funcobj-i)
+        omap af <Plug>(coc-funcobj-a)
+
+        " Use `:Format` to format current buffer
+        command! -nargs=0 Format :call CocAction('format')
+
+        " Use `:Fold` to fold current buffer
+        command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+        " use `:OR` for organize import of current buffer
+        command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+        " Add status line support, for integration with other plugin, checkout `:h coc-status`
+        set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+    " }}}
+
+"}}}
+
+filetype plugin indent on   " Add filetype, plugin, and indent support
+syntax on                   " Turn on syntax highlighting
+" Transparent bg
+hi! Normal guibg=NONE ctermbg=NONE
+
+
+" vim: fdm=marker foldlevel=0
