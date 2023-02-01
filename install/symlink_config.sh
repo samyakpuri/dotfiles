@@ -18,7 +18,7 @@ dotfiles_dir=$(git rev-parse --show-toplevel)
 ##################################
 # Delete existing dotfiles
 ##################################
-sudo rm -rf ~/.vim > /dev/null 2>&1
+# sudo rm -rf ~/.vim > /dev/null 2>&1
 sudo rm -rf ~/.config/alacritty > /dev/null 2>&1
 sudo rm -rf ~/.config/dunst > /dev/null 2>&1
 sudo rm -rf ~/.config/git > /dev/null 2>&1
@@ -65,7 +65,7 @@ ln -sf $dotfiles_dir/config/starship.toml ~/.config/starship.toml
 ln -sf $dotfiles_dir/config/sxhkd ~/.config/sxhkd
 ln -sf $dotfiles_dir/config/user-dirs.dirs ~/.config/user-dirs.dirs
 ln -sf $dotfiles_dir/config/user-dirs.locale ~/.config/user-dirs.locale
-ln -sf $dotfiles_dir/config/vim ~/.config/vim
+# ln -sf $dotfiles_dir/config/vim ~/.config/vim
 ln -sf $dotfiles_dir/config/wget ~/.config/wget
 ln -sf $dotfiles_dir/config/zsh ~/.config/zsh
 ln -sf $dotfiles_dir/share ~/.local/share/$USER
