@@ -1,16 +1,18 @@
 ; vim: ft=gitconfig
 
 [core]
-	editor = vim
+	editor = nvim
 	excludesfile = ~/.config/git/ignore
-  autocrlf = input
+    autocrlf = input
 	pager = diff-so-fancy | less --tabs=2 -RFXS --patter '^(Date|added|deleted|modified): '
+	ditor = nvim
 
 [help]
   autocorrect=-1
 
 [push]
   default = tracking
+	autoSetupRemote = True
 
 [log]
   date = local
