@@ -1,8 +1,8 @@
 return {
   "voldikss/vim-floaterm",
   keys = {
-    vim.keymap.set("n", "<F1>", ":FloatermToggle scratch<CR>"),
-    vim.keymap.set("t", "<F1>", "<C-\\><C-n>:FloatermToggle scratch<CR>"),
+    { "<F1>", ":FloatermToggle scratch<CR>", desc = "Toggle Floaterm" },
+    { "<F1>", "<C-\\><C-n>:FloatermToggle scratch<CR>", mode = "t", desc = "Toggle Floaterm" },
   },
   config = function()
     vim.g.floaterm_gitcommit = "floaterm"
