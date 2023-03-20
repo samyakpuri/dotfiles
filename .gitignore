@@ -7,3 +7,4 @@ vim/autoload/
 .installed
 shortcuts.sh
 config/mpd/*
+config/nvim/lazy-lock.json

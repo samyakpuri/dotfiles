@@ -446,8 +446,8 @@
     ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)
 #}}}
 
-source $XDG_CONFIG_HOME/broot/launcher/bash/br
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
 source $XDG_DATA_HOME/cargo/env 
+source $XDG_CONFIG_HOME/broot/launcher/bash/br
