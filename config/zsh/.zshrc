@@ -449,5 +449,5 @@
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 
-source $XDG_DATA_HOME/cargo/env 
-source $XDG_CONFIG_HOME/broot/launcher/bash/br
+[ -f $XDG_DATA_HOME/cargo/env ] && source $XDG_DATA_HOME/cargo/env 
+[ -f $XDG_CONFIG_HOME/broot/launcher/bash/br ] && source $XDG_CONFIG_HOME/broot/launcher/bash/br
