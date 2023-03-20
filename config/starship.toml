@@ -1,9 +1,21 @@
+## Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+# prompt
+format = "$os$all"
+
 # Don't print a new line at the start of the prompt
 add_newline = false
 
 # Make prompt a single line instead of two lines
 [line_break]
 disabled = true
+
+# Replace the "❯"
+[character]
+success_symbol = "[λ](white)"
+error_symbol = "[λ](red)"
+vimcmd_symbol = "[λ](blue)"
 
 [directory]
 read_only = " "
@@ -19,12 +31,22 @@ disabled = false
 [username]
 style_user = "cyan bold"
 style_root = "red bold"
-format = "[$user]($style) "
+format = "[$user]($style)"
 disabled = false
 show_always = true
 
-[git_status]
-
+# [git_status]
+# conflicted = "⚔️ "
+# ahead = "🏎️ 💨 ×${count} "
+# behind = "🐢 ×${count} "
+# diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count} "
+# untracked = "🛤️  ×${count} "
+# stashed = "📦 "
+# modified = "📝 ×${count} "
+# staged = "🗃️  ×${count} "
+# renamed = "📛 ×${count} "
+# deleted = "🗑️  ×${count} "
+# format = "$all_status$ahead_behind"
 
 # These symbols will only show when battery levels are 20% or less
 [battery]
@@ -145,7 +167,7 @@ format = "[$symbol]($style)"
 
 [python]
 symbol = " "
-format = "[$symbol]($style)"
+format = "[${symbol} (\\($virtualenv\\) )]($style)"
 
 [rlang]
 symbol = "ﳒ "
@@ -166,3 +188,44 @@ format = "[$symbol]($style)"
 [spack]
 symbol = "🅢 "
 format = "[$symbol]($style)"
+
+[os.symbols]
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "﯑ "
+Gentoo = " "
+HardenedBSD = "ﲊ "
+Illumos = " "
+Linux = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+OpenBSD = " "
+openSUSE = " "
+OracleLinux = " "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+Redox = " "
+Solus = "ﴱ "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Windows = " "
+
+[os]
+format = "[$name]($style) "
