@@ -449,3 +449,5 @@
 source $XDG_CONFIG_HOME/broot/launcher/bash/br
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
+
+source $XDG_DATA_HOME/cargo/env 
