@@ -20,7 +20,7 @@ source ${XDG_CONFIG_HOME}/shell/path_functions
 
 scripts=""
 [ -d ${HOME}]/.local/bin/scripts ] && scripts=$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 |grep -v cron| tr '\n' ' ' | sed 's/:*$//')
-+path.prepend PATH ${HOME}/.local/bin ${scripts} ${XDG_CONFIG_HOME}/emacs/bin
++path.prepend PATH ${HOME}/.local/bin ${scripts} ${XDG_CONFIG_HOME}/emacs/bin /opt/gcc-arm-none-eabi/bin/
 
 # XDG config variables for programs
 export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
