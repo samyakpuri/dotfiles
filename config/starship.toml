@@ -45,7 +45,7 @@ stashed = "📦"
 modified = "📝"
 staged = '[++\($count\)](green)'
 renamed = "👅"
-deleted ="🗑 "
+deleted = "🗑 "
 
 # These symbols will only show when battery levels are 20% or less
 [battery]
@@ -102,7 +102,7 @@ format = "[$symbol]($style)"
 
 [git_branch]
 symbol = " "
-format = "[$symbol]($style)"
+format = '[$symbol\($branch\)]($style)'
 
 [golang]
 symbol = " "
@@ -229,4 +229,3 @@ Windows = " "
 [os]
 format = "[$symbol]($style) "
 disabled = false
-
