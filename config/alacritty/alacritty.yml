@@ -87,7 +87,6 @@ scrolling:
 #tabspaces: 8
 # Font configuration
 font:
-
   normal:
     family: JetBrainsMono Nerd Font
     style: Regular
@@ -137,32 +136,34 @@ draw_bold_text_with_bright_colors: true
 
 # Colors (Tomorrow Night Bright)
 colors:
-  name: Google (dark)
-  author: Chris Kempson
+  # Default colors
   primary:
-    background: "#1d1f21"
-    foreground: "#c5c8c6"
-  cursor:
-    text: "#1d1f21"
-    cursor: "#c5c8c6"
+    background: '#282c34'
+    foreground: '#abb2bf'
+
+  # Normal colors
   normal:
-    black: "#1d1f21"
-    red: "#cc342b"
-    green: "#198844"
-    yellow: "#fba922"
-    blue: "#3971ed"
-    magenta: "#a36ac7"
-    cyan: "#3971ed"
-    white: "#c5c8c6"
+    # NOTE: Use '#131613' for the `black` color if you'd like to see
+    # black text on the background.
+    black: '#282c34'
+    red: '#e06c75'
+    green: '#98c379'
+    yellow: '#d19a66'
+    blue: '#61afef'
+    magenta: '#c678dd'
+    cyan: '#56b6c2'
+    white: '#abb2bf'
+
+  # Bright colors
   bright:
-    black: "#969896"
-    red: "#cc342b"
-    green: "#198844"
-    yellow: "#fba922"
-    blue: "#3971ed"
-    magenta: "#a36ac7"
-    cyan: "#3971ed"
-    white: "#ffffff"
+    black: '#5c6370'
+    red: '#e06c75'
+    green: '#98c379'
+    yellow: '#d19a66'
+    blue: '#61afef'
+    magenta: '#c678dd'
+    cyan: '#56b6c2'
+    white: '#ffffff'
 # Visual Bell
 #
 # Any time the BEL code is received, Alacritty "rings" the visual bell. Once
@@ -190,7 +191,6 @@ colors:
 #  color: '0xffffff'
 # Background opacity
 #
-
 #selection:
 #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
 # When set to `true`, selected text will be copied to the primary clipboard.
@@ -448,4 +448,4 @@ key_bindings:
       action: ScrollToBottom,
       mode: ~Alt
     }
-theme: Google.dark
+theme: One-Dark

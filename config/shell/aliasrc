@@ -23,9 +23,11 @@ alias grep="rg"
 alias highlight="highlight --force -O xterm256 --style molokai"
 
 # {{{ Directory Navigation
-    alias ls="ls --color=always"
+    # alias ls="ls --color=always"
+	alias ls="exa"
     alias l="ls -lh"
     alias ll='ls -lah'
+	alias la="l -a"
     alias less="less -R"
     alias d='dirs -v'
     for index ({1..9}) alias "$index"="cd +${index}"; unset index
