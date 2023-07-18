@@ -18,7 +18,7 @@ error_symbol = "[λ](red)"
 vimcmd_symbol = "[λ](blue)"
 
 [directory]
-read_only = " "
+# read_only = " "
 truncation_length = 1
 
 [hostname]

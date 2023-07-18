@@ -46,13 +46,13 @@
 	# branch
 	b = branch -v					# branch (verbose)
 
-	# commit 
+	# commit
 	c = commit -m					# commit with message
 	ca = commit -am					# commit all with message
 	ci = commit						# commit
 	amend = commit --amend			# ammend your last commit
-	
-	# checkout 
+
+	# checkout
 	co = checkout					# checkout
 	nb = checkout -b				# create and switch to a new branch
 
@@ -65,7 +65,7 @@
 	last = diff HEAD^				# diff last committed change# diff unstaged changes
 	dc = diff --cached				# diff staged changes
 	last = diff HEAD^				# diff last committed change
-	
+
 	# log
 	l = log --graph --date=short
 	changes = log --pretty=format:\"%h %cr %cn %Cgreen%s%Creset\" --name-status
@@ -123,3 +123,5 @@
 	rebase = false
 [colors]
 	ui = true
+[init]
+	defaultBranch = main
