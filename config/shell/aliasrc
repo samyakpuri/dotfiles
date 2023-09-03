@@ -4,65 +4,75 @@ alias clip="xclip -selection clipboard -i"
 alias p="ping 9.9.9.9"
 alias ping="ping -c 5"
 alias md="mkdir -p"
-alias rd="rmdir"
-alias rm="rm -Iv"
 
-mcd () {
-    mkdir -p "$@" && cd "$@"
+mcd() {
+	mkdir -p "$@" && cd "$@" || return
 }
 
 # Editor alias
-alias vim=$EDITOR
+alias vim='$EDITOR'
 alias e=vim
 alias edit=vim
 alias pb="nc termbin.com 9999" # pasting from terminal
 
-# alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
-alias grep="rg"
+if command -v rg >/dev/null 2>&1; then
+	alias grep="rg"
+else
+	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
+fi
+
 # Highlight with less
 alias highlight="highlight --force -O xterm256 --style molokai"
 
 # {{{ Directory Navigation
-    # alias ls="ls --color=always"
+if command -v exa >/dev/null 2>&1; then
 	alias ls="exa"
-    alias l="ls -lh"
-    alias ll='ls -lah'
-	alias la="l -a"
-    alias less="less -R"
-    alias d='dirs -v'
-    for index ({1..9}) alias "$index"="cd +${index}"; unset index
+else
+	alias ls="ls --color=always"
+fi
+alias l="ls -lh"
+alias ll='ls -lah'
+alias la="l -a"
+alias less="less -R"
+alias d='dirs -v'
 #}}}
 
 # {{{ Git Aliases
-    alias g="git"
-    alias ga="git add"
-    alias gb="git branch"
-    alias gre="git restore"
-    alias gres="git restore --staged"
-    alias grea="git restore ."
-    alias gc="git commit -m"
-    alias gco="git checkout"
-    alias gcb="git checkout -b"
-    alias gcom="git checkout master"
-    alias gd="git diff"
-    alias gs="git status -sb"
-    alias gca="git commit --amend"
-    alias gcl="git clone"
-    alias gst="git stash"
-    alias gstp="git stash push"
-    alias gstpo="git stash pop"
-    alias gpull="git pull"
-    alias gpush="git push"
-    alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
+alias g="git"
+alias ga="git add"
+alias gb="git branch"
+alias gre="git restore"
+alias gres="git restore --staged"
+alias grea="git restore ."
+alias gc="git commit -m"
+alias gco="git checkout"
+alias gcb="git checkout -b"
+alias gcom="git checkout master"
+alias gd="git diff"
+alias gs="git status -sb"
+alias gca="git commit --amend"
+alias gcl="git clone"
+alias gst="git stash"
+alias gstp="git stash push"
+alias gstpo="git stash pop"
+alias gpull="git pull"
+alias gpush="git push"
+alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
 # }}}
 
 # {{{ Trash-cli Aliases
-    alias trp="trash-put"
-    alias trp='trash-put'
-    alias tre='trash-empty'
-    alias trl='trash-list'
-    alias trr='trash-restore'
-    alias trm='trash-rm'
+if command -v trash-put >/dev/null 2>&1; then
+	alias rd="trash-put"
+	alias rm="trash-put"
+else
+	alias rd="rmdir"
+	alias rm="rm -Iv"
+fi
+alias trp="trash-put"
+alias tre='trash-empty'
+alias trl='trash-list'
+alias trr='trash-restore'
+alias trm='trash-rm'
 #}}}
 
 # vim: fdm=marker

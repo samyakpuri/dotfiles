@@ -9,27 +9,19 @@ export BROWSER="brave"
 
 # ~/ Clean-up:
 # Add XDG variables
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-export XDG_STATE_HOME="$HOME/.local/state"
-
-# Add custom locations to $PATH
-
-source ${XDG_CONFIG_HOME}/shell/path_functions
-
-scripts=""
-[ -d ${HOME}]/.local/bin/scripts ] && scripts=$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 | grep -v cron | tr '\n' ' ' | sed 's/:*$//')
-+path.prepend PATH ${HOME}/.local/bin ${scripts} ${XDG_CONFIG_HOME}/emacs/bin /opt/gcc-arm-none-eabi/bin/ ${HOME}/.nix-profile/bin/ ${HOME}/go/bin
+export XDG_CONFIG_HOME="$HOME"/.config
+export XDG_DATA_HOME="$HOME"/.local/share
+export XDG_CACHE_HOME="$HOME"/.cache
+export XDG_STATE_HOME="$HOME"/.local/state
 
 # XDG config variables for programs
-export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
-export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
-export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
-export INPUTRC="$XDG_CONFIG_HOME/inputrc"
-export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
-export GNUPGHOME="$XDG_DATA_HOME/gnupg"
-export PASSWORD_STORE_DIR="$XDG_DATA_HOME/password-store"
+export XINITRC="$XDG_CONFIG_HOME"/x11/xinitrc
+export GTK2_RC_FILES="$XDG_CONFIG_HOME"/gtk-2.0/gtkrc-2.0
+export WGETRC="$XDG_CONFIG_HOME"/wget/wgetrc
+export INPUTRC="$XDG_CONFIG_HOME"/inputrc
+export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
+export GNUPGHOME="$XDG_DATA_HOME"/gnupg
+export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
 export LESSHISTFILE="-"
 
 # Other program settings:
@@ -54,13 +46,21 @@ export FZF_DEFAULT_OPTS="--layout=reverse --height 40%"
 
 # Less Config
 export LESS=-R
+# shellcheck disable=SC2155
 export LESS_TERMCAP_mb="$(printf '%b' '[1;31m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_md="$(printf '%b' '[1;36m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_me="$(printf '%b' '[0m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_so="$(printf '%b' '[01;44;33m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_se="$(printf '%b' '[0m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_us="$(printf '%b' '[1;32m')"
+# shellcheck disable=SC2155
 export LESS_TERMCAP_ue="$(printf '%b' '[0m')"
+# shellcheck disable=SC2155
 export LESSCHARSET="utf-8"
 export LESSOPEN="| /usr/bin/highlight -O ansi %s 2>/dev/null"
 
@@ -88,3 +88,13 @@ export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME"/npm/npmrc
 
 # wayland scaling
 export PLASMA_USE_QT_SCALING=1
+
+# Add custom locations to $PATH
+# source ${XDG_CONFIG_HOME}/shell/path_functions
+
+scripts=""
+[ -d "${HOME}"/.local/bin/scripts ] && scripts=$(du --exclude ".git" "$HOME"/.local/bin/scripts/ | cut -f2 | grep -v cron | tr '\n' ' ' | sed 's/:*$//')
+LPATH="${HOME}"/.local/bin:"${scripts}"
+[ -d "${XDG_CONFIG_HOME}"/emacs/bin ] && LPATH="${XDG_CONFIG_HOME}"/emacs/bin:"$LPATH"
+[ -d /opt/gcc-arm-none-eabi/bin/ ] && LPATH=/opt/gcc-arm-none-eabi/bin/:"$LPATH"
+export PATH="$LPATH":"$PATH"
