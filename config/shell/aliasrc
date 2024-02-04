@@ -10,12 +10,13 @@ mcd() {
 }
 
 # Editor alias
-alias vim='$EDITOR'
-alias e=vim
-alias edit=vim
+alias lvim="NVIM_APPNAME=lvim nvim"
+alias e="$EDITOR"
+alias le="lvim"
+alias sudoe="EDITOR=lvim sudo -e "
 alias pb="nc termbin.com 9999" # pasting from terminal
 
-if command -v rg >/dev/null 2>&1; then
+if command -v rg &>/dev/null ; then
 	alias grep="rg"
 else
 	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
@@ -25,16 +26,27 @@ fi
 alias highlight="highlight --force -O xterm256 --style molokai"
 
 # {{{ Directory Navigation
-if command -v exa >/dev/null 2>&1; then
-	alias ls="exa"
+if command -v exa >/dev/null; then
+	alias ls="exa --group-directories-first --icons"
 else
-	alias ls="ls --color=always"
+	alias ls="ls --group-directories-first --color=always "
 fi
 alias l="ls -lh"
 alias ll='ls -lah'
 alias la="l -a"
-alias less="less -R"
 alias d='dirs -v'
+
+if command -v batcat &> /dev/null; then
+	alias bat='batcat'
+fi
+if command -v bat &> /dev/null; then
+	alias bat='bat --theme "Visual Studio Dark+"'
+	alias cat='bat --pp'
+	alias catt='bat'
+	alias less='bat'
+else
+	alias less='less -R'
+fi
 #}}}
 
 # {{{ Git Aliases
@@ -61,18 +73,18 @@ alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Cres
 # }}}
 
 # {{{ Trash-cli Aliases
-if command -v trash-put >/dev/null 2>&1; then
+if command -v trash >/dev/null 2>&1; then
 	alias rd="trash-put"
 	alias rm="trash-put"
+	alias trp="trash-put"
+	alias tre='trash-empty'
+	alias trl='trash-list'
+	alias trr='trash-restore'
+	alias trm='trash-rm'
 else
 	alias rd="rmdir"
 	alias rm="rm -Iv"
 fi
-alias trp="trash-put"
-alias tre='trash-empty'
-alias trl='trash-list'
-alias trr='trash-restore'
-alias trm='trash-rm'
 #}}}
 
 # vim: fdm=marker

@@ -8,9 +8,23 @@
 #
 #############################################
 
+# {{{ Plugins
+    # use zap
+    [ -f "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh" ] && source "${XDG_DATA_HOME:-$HOME/.local/share}/zap/zap.zsh"
+    
+    plug "zap-zsh/completions"
+    plug "zsh-users/zsh-autosuggestions"
+    plug "hlissner/zsh-autopair"
+    plug "zap-zsh/supercharge"
+    plug "zap-zsh/vim"
+    plug "zap-zsh/fzf"
+    plug "zsh-users/zsh-syntax-highlighting"
+    plug "zsh-users/zsh-history-substring-search"
+
+#}}}
+
 # {{{ ZSH Modules
 
-    autoload -Uz compinit
     autoload -U promptinit zcalc
     autoload -U colors && colors
     fpath=(${XDG_CONFIG_HOME}/zsh/functions ${XDG_CONFIG_HOME}/zsh/completions $fpath)
@@ -39,8 +53,8 @@
     setopt EXTENDED_GLOB
     setopt GLOB_COMPLETE
     setopt RC_EXPAND_PARAM
-    unsetopt HASH_DIRS
-    unsetopt HASH_CMDS
+    setopt HASH_DIRS
+    setopt HASH_CMDS
     unsetopt FLOW_CONTROL
     unsetopt CLOBBER
 
@@ -60,113 +74,6 @@
     setopt HIST_SAVE_NO_DUPS         # Don't write duplicate entries in the history file.
     setopt HIST_REDUCE_BLANKS        # Remove superfluous blanks before recording entry.
     setopt HIST_VERIFY               # Don't execute immediately upon history expansion.
-
-#}}}
-
-# {{{ Completion
-    setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
-    setopt ALWAYS_TO_END       # Move cursor to the end of a completed word.
-    setopt PATH_DIRS           # Perform path search even on command names with slashes.
-    setopt AUTO_MENU           # Show completion menu on a successive tab press.
-    setopt AUTO_LIST           # Automatically list choices on ambiguous completion.
-    setopt AUTO_PARAM_SLASH    # If completed parameter is a directory, add a trailing slash.
-    setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
-    setopt NO_COMPLETE_ALIASES # autocompletion CLI switches for aliases
-    unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
-
-    # Activate Bash auto-completion
-    autoload -U bashcompinit
-    bashcompinit
-
-    # Activate auto-completion
-    zmodload -i zsh/complist
-
-    # Use caching to make completion for commands such as dpkg and apt usable.
-    zstyle ':completion::complete:*' use-cache on
-    zstyle ':completion::complete:*' cache-path "$XDG_CACHE_HOME/zsh/zcompcache"
-
-    # autocomplete case-insensitive (all),partial-word and then substring
-    zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
-    unsetopt CASE_GLOB
-
-    # Group matches and describe.
-    zstyle ':completion:*:*:*:*:*' menu select
-    zstyle ':completion:*:matches' group 'yes'
-    zstyle ':completion:*:options' description 'yes'
-    zstyle ':completion:*:options' auto-description '%d'
-    zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
-    zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-    zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
-    zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-    zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-    zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
-    zstyle ':completion:*' group-name ''
-    zstyle ':completion:*' verbose yes
-    zstyle ":completion:*:commands" rehash 1
-
-    # Fuzzy match mistyped completions.
-    zstyle ':completion:*' completer _complete _match _approximate
-    zstyle ':completion:*:match:*' original only
-    zstyle ':completion:*:approximate:*' max-errors 1 numeric
-
-    # Increase the number of errors based on the length of the typed word. But make
-    # sure to cap (at 7) the max-errors to avoid hanging.
-    zstyle -e ':completion:*:approximate:*' max-errors 'reply=($((($#PREFIX+$#SUFFIX)/3>7?7:($#PREFIX+$#SUFFIX)/3))numeric)'
-
-    # Don't complete unavailable commands.
-    zstyle ':completion:*:functions' ignored-patterns '(_*|pre(cmd|exec))'
-
-    # Array completion element sorting.
-    zstyle ':completion:*:*:-subscript-:*' tag-order indexes parameters
-
-    # Directories
-    zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
-    zstyle ':completion:*:cd:*' ignore-parents parent pwd # cd never selects the parent directory (e.g.: cd ../<TAB>)
-    zstyle ':completion:*:*:cd:*' tag-order local-directories directory-stack path-directories
-    zstyle ':completion:*:*:cd:*:directory-stack' menu yes select
-    zstyle ':completion:*:-tilde-:*' group-order 'named-directories' 'path-directories' 'users' 'expand'
-    zstyle ':completion:*' squeeze-slashes true
-
-    # Ignore VCS directories
-    zstyle ':completion:*:(all-|)files' ignored-patterns '(|*/)(.svn|.git|.hg)'
-    zstyle ':completion:*:cd:*' ignored-patterns '(*/)(.svn|.git|.hg)'
-
-    # History
-    zstyle ':completion:*:history-words' stop yes
-    zstyle ':completion:*:history-words' remove-all-dups yes
-    zstyle ':completion:*:history-words' list false
-    zstyle ':completion:*:history-words' menu yes
-
-    # Environment Variables
-    zstyle ':completion::*:(-command-|export):*' fake-parameters ${${${_comps[(I)-value-*]#*,}%%,*}:#-*-}
-
-    # Don't complete uninteresting users...
-    zstyle ':completion:*:*:*:users' ignored-patterns \
-      adm amanda apache avahi beaglidx bin cacti canna clamav daemon \
-      dbus distcache dovecot fax ftp games gdm gkrellmd gopher \
-      hacluster haldaemon halt hsqldb ident junkbust ldap lp mail \
-      mailman mailnull mldonkey mysql nagios \
-      named netdump news nfsnobody nobody nscd ntp nut nx openvpn \
-      operator pcap postfix postgres privoxy pulse pvm quagga radvd \
-      rpc rpcuser rpm shutdown squid sshd sync uucp vcsa xfs '_*'
-
-    # ... unless we really want to.
-    zstyle '*' single-ignored show
-
-    #{{{ Ignore
-        zstyle ':completion:*:(rm|kill|diff):*' ignore-line other
-        zstyle ':completion:*:(all-|)files' ignored-patterns "(*.pyc|*~|*.o|*.class)"
-        zstyle ':completion:*:ls:*:(all-|)files' ignored-patterns
-        zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
-    #}}}
-
-    _comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
-    if (( $#_comp_files )); then
-    compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-    else
-    compinit -i -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-    fi
-    unset _comp_files
 
 #}}}
 
@@ -291,48 +198,6 @@
     bindkey '^D' exit_zsh
 #}}}
 
-# {{{ Prompt
-
-#     autoload -Uz vcs_info add-zsh-hook
-#     add-zsh-hook precmd vcs_info
-#     setopt promptsubst
-
-#     # Updates editor information when the keymap changes.
-#     function zle-keymap-select() {
-#       zle reset-prompt
-#       zle -R
-#     }
-
-#     zle -N zle-keymap-select
-
-#     function vi_info() {
-#       echo "${${KEYMAP/vicmd/[% N]% }/(main|viins)/[% I]% }"
-#     }
-#     zstyle ':vcs_info:*' unstagedstr '%F{yellow}%{%G✗%}'
-#     zstyle ':vcs_info:*' check-for-changes true
-#     zstyle ':vcs_info:*' actionformats '%a'
-#     zstyle ':vcs_info:*' formats '%F{blue}%s:%F{7}(%b)%u%m'
-#     zstyle ':vcs_info:git*+set-message:*' hooks git-ahead
-#     zstyle ':vcs_info:*' enable git
-
-#     +vi-git-ahead()
-#     {
-#         set -- git rev-list --left-right HEAD...@{u} --count 2> /dev/null
-#         ahead=$1
-#         behind=$2
-#         if [[ -n $ahead ]]; then
-#         hook_com[misc]+='%{%G⇡%}'
-#         else
-#         hook_com[misc]+='%{%G⇣%}'
-#         fi
-#     }
-
-
-#     # Define prompts.
-#     local ret_status="%(?:%{%F{green}%}%{%G➜%} :%{%F{red}%}%{%G➜%} )"
-#     export PROMPT='$(vi_info) %{$reset_color% %F{cyan}%}%1~ ${vcs_info_msg_0_}${ret_status}%{$reset_color%}'
-
-# }}}
 
 # {{{ Misc
     # Deactivate Software flow control
@@ -396,27 +261,6 @@
 
 #}}}
 
-# {{{ Plugins
-    LOC="/usr/share/zsh/plugins/zsh-"
-    LOC2="/usr/share/"
-    PLUGINS+=(autosuggestions syntax-highlighting history-substring-search you-should-use fzf)
-
-    for plugin in $PLUGINS; do
-        if [[ -d $LOC$plugin ]]; then
-            [[ -f $L$LOC$plugin/zsh-$plugin.plugin.zsh ]] && source $LOC$plugin/zsh-$plugin.plugin.zsh
-            [[ -f $L$LOC$plugin/$plugin.plugin.zsh ]] && source $LOC$plugin/$plugin.plugin.zsh
-        elif [[ -d $LOC2$plugin ]]; then
-            for i in $LOC2$plugin/*.zsh; do
-                source $i
-            done
-        fi
-    done
-
-    bindkey '\et' fzf-cd-widget
-
-    unset LOC LOC2 PLUGINS
-    [[ -r "/usr/share/z.lua/z.lua.plugin.zsh" ]] && source /usr/share/z.lua/z.lua.plugin.zsh
-#}}}
 
 # {{{ ZSH Autocompletion
     # Remove forward-char widgets from ACCEPT
@@ -432,10 +276,10 @@
         if [[ $CURSOR -lt ${#BUFFER} && $KEYMAP != vicmd ||
               $CURSOR -lt $((${#BUFFER} - 1)) ]]; then
           # if cursor is at end of buffer invoke forward-word widget
-          zle forward-char
+            zle forward-word
         else
           # if cursor is not at end of buffer invoke forward-char widget
-          zle forward-word
+            zle forward-char
         fi
     }
 
