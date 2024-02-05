@@ -11,12 +11,12 @@ mcd() {
 
 # Editor alias
 alias lvim="NVIM_APPNAME=lvim nvim"
-alias e="$EDITOR"
+alias e='$EDITOR'
 alias le="lvim"
 alias sudoe="EDITOR=lvim sudo -e "
 alias pb="nc termbin.com 9999" # pasting from terminal
 
-if command -v rg &>/dev/null ; then
+if command -v rg >/dev/null 2>&1; then
 	alias grep="rg"
 else
 	alias grep="grep --line-number --ignore-case --color=auto --exclude-dir={.git}"
@@ -26,7 +26,7 @@ fi
 alias highlight="highlight --force -O xterm256 --style molokai"
 
 # {{{ Directory Navigation
-if command -v exa >/dev/null; then
+if command -v exa >/dev/null 2>&1; then
 	alias ls="exa --group-directories-first --icons"
 else
 	alias ls="ls --group-directories-first --color=always "
@@ -34,14 +34,16 @@ fi
 alias l="ls -lh"
 alias ll='ls -lah'
 alias la="l -a"
+alias sl=ls
 alias d='dirs -v'
 
-if command -v batcat &> /dev/null; then
+if command -v batcat >/dev/null 2>&1; then
 	alias bat='batcat'
-fi
-if command -v bat &> /dev/null; then
-	alias bat='bat --theme "Visual Studio Dark+"'
-	alias cat='bat --pp'
+	alias cat='bat -pp'
+	alias catt='bat'
+	alias less='bat'
+elif command -v bat >/dev/null 2>&1; then
+	alias cat='bat -pp'
 	alias catt='bat'
 	alias less='bat'
 else
@@ -50,26 +52,41 @@ fi
 #}}}
 
 # {{{ Git Aliases
+source ~/.config/shell/git.sh
 alias g="git"
 alias ga="git add"
 alias gb="git branch"
+alias gba="git branch --all"
+alias gbd="git branch -d"
+alias gbD="git branch -D"
+alias gcp="git cherry-pick"
 alias gre="git restore"
-alias gres="git restore --staged"
+alias grs="git restore --staged"
 alias grea="git restore ."
+alias gpr="git remote prune origin"
 alias gc="git commit -m"
+alias gca="git commit --amend"
+alias gcan='gc --amend --no-edit'
 alias gco="git checkout"
 alias gcb="git checkout -b"
-alias gcom="git checkout master"
-alias gd="git diff"
+alias gcm="git checkout master"
+alias gd="git diff -w"
+alias gds="git diff -w --staged"
 alias gs="git status -sb"
-alias gca="git commit --amend"
 alias gcl="git clone"
 alias gst="git stash"
 alias gstp="git stash push"
 alias gstpo="git stash pop"
+alias ff="gpr && git pull --ff-only"
 alias gpull="git pull"
 alias gpush="git push"
-alias gl="git log --format=format:'%C(auto)%h %C(green)%aN%Creset %Cblue%cr%Creset %s'"
+alias gl=pretty_git_log
+alias gla=pretty_git_log_all
+alias grc='git rebase --continue'
+alias gra='git rebase --abort'
+alias git-current-branch="git branch | grep \* | cut -d ' ' -f2"
+alias gup='git branch --set-upstream-to=origin/$(git-current-branch) $(git-current-branch)'
+alias gu='git reset --soft HEAD~1'
 # }}}
 
 # {{{ Trash-cli Aliases
@@ -86,5 +103,7 @@ else
 	alias rm="rm -Iv"
 fi
 #}}}
+
+alias ta="tmux attach -t"
 
 # vim: fdm=marker

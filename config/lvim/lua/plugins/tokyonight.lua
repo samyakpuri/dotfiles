@@ -1,5 +1,6 @@
 return {
   "folke/tokyonight.nvim",
+  name = "tokyonight",
   opts = {
     transparent = true,
     styles = {
