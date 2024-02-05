@@ -1,17 +1,35 @@
-; vim: ft=gitconfig
+; vim: ft=gitconfig,ts=2,sts=2,sw=2
 
 [core]
 	editor = nvim
 	excludesfile = ~/.config/git/ignore
-    autocrlf = input
-	pager = diff-so-fancy | less --tabs=2 -RFXS --patter '^(Date|added|deleted|modified): '
-	ditor = nvim
+	autocrlf = input
+	; pager = diff-so-fancy | less --tabs=2 -RFXS --patter '^(Date|added|deleted|modified): '
+	pager = delta
+
+[interactive]
+	diffFilter = delta --color-only --features=interactive
+
+[delta]
+	features = decorations
+
+[delta "interactive"]
+	keep-plus-minus-markers = false
+
+[delta "decorations"]
+	 commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
 
 [help]
-  autocorrect=-1
+	autocorrect=-1
 
 [push]
-  default = tracking
+	default = tracking
 	autoSetupRemote = True
 
 [log]
