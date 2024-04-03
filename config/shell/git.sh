@@ -82,6 +82,10 @@ git_page_maybe() {
 		cat
 	else
 		# Page only if needed.
-		less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS --chop-long-lines
+		if command -v bat >/dev/null 2>&1 || command -v batcat >/dev/null 2>&1; then
+			bat
+		else
+			less --quit-if-one-screen --no-init --RAW-CONTROL-CHARS --chop-long-lines
+		fi
 	fi
 }
