@@ -87,7 +87,7 @@ format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "bright-black"
 
 [git_metrics]
-disabled = false
+disabled = true
 
 # Clear visibility for exit codes
 [status]
@@ -107,6 +107,10 @@ format = "[$symbol]($style)"
 [c]
 symbol = " "
 format = "[$symbol]($style)"
+
+[cmake]
+format = "[$symbol]($style)"
+disabled = true
 
 [conda]
 symbol = " "
@@ -132,8 +136,8 @@ format = "[$symbol]($style)"
 # symbol = " "
 # format = "[$symbol]($style)"
 
-[git_branch]
-symbol = " "
+# [git_branch]
+# symbol = " "
 
 [golang]
 symbol = " "
