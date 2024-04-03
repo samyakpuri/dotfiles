@@ -106,4 +106,22 @@ fi
 
 alias ta="tmux attach -t"
 
-# vim: fdm=marker
+# wait for ssh and then ssh
+# usage: wssh <hostname>
+# example: wssh myserver
+wsssh() {
+	name="$1"
+	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
+	until nc -zw 2 "$ipaddr" 22; do sleep 2; done && ssh $name
+}
+
+# wait for ssh
+# usage: wssh <hostname>
+# example: wssh myserver
+wssh() {
+	name="$1"
+	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
+	until nc -zw 2 "$ipaddr" 22; do sleep 2; done
+}
+
+# vim: fdm=marker ft=sh
