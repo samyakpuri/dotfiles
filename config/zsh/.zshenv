@@ -5,3 +5,4 @@ skip_global_compinit=1
 
 # Load environmental variables.
 [ -f "$HOME/.config/shell/env" ] && source "$HOME/.config/shell/env"
+

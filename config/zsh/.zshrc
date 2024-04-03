@@ -21,7 +21,10 @@
     plug "zap-zsh/fzf"
     plug "zsh-users/zsh-syntax-highlighting"
     plug "zsh-users/zsh-history-substring-search"
+    plug "sunlei/zsh-ssh"
     
+    # disable CTRL+X reload config
+    bindkey -r "^X"
 #}}}
 
 # {{{ ZSH Modules
@@ -88,6 +91,9 @@
     setopt EXTENDED_GLOB       # Needed for file modification glob modifiers with compinit
     setopt NO_COMPLETE_ALIASES # autocompletion CLI switches for aliases
     unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
+
+    # Set xdg zcompdump location
+    zstyle ':completion:*' cache-path "$XDG_CACHE_HOME"/zsh/zcompcache
 
     # Activate Bash auto-completion
     autoload -U bashcompinit
@@ -175,13 +181,14 @@
         zstyle ':completion:*:rm:*:(all-|)files' ignored-patterns
     #}}}
 
-    _comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
-    if (( $#_comp_files )); then
-    compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-    else
-    compinit -i -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
-    fi
-    unset _comp_files
+    compinit -d "$XDG_CACHE_HOME"/zsh/zcompdump-$ZSH_VERSION
+    # _comp_files=(${XDG_CACHE_HOME}/zsh/zcompdump(Nm-20))
+    # if (( $#_comp_files )); then
+    # compinit -i -C -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+    # else
+    # compinit -i -d $XDG_CACHE_HOME/zsh/zcompdump-$ZSH_VERSION
+    # fi
+    # unset _comp_files
 
 #}}}
 
@@ -387,7 +394,7 @@
           zle forward-word
         else
           # if cursor is not at end of buffer invoke forward-char widget
-          zle forward-word
+          zle forward-char
         fi
     }
 
@@ -396,10 +403,22 @@
 
     # Add autosuggest_partial_wordwise to IGNORE
     ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)
+
+    # ussh ssh slogin hosts Autocompletion
+    h=()
+    if [[ -r ~/.ssh/config ]]; then
+        h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
+    fi
+    if [[ $#h -gt 0 ]]; then
+        zstyle ':completion:*:ssh:*' hosts $h
+        zstyle ':completion:*:slogin:*' hosts $h
+        zstyle ':completion:*:ussh:*' hosts $h
+    fi
+
 #}}}
 
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
+command -v starship &> /dev/null && eval "$(starship init zsh)"
+command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
 
 [ -f $XDG_DATA_HOME/cargo/env ] && source $XDG_DATA_HOME/cargo/env 
 [ -f $XDG_CONFIG_HOME/broot/launcher/bash/br ] && source $XDG_CONFIG_HOME/broot/launcher/bash/br
