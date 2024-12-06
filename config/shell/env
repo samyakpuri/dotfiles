@@ -25,7 +25,6 @@ export INPUTRC="$XDG_CONFIG_HOME"/inputrc
 export ZDOTDIR="$XDG_CONFIG_HOME"/zsh
 export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export PASSWORD_STORE_DIR="$XDG_DATA_HOME"/password-store
-export LESSHISTFILE="-"
 
 # Other program settings:
 #export BIB="$HOME/dox/latex/uni.bib"
@@ -38,7 +37,7 @@ export RUSTUP_HOME="$XDG_DATA_HOME"/rustup
 
 # History Variables
 export HISTCONTROL=erasedups # Ignore duplicate entries in history
-export HISTFILE="$XDG_STATE_HOME/zsh/history"
+export HISTFILE="${XDG_STATE_HOME}/zsh/history"
 export HISTSIZE=1000000 # Increases size of history
 export SAVEHIST=1000000
 export HISTIGNORE="&:ls:ll:la:l.:pwd:exit:clear:clr:[bf]g"
@@ -121,12 +120,14 @@ source ${XDG_CONFIG_HOME}/shell/path_functions
 
 scripts=""
 [ -d ${HOME}]/.local/bin/scripts ] && scripts=$(du --exclude ".git" "$HOME/.local/bin/scripts/" | cut -f2 | grep -v cron | tr '\n' ' ' | sed 's/:*$//')
-# +path.prepend PATH ${HOME}/.local/bin ${scripts} ${XDG_CONFIG_HOME}/emacs/bin /opt/gcc-arm-none-eabi/bin/ ${HOME}/.nix-profile/bin/ ${HOME}/go/bin
 +path.prepend PATH ${CARGO_HOME}/bin
 +path.prepend PATH ${GO_PATH}/bin
 +path.prepend PATH ${HOME}/.nix-profile/bin
 +path.prepend PATH /opt/gcc-arm-none-eabi/bin
 +path.prepend PATH ${XDG_CONFIG_HOME}/emacs/bin
 +path.prepend PATH ${HOME}/.local/bin
++path.prepend PATH ${XDG_DATA_HOME}/npm/bin
 
-# export PATH=${HOME}/.local/bin:${XDG_CONFIG_HOME}/emacs/bin:/opt/gcc-arm-none-eabi/bin:${HOME}/.nix-profile/bin:${GOPATH}/bin:${CARGO_HOME}/bin:${PATH}
+export STM32CubeMX_PATH="$HOME/.local/bin/STM32CubeMX"
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
