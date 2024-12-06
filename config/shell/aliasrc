@@ -107,9 +107,9 @@ fi
 alias ta="tmux attach -t"
 
 # wait for ssh and then ssh
-# usage: wssh <hostname>
-# example: wssh myserver
-wsssh() {
+# usage: ussh <hostname>
+# example: ussh myserver
+ussh() {
 	name="$1"
 	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
 	until nc -zw 2 "$ipaddr" 22; do sleep 2; done && ssh $name
@@ -122,6 +122,39 @@ wssh() {
 	name="$1"
 	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
 	until nc -zw 2 "$ipaddr" 22; do sleep 2; done
+}
+
+# wait for vnc
+# usage: wvnc <hostname>
+# example: wvnc myserver
+wvnc() {
+	name="$1"
+	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
+	until nc -zw 2 "$ipaddr" 5900; do
+		sleep 2
+	done
+}
+
+# Create c files
+# usage: cfiles <filename>
+# example: cfiles test
+cfiles() {
+	name="$1"
+	touch "$name."{c,h}
+}
+
+# Create cpp files
+# usage: cpfiles <filename>
+# example: cpfiles test
+cpfiles() {
+	name="$1"
+	touch "$name."{cxx,hxx}
+}
+
+# Create CMakeLists
+# usage cmakel
+cmakel() {
+	touch CMakeLists.txt
 }
 
 # vim: fdm=marker ft=sh
