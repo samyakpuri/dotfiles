@@ -19,6 +19,7 @@
     plug "zap-zsh/supercharge"
     plug "zap-zsh/vim"
     plug "zap-zsh/fzf"
+    plug "joshskidmore/zsh-fzf-history-search"
     plug "zsh-users/zsh-syntax-highlighting"
     plug "zsh-users/zsh-history-substring-search"
     plug "sunlei/zsh-ssh"
@@ -286,7 +287,7 @@
 
     bindkey '^O' clear-screen
 
-    bindkey '^r' history-incremental-search-backward
+    # bindkey '^r' history-incremental-search-backward
     autoload -z edit-command-line
     zle -N edit-command-line
     bindkey '^X^E' edit-command-line
@@ -390,11 +391,12 @@
     autosuggest_partial_wordwise () {
         if [[ $CURSOR -lt ${#BUFFER} && $KEYMAP != vicmd ||
               $CURSOR -lt $((${#BUFFER} - 1)) ]]; then
+        # if [[ $CURSOR == $#BUFFER ]]; then
           # if cursor is at end of buffer invoke forward-word widget
-          zle forward-word
+          zle forward-char
         else
           # if cursor is not at end of buffer invoke forward-char widget
-          zle forward-char
+          zle forward-word
         fi
     }
 
@@ -404,21 +406,25 @@
     # Add autosuggest_partial_wordwise to IGNORE
     ZSH_AUTOSUGGEST_IGNORE_WIDGETS+=(autosuggest_partial_wordwise)
 
-    # ussh ssh slogin hosts Autocompletion
+    # ussh wssh ssh slogin hosts Autocompletion
     h=()
     if [[ -r ~/.ssh/config ]]; then
         h=($h ${${${(@M)${(f)"$(cat ~/.ssh/config)"}:#Host *}#Host }:#*[*?]*})
     fi
     if [[ $#h -gt 0 ]]; then
-        zstyle ':completion:*:ssh:*' hosts $h
-        zstyle ':completion:*:slogin:*' hosts $h
-        zstyle ':completion:*:ussh:*' hosts $h
+        zstyle -e ':completion:*:ssh:*' hosts    'reply=($h)'
+        zstyle -e ':completion:*:slogin:*' hosts 'reply=($h)'
+        zstyle -e ':completion:*:ussh:*' hosts   'reply=($h)'
+        zstyle -e ':completion:*:wssh:*' hosts   'reply=($h)'
+        zstyle -e ':completion:*:wvnc:*' hosts   'reply=($h)'
     fi
 
 #}}}
 
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
+
+export HISTFILE="${XDG_STATE_HOME}/zsh/history"
 
 [ -f $XDG_DATA_HOME/cargo/env ] && source $XDG_DATA_HOME/cargo/env 
 [ -f $XDG_CONFIG_HOME/broot/launcher/bash/br ] && source $XDG_CONFIG_HOME/broot/launcher/bash/br
