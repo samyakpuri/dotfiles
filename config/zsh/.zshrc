@@ -428,3 +428,6 @@ export HISTFILE="${XDG_STATE_HOME}/zsh/history"
 
 [ -f $XDG_DATA_HOME/cargo/env ] && source $XDG_DATA_HOME/cargo/env 
 [ -f $XDG_CONFIG_HOME/broot/launcher/bash/br ] && source $XDG_CONFIG_HOME/broot/launcher/bash/br
+
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
