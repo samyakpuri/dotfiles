@@ -1,0 +1,158 @@
+#!/bin/sh
+
+# Common function to resolve hostname and wait for port
+# Usage: _wait_for_port <hostname> <port> <timeout> <service_name>
+_wait_for_port() {
+    local name="$1"
+    local port="$2"
+    local timeout="$3"
+    local service="$4"
+    local start_time=$(date +%s)
+
+    # Get IP address from SSH config
+    local ipaddr
+    ipaddr=$(ssh -G "$name" 2>/dev/null | awk '/^hostname / { print $2 }')
+    
+    if [ -z "$ipaddr" ]; then
+        echo "Error: Could not resolve hostname '$name'"
+        return 1
+    fi
+
+    echo "Waiting for $service on $name ($ipaddr:$port)..."
+    until nc -zw 2 "$ipaddr" "$port" 2>/dev/null; do
+        local current_time=$(date +%s)
+        local elapsed=$((current_time - start_time))
+        
+        if [ $elapsed -ge $timeout ]; then
+            echo "Timeout after ${timeout} seconds waiting for $name"
+            return 1
+        fi
+        
+        echo -n "."
+        sleep 2
+    done
+    echo -e "\n$service available on $name:$port"
+    return 0
+}
+
+# Wait for SSH and then connect
+# Usage: ussh <hostname> [timeout_seconds]
+# Example: ussh myserver 60
+ussh() {
+    local name="$1"
+    local timeout="${2:-300}"  # Default timeout of 5 minutes
+
+    if [ -z "$name" ]; then
+        echo "Error: Hostname required"
+        echo "Usage: ussh <hostname> [timeout_seconds]"
+        return 1
+    fi
+
+    if _wait_for_port "$name" 22 "$timeout" "SSH"; then
+        ssh "$name"
+    fi
+}
+
+# Wait for SSH to become available
+# Usage: wssh <hostname> [timeout_seconds]
+# Example: wssh myserver 60
+wssh() {
+    local name="$1"
+    local timeout="${2:-300}"  # Default timeout of 5 minutes
+
+    if [ -z "$name" ]; then
+        echo "Error: Hostname required"
+        echo "Usage: wssh <hostname> [timeout_seconds]"
+        return 1
+    fi
+
+    _wait_for_port "$name" 22 "$timeout" "SSH"
+}
+
+# Wait for VNC to become available
+# Usage: wvnc <hostname> [port] [timeout_seconds]
+# Example: wvnc myserver 5901 60
+wvnc() {
+    local name="$1"
+    local port="${2:-5900}"  # Default VNC port
+    local timeout="${3:-300}"  # Default timeout of 5 minutes
+
+    if [ -z "$name" ]; then
+        echo "Error: Hostname required"
+        echo "Usage: wvnc <hostname> [port] [timeout_seconds]"
+        return 1
+    fi
+
+    _wait_for_port "$name" "$port" "$timeout" "VNC"
+}
+
+# Create empty C files
+# Usage: cfiles <filename> [directory]
+# Example: cfiles myproject src
+cfiles() {
+    local name="$1"
+    local dir="${2:-.}"  # Default to current directory
+    
+    if [ -z "$name" ]; then
+        echo "Error: Filename required"
+        echo "Usage: cfiles <filename> [directory]"
+        return 1
+    fi
+
+    # Create directory if it doesn't exist
+    mkdir -p "$dir"
+    
+    touch "$dir/$name."{c,h}
+    echo "Created $name.c and $name.h in $dir/"
+}
+
+# Create empty C++ files
+# Usage: cpfiles <filename> [directory]
+# Example: cpfiles myproject src
+cpfiles() {
+    local name="$1"
+    local dir="${2:-.}"  # Default to current directory
+    
+    if [ -z "$name" ]; then
+        echo "Error: Filename required"
+        echo "Usage: cpfiles <filename> [directory]"
+        return 1
+    fi
+
+    # Create directory if it doesn't exist
+    mkdir -p "$dir"
+    
+    touch "$dir/$name."{cxx,hxx}
+    echo "Created $name.cxx and $name.hxx in $dir/"
+}
+
+# Create empty CMakeLists.txt
+# Usage: cmakel [-f]
+# Example: cmakel -f
+cmakel() {
+    local force=0
+    
+    # Parse options
+    while getopts "f" opt; do
+        case $opt in
+            f) force=1 ;;
+            *) echo "Usage: cmakel [-f]"; return 1 ;;
+        esac
+    done
+
+    if [ -f "CMakeLists.txt" ]; then
+        if [ $force -eq 1 ]; then
+            cp CMakeLists.txt CMakeLists.txt.bak
+            touch CMakeLists.txt
+            echo "Backed up existing CMakeLists.txt and created new empty one"
+        else
+            echo "Error: CMakeLists.txt already exists. Use -f to force creation with backup"
+            return 1
+        fi
+    else
+        touch CMakeLists.txt
+        echo "Created empty CMakeLists.txt"
+    fi
+}
+
+# vim: fdm=marker ft=sh

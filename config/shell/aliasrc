@@ -10,10 +10,8 @@ mcd() {
 }
 
 # Editor alias
-alias lvim="NVIM_APPNAME=lvim nvim"
 alias e='$EDITOR'
-alias le="lvim"
-alias sudoe="EDITOR=lvim sudo -e "
+alias sudoe="EDITOR=nvim sudo -e "
 alias pb="nc termbin.com 9999" # pasting from terminal
 
 if command -v rg >/dev/null 2>&1; then
@@ -68,7 +66,8 @@ alias gc="git commit -m"
 alias gca="git commit --amend"
 alias gcan='git commit --amend --no-edit'
 alias gco="git checkout"
-alias gcb="git checkout -b"
+alias gsw="git switch"
+alias gsc="git switch -c"
 alias gcm="git checkout master"
 alias gd="git diff -w"
 alias gds="git diff -w --staged"
@@ -80,8 +79,7 @@ alias gstpo="git stash pop"
 alias ff="gpr && git pull --ff-only"
 alias gpull="git pull"
 alias gpush="git push"
-alias gl=pretty_git_log
-alias gla=pretty_git_log_all
+alias gl="git lg"
 alias grc='git rebase --continue'
 alias gra='git rebase --abort'
 alias git-current-branch="git branch | grep \* | cut -d ' ' -f2"
@@ -105,56 +103,5 @@ fi
 #}}}
 
 alias ta="tmux attach -t"
-
-# wait for ssh and then ssh
-# usage: ussh <hostname>
-# example: ussh myserver
-ussh() {
-	name="$1"
-	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
-	until nc -zw 2 "$ipaddr" 22; do sleep 2; done && ssh $name
-}
-
-# wait for ssh
-# usage: wssh <hostname>
-# example: wssh myserver
-wssh() {
-	name="$1"
-	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
-	until nc -zw 2 "$ipaddr" 22; do sleep 2; done
-}
-
-# wait for vnc
-# usage: wvnc <hostname>
-# example: wvnc myserver
-wvnc() {
-	name="$1"
-	ipaddr=$(ssh -G "$name" | awk '/^hostname / { print $2 }')
-	until nc -zw 2 "$ipaddr" 5900; do
-		sleep 2
-	done
-}
-
-# Create c files
-# usage: cfiles <filename>
-# example: cfiles test
-cfiles() {
-	name="$1"
-	touch "$name."{c,h}
-}
-
-# Create cpp files
-# usage: cpfiles <filename>
-# example: cpfiles test
-cpfiles() {
-	name="$1"
-	touch "$name."{cxx,hxx}
-}
-
-# Create CMakeLists
-# usage cmakel
-cmakel() {
-	touch CMakeLists.txt
-}
 
 # vim: fdm=marker ft=sh
