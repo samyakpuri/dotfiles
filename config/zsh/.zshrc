@@ -213,10 +213,12 @@
     #{{{ Global Alias
 
         alias -g G='|& grep'
-        alias -g C='| wc -l'
+        alias -g W='| wc -l'
         alias -g H='| head'
         alias -g L='| less'
         alias -g N='&> /dev/null'
+        alias -g C='|& xclip'
+        alias -g TC="|& tee >(xclip)"
 
         #{{{ Alias expansion
             # globalias() {
@@ -432,6 +434,28 @@
     fi
 
 #}}}
+
+#{{{ Bash like commmand not found
+command_not_found_handle () 
+{ 
+    if [ -x /usr/lib/command-not-found ]; then
+        /usr/lib/command-not-found -- "$1";
+        return $?;
+    else
+        if [ -x /usr/share/command-not-found/command-not-found ]; then
+            /usr/share/command-not-found/command-not-found -- "$1";
+            return $?;
+        else
+            printf "%s: command not found\n" "$1" 1>&2;
+            return 127;
+        fi;
+    fi
+}
+#}}}
+
+if [ -f /etc/zsh_command_not_found ]; then
+    . /etc/zsh_command_not_found
+fi
 
 command -v starship &> /dev/null && eval "$(starship init zsh)"
 command -v zoxide &> /dev/null && eval "$(zoxide init zsh)"
