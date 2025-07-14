@@ -103,5 +103,7 @@ fi
 #}}}
 
 alias ta="tmux attach -t"
+alias xclip="xclip -selection clipboard"
+alias clip="tee >(xclip)"
 
 # vim: fdm=marker ft=sh
