@@ -217,8 +217,17 @@
         alias -g H='| head'
         alias -g L='| less'
         alias -g N='&> /dev/null'
-        alias -g C='|& xclip'
-        alias -g TC="|& tee >(xclip)"
+        # Set clipboard command based on session type
+        if [[ "$XDG_SESSION_TYPE" == "wayland" ]] && command -v wl-copy >/dev/null 2>&1; then
+            _CLIP_CMD="wl-copy"
+        elif command -v xclip >/dev/null 2>&1; then
+            _CLIP_CMD="xclip -selection clipboard"
+        else
+            _CLIP_CMD="cat"
+        fi
+
+        alias -g C="|& $_CLIP_CMD"
+        alias -g TC="|& tee >($_CLIP_CMD)"
 
         #{{{ Alias expansion
             # globalias() {
