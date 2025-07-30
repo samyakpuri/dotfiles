@@ -86,44 +86,95 @@ wvnc() {
     _wait_for_port "$name" "$port" "$timeout" "VNC"
 }
 
-# Create empty C files
-# Usage: cfiles <filename> [directory]
-# Example: cfiles myproject src
-cfiles() {
-    local name="$1"
-    local dir="${2:-.}"  # Default to current directory
+# Common function to create file pairs with language-based extensions
+# Usage: _create_files_with_parsing <language> "$@"
+_create_files_with_parsing() {
+    local lang="$1"
+    shift
     
-    if [ -z "$name" ]; then
-        echo "Error: Filename required"
-        echo "Usage: cfiles <filename> [directory]"
+    # Extension dictionary
+    local ext1 ext2
+    case "$lang" in
+        c)
+            ext1="c"
+            ext2="h"
+            ;;
+        cpp|c++|cxx)
+            ext1="cxx"
+            ext2="hxx"
+            ;;
+        *)
+            echo "Error: Unknown language '$lang'"
+            echo "Supported languages: c, cpp, c++, cxx"
+            return 1
+            ;;
+    esac
+    
+    local dir="."
+    local filenames=()
+    
+    # Parse all arguments, collecting filenames and looking for -d option
+    while [ $# -gt 0 ]; do
+        case "$1" in
+            -d)
+                if [ -n "$2" ]; then
+                    dir="$2"
+                    shift 2
+                else
+                    echo "Error: -d option requires a directory argument"
+                    return 1
+                fi
+                ;;
+            -*)
+                echo "Error: Unknown option $1"
+                return 1
+                ;;
+            *)
+                filenames+=("$1")
+                shift
+                ;;
+        esac
+    done
+    
+    if [ ${#filenames[@]} -eq 0 ]; then
+        echo "Error: At least one filename required"
         return 1
     fi
 
     # Create directory if it doesn't exist
     mkdir -p "$dir"
     
-    touch "$dir/$name."{c,h}
-    echo "Created $name.c and $name.h in $dir/"
+    # Create file pairs for all filenames
+    for name in "${filenames[@]}"; do
+        touch "$dir/$name.$ext1" "$dir/$name.$ext2"
+        echo "Created $name.$ext1 and $name.$ext2 in $dir/"
+    done
+}
+
+# Create empty C files
+# Usage: cfiles [-d directory] <filename> [filename2]
+# Example: cfiles -d src main utils parser
+# Example: cfiles main utils parser -d src
+cfiles() {
+    if [ $# -eq 0 ]; then
+        echo "Usage: cfiles [-d directory] <filename> [filename2] ..."
+        return 1
+    fi
+    
+    _create_files_with_parsing "c" "$@"
 }
 
 # Create empty C++ files
-# Usage: cpfiles <filename> [directory]
-# Example: cpfiles myproject src
+# Usage: cpfiles [-d directory] <filename> [filename2]
+# Example: cpfiles -d src main utils parser
+# Example: cpfiles main utils parser -d src
 cpfiles() {
-    local name="$1"
-    local dir="${2:-.}"  # Default to current directory
-    
-    if [ -z "$name" ]; then
-        echo "Error: Filename required"
-        echo "Usage: cpfiles <filename> [directory]"
+    if [ $# -eq 0 ]; then
+        echo "Usage: cpfiles [-d directory] <filename> [filename2] ..."
         return 1
     fi
-
-    # Create directory if it doesn't exist
-    mkdir -p "$dir"
     
-    touch "$dir/$name."{cxx,hxx}
-    echo "Created $name.cxx and $name.hxx in $dir/"
+    _create_files_with_parsing "cpp" "$@"
 }
 
 # Create empty CMakeLists.txt
