@@ -111,7 +111,7 @@ else
 fi
 
 alias ta="tmux attach -t"
-alias xclip="_CLIP_CMD"
-alias clip="tee >(_CLIP_CMD)"
+alias xclip="$_CLIP_CMD"
+alias clip="tee >(\$_CLIP_CMD)"
 
 # vim: fdm=marker ft=sh
