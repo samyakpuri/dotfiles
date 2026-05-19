@@ -64,10 +64,15 @@ if (Get-Module -ListAvailable -Name PSFzf -ErrorAction SilentlyContinue) {
 
 Write-Host "`nCreating PowerShell symlinks..." -ForegroundColor Cyan
 
-# PowerShell profile
+# PowerShell 7 profile
 New-Symlink `
     -Target "$dotfilesDir\config\powershell\profile.ps1" `
     -Link   $PROFILE
+
+# Windows PowerShell 5.1 profile
+New-Symlink `
+    -Target "$dotfilesDir\config\powershell\profile.ps1" `
+    -Link   "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 # Starship config (shared with Linux — already in repo)
 New-Symlink `
