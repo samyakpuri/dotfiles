@@ -14,7 +14,7 @@ $fill\
 $all\
 $cmd_duration $jobs $time\
 $line_break\
-$character
+$character\
 """
 
 # Don't print a new line at the start of the prompt
