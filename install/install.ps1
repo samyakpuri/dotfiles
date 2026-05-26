@@ -13,6 +13,7 @@ if ($LASTEXITCODE -ne 0) {
     Write-Error "Not inside a git repository. Run this from the dotfiles directory."
     exit 1
 }
+$cfg = "$dotfilesDir\config"
 
 function New-Symlink {
     param($Target, $Link)
@@ -26,6 +27,11 @@ function New-Symlink {
             Write-Host "  already linked: $Link" -ForegroundColor DarkGray
             return
         }
+        # Safety: refuse to delete a real (non-symlink) directory
+        if ($existing.PSIsContainer -and -not $existing.LinkType) {
+            Write-Warning "  skipped: real directory exists at $Link — remove manually first"
+            return
+        }
         Remove-Item $Link -Recurse -Force
     }
     $linkParent = Split-Path -Parent $Link
@@ -36,47 +42,167 @@ function New-Symlink {
     Write-Host "  linked: $Link -> $Target" -ForegroundColor Green
 }
 
+function Test-Cmd { param($name) [bool](Get-Command $name -ErrorAction SilentlyContinue) }
+
+# ---------------------------------------------------------------------------
 # Check for optional recommended tools and warn if missing
+# ---------------------------------------------------------------------------
 Write-Host "`nChecking recommended tools..." -ForegroundColor Cyan
-$recommended = @{
-    'starship' = 'winget install Starship.Starship'
-    'eza'      = 'winget install eza-community.eza'
-    'bat'      = 'winget install sharkdp.bat'
-    'rg'       = 'winget install BurntSushi.ripgrep.MSVC'
-    'fzf'      = 'winget install junegunn.fzf'
-    'zoxide'   = 'winget install ajeetdsouza.zoxide'
-    'nvim'     = 'winget install Neovim.Neovim'
+$recommended = [ordered]@{
+    'starship'  = 'winget install Starship.Starship'
+    'nvim'      = 'winget install Neovim.Neovim'
+    'eza'       = 'winget install eza-community.eza'
+    'bat'       = 'winget install sharkdp.bat'
+    'rg'        = 'winget install BurntSushi.ripgrep.MSVC'
+    'fzf'       = 'winget install junegunn.fzf'
+    'zoxide'    = 'winget install ajeetdsouza.zoxide'
+    'alacritty' = 'winget install Alacritty.Alacritty'
+    'kitty'     = 'winget install kovidgoyal.kitty'
+    'tmux'      = 'winget install tmux'
+    'vim'       = 'winget install vim.vim'
+    'npm'       = 'winget install OpenJS.NodeJS'
+    'wget'      = 'winget install GNU.Wget2'
+    'git'       = 'winget install Git.Git'
 }
 foreach ($tool in $recommended.Keys) {
-    if (Get-Command $tool -ErrorAction SilentlyContinue) {
+    if (Test-Cmd $tool) {
         Write-Host "  ✅ $tool" -ForegroundColor Green
     } else {
         Write-Host "  ❌ $tool  (install: $($recommended[$tool]))" -ForegroundColor Yellow
     }
 }
 
-# Check PSFzf module
 if (Get-Module -ListAvailable -Name PSFzf -ErrorAction SilentlyContinue) {
     Write-Host "  ✅ PSFzf" -ForegroundColor Green
 } else {
     Write-Host "  ❌ PSFzf  (install: Install-Module -Name PSFzf)" -ForegroundColor Yellow
 }
 
-Write-Host "`nCreating PowerShell symlinks..." -ForegroundColor Cyan
+# ---------------------------------------------------------------------------
+# PowerShell
+# ---------------------------------------------------------------------------
+Write-Host "`nPowerShell..." -ForegroundColor Cyan
+New-Symlink -Target "$cfg\powershell\profile.ps1" -Link $PROFILE
+New-Symlink -Target "$cfg\powershell\profile.ps1" `
+            -Link   "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
-# PowerShell 7 profile
-New-Symlink `
-    -Target "$dotfilesDir\config\powershell\profile.ps1" `
-    -Link   $PROFILE
+# ---------------------------------------------------------------------------
+# Git
+# ---------------------------------------------------------------------------
+Write-Host "`nGit..." -ForegroundColor Cyan
 
-# Windows PowerShell 5.1 profile
-New-Symlink `
-    -Target "$dotfilesDir\config\powershell\profile.ps1" `
-    -Link   "$HOME\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
+$gitconfigPath = "$HOME\.gitconfig"
+if (-not (Test-Path $gitconfigPath)) {
+    New-Item -Path $gitconfigPath -ItemType File -Force | Out-Null
+}
+$gitconfigContent = Get-Content $gitconfigPath -Raw -ErrorAction SilentlyContinue
 
-# Starship config (shared with Linux — already in repo)
-New-Symlink `
-    -Target "$dotfilesDir\config\starship.toml" `
-    -Link   "$HOME\.config\starship.toml"
+# Ensure [user] section exists
+if ($gitconfigContent -notmatch '(?m)^\[user\]') {
+    Write-Host "  No [user] found — enter your git identity:" -ForegroundColor Yellow
+    $gitName  = Read-Host "  Name"
+    $gitEmail = Read-Host "  Email"
+    git config --global user.name  $gitName
+    git config --global user.email $gitEmail
+    Write-Host "  Set user: $gitName <$gitEmail>" -ForegroundColor Green
+} else {
+    $existing = "$(git config --global user.name) <$(git config --global user.email)>"
+    Write-Host "  [user] already set: $existing" -ForegroundColor DarkGray
+}
+
+# Ensure [include] points to dotfiles git config
+$includeTarget = "~/Documents/dotfiles/config/git/config"
+if ($gitconfigContent -notmatch [regex]::Escape($includeTarget)) {
+    git config --global include.path $includeTarget
+    Write-Host "  Added [include] -> dotfiles git config" -ForegroundColor Green
+} else {
+    Write-Host "  [include] already present" -ForegroundColor DarkGray
+}
+
+# Symlink git ignore into XDG path
+New-Symlink -Target "$cfg\git\ignore" -Link "$HOME\.config\git\ignore"
+
+# ---------------------------------------------------------------------------
+# Starship
+# ---------------------------------------------------------------------------
+if (Test-Cmd starship) {
+    Write-Host "`nStarship..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\starship.toml" -Link "$HOME\.config\starship.toml"
+}
+
+# ---------------------------------------------------------------------------
+# Neovim  (%LOCALAPPDATA%\nvim)
+# ---------------------------------------------------------------------------
+if (Test-Cmd nvim) {
+    Write-Host "`nNeovim..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\nvim" -Link "$env:LOCALAPPDATA\nvim"
+}
+
+# ---------------------------------------------------------------------------
+# Alacritty  (%APPDATA%\alacritty)
+# ---------------------------------------------------------------------------
+if (Test-Cmd alacritty) {
+    Write-Host "`nAlacritty..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\alacritty\alacritty.yml" `
+                -Link   "$env:APPDATA\alacritty\alacritty.yml"
+}
+
+# ---------------------------------------------------------------------------
+# bat  (%APPDATA%\bat)
+# ---------------------------------------------------------------------------
+if (Test-Cmd bat) {
+    Write-Host "`nbat..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\bat" -Link "$env:APPDATA\bat"
+}
+
+# ---------------------------------------------------------------------------
+# kitty  (%APPDATA%\kitty)
+# ---------------------------------------------------------------------------
+if (Test-Cmd kitty) {
+    Write-Host "`nkitty..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\kitty" -Link "$env:APPDATA\kitty"
+}
+
+# ---------------------------------------------------------------------------
+# npm  (~/.npmrc)
+# ---------------------------------------------------------------------------
+if (Test-Cmd npm) {
+    Write-Host "`nnpm..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\npm\npmrc" -Link "$HOME\.npmrc"
+}
+
+# ---------------------------------------------------------------------------
+# tmux  (~/.tmux.conf)
+# ---------------------------------------------------------------------------
+if (Test-Cmd tmux) {
+    Write-Host "`ntmux..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\tmux\tmux.conf"       -Link "$HOME\.tmux.conf"
+    New-Symlink -Target "$cfg\tmux\tmux.reset.conf" -Link "$HOME\.tmux.reset.conf"
+}
+
+# ---------------------------------------------------------------------------
+# Vim  (~/.vimrc)
+# ---------------------------------------------------------------------------
+if (Test-Cmd vim) {
+    Write-Host "`nVim..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\vim\vimrc" -Link "$HOME\.vimrc"
+}
+
+# ---------------------------------------------------------------------------
+# wget  (~/.wgetrc)
+# ---------------------------------------------------------------------------
+if (Test-Cmd wget) {
+    Write-Host "`nwget..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\wget\wgetrc" -Link "$HOME\.wgetrc"
+}
+
+# ---------------------------------------------------------------------------
+# Python  ($PYTHONSTARTUP → ~/.pythonrc)
+# ---------------------------------------------------------------------------
+if (Test-Cmd python) {
+    Write-Host "`nPython..." -ForegroundColor Cyan
+    New-Symlink -Target "$cfg\python\pythonrc" -Link "$HOME\.pythonrc"
+    Write-Host "  note: set PYTHONSTARTUP=$HOME\.pythonrc in your environment" -ForegroundColor DarkGray
+}
 
 Write-Host "`nDone! Restart your shell or run: . `$PROFILE" -ForegroundColor Green
