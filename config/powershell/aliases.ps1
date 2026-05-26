@@ -42,6 +42,8 @@ function p { ping 9.9.9.9 }
 # {{{ Git
 # Note: 'gc' shadows Get-Content alias; use Get-Content by full name if needed
 #       'gs' shadows Get-Service alias; use Get-Service by full name if needed
+#       'gl' shadows Get-Location alias; explicitly removed below
+Remove-Alias gl -Force -ErrorAction SilentlyContinue
 function g    { git $args }
 function ga   { git add $args }
 function gb   { git branch $args }
