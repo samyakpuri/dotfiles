@@ -54,6 +54,7 @@ $recommended = [ordered]@{
     'eza'       = 'winget install eza-community.eza'
     'bat'       = 'winget install sharkdp.bat'
     'rg'        = 'winget install BurntSushi.ripgrep.MSVC'
+    'delta'     = 'winget install dandavison.delta'
     'fzf'       = 'winget install junegunn.fzf'
     'zoxide'    = 'winget install ajeetdsouza.zoxide'
     'alacritty' = 'winget install Alacritty.Alacritty'
