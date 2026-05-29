@@ -3,7 +3,7 @@
 [core]
 	editor = nvim
 	excludesfile = ~/.config/git/ignore
-	autocrlf = input
+	autocrlf = true
 	; pager = diff-so-fancy | less --tabs=2 -RFXS --patter '^(Date|added|deleted|modified): '
 	pager = delta
 
@@ -79,8 +79,6 @@
 
 	# diff
 	d = diff						# diff unstaged changes
-	dc = diff --cached				# diff staged changes
-	last = diff HEAD^				# diff last committed change# diff unstaged changes
 	dc = diff --cached				# diff staged changes
 	last = diff HEAD^				# diff last committed change
 
