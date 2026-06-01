@@ -3,7 +3,7 @@
 #
 #   Create symlinks for PowerShell / Windows dotfiles
 #   Run from the dotfiles directory (or anywhere — uses git root)
-#   Requires Developer Mode OR run as Administrator for symlink creation
+#   Symlinks preferred; falls back to junctions (dirs) or stubs (files) without elevation
 #
 ################################################################################
 
@@ -27,6 +27,14 @@ function New-Symlink {
             Write-Host "  already linked: $Link" -ForegroundColor DarkGray
             return
         }
+        # Stub .ps1: already forwards to target
+        if ($existing.Extension -eq '.ps1' -and -not $existing.LinkType) {
+            $stubLine = ". `"$Target`""
+            if ((Get-Content $Link -Raw) -match [regex]::Escape($stubLine)) {
+                Write-Host "  already stubbed: $Link" -ForegroundColor DarkGray
+                return
+            }
+        }
         # Safety: refuse to delete a real (non-symlink) directory
         if ($existing.PSIsContainer -and -not $existing.LinkType) {
             Write-Warning "  skipped: real directory exists at $Link — remove manually first"
@@ -38,8 +46,27 @@ function New-Symlink {
     if (-not (Test-Path $linkParent)) {
         New-Item -Type Directory -Path $linkParent -Force | Out-Null
     }
-    New-Item -ItemType SymbolicLink -Path $Link -Target $Target | Out-Null
-    Write-Host "  linked: $Link -> $Target" -ForegroundColor Green
+    $targetItem = Get-Item $Target
+    $isDir = $targetItem.PSIsContainer
+    # Try symlink first; fall back to junction (dirs) or stub (files) when elevation is required
+    try {
+        New-Item -ItemType SymbolicLink -Path $Link -Target $Target -ErrorAction Stop | Out-Null
+        Write-Host "  linked: $Link -> $Target" -ForegroundColor Green
+    } catch {
+        if ($_ -match 'Administrator privilege') {
+            if ($isDir) {
+                New-Item -ItemType Junction -Path $Link -Target $Target | Out-Null
+                Write-Host "  junctioned: $Link -> $Target" -ForegroundColor Yellow
+            } elseif ([System.IO.Path]::GetExtension($Link) -eq '.ps1') {
+                Set-Content -Path $Link -Value ". `"$Target`"" -Encoding UTF8
+                Write-Host "  stubbed: $Link -> $Target" -ForegroundColor Yellow
+            } else {
+                Write-Warning "  skipped (needs elevation): $Link — enable Developer Mode or run as Admin to create file symlinks"
+            }
+        } else {
+            Write-Warning "  failed: $Link — $_"
+        }
+    }
 }
 
 function Test-Cmd { param($name) [bool](Get-Command $name -ErrorAction SilentlyContinue) }
