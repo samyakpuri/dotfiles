@@ -18,6 +18,8 @@ if ($_self.LinkType) {
 # Source aliases and functions
 . "$PSScriptDir\aliases.ps1"
 . "$PSScriptDir\functions.ps1"
+. "$PSScriptDir\git.ps1"
+. "$PSScriptDir\ssh.ps1"
 
 # {{{ Starship prompt
 if (Get-Command starship -ErrorAction SilentlyContinue) {
@@ -57,8 +59,11 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 
 # {{{ PSReadLine (inline suggestions + tab completion like zsh/fish)
 # Inline autosuggestions from history (like zsh-autosuggestions / fish)
-Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-Set-PSReadLineOption -PredictionViewStyle InlineView
+# PredictionSource/ViewStyle require PSReadLine 2.1+ (ships with PS7; PS5 skips)
+if ($PSVersionTable.PSVersion.Major -ge 7) {
+    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+    Set-PSReadLineOption -PredictionViewStyle InlineView
+}
 
 # Right arrow or End to accept the current inline suggestion
 Set-PSReadLineKeyHandler -Key RightArrow -Function ForwardWord
