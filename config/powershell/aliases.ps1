@@ -35,7 +35,7 @@ if ($Host.Name -eq 'ConsoleHost' -and (Get-Command bat -ErrorAction SilentlyCont
 # }}}
 
 # {{{ grep -> rg
-if (Get-Command rg -ErrorAction SilentlyContinue) {
+if ($Host.Name -eq 'ConsoleHost' -and (Get-Command rg -ErrorAction SilentlyContinue)) {
     function grep { rg $args }
 }
 # }}}
@@ -45,8 +45,20 @@ function p { ping 9.9.9.9 }
 # }}}
 
 # {{{ Unix compat
-function head { $input | Select-Object -First $(if ($args[0]) { [int]$args[0] } else { 10 }) }
-function tail { $input | Select-Object -Last  $(if ($args[0]) { [int]$args[0] } else { 10 }) }
+function head {
+    param([Parameter(Position=0)][string]$Arg1, [Parameter(Position=1)][string]$Arg2)
+    if     ($Arg1 -match '^\d+$' -and $Arg2) { Get-Content $Arg2 | Select-Object -First ([int]$Arg1) }
+    elseif ($Arg1 -match '^\d+$')             { $input | Select-Object -First ([int]$Arg1) }
+    elseif ($Arg1)                             { Get-Content $Arg1 | Select-Object -First 10 }
+    else                                       { $input | Select-Object -First 10 }
+}
+function tail {
+    param([Parameter(Position=0)][string]$Arg1, [Parameter(Position=1)][string]$Arg2)
+    if     ($Arg1 -match '^\d+$' -and $Arg2) { Get-Content $Arg2 | Select-Object -Last ([int]$Arg1) }
+    elseif ($Arg1 -match '^\d+$')             { $input | Select-Object -Last ([int]$Arg1) }
+    elseif ($Arg1)                             { Get-Content $Arg1 | Select-Object -Last 10 }
+    else                                       { $input | Select-Object -Last 10 }
+}
 function wc   { $input | Measure-Object -Line | Select-Object -ExpandProperty Lines }
 function which { Get-Command $args }
 function touch {
