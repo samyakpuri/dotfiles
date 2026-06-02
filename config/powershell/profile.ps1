@@ -58,22 +58,27 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 # }}}
 
 # {{{ PSReadLine (inline suggestions + tab completion like zsh/fish)
-# Inline autosuggestions from history (like zsh-autosuggestions / fish)
-# PredictionSource/ViewStyle require PSReadLine 2.1+ (ships with PS7; PS5 skips)
-if ($PSVersionTable.PSVersion.Major -ge 7) {
-    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-    Set-PSReadLineOption -PredictionViewStyle InlineView
+# PSReadLine is only available in ConsoleHost — not ISE, remoting, or constrained sessions.
+if ($Host.Name -eq 'ConsoleHost') {
+    # PredictionSource/ViewStyle require PSReadLine 2.1+ (ships with PS7; PS5 skips)
+    if ($PSVersionTable.PSVersion.Major -ge 7) {
+        Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+        Set-PSReadLineOption -PredictionViewStyle InlineView
+    }
+
+    # Ctrl+D exits (like bash/zsh); deletes char if line is non-empty
+    Set-PSReadLineKeyHandler -Key Ctrl+d -Function DeleteCharOrExit
+
+    # Right arrow to accept the current inline suggestion
+    Set-PSReadLineKeyHandler -Key RightArrow -Function ForwardWord
+
+    # Up/Down search history by typed prefix (like zsh-history-substring-search)
+    Set-PSReadLineKeyHandler -Key UpArrow   -Function HistorySearchBackward
+    Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+
+    # Tab shows scrollable menu (like zsh menuselect); overridden by PSFzf below if fzf present
+    Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 }
-
-# Right arrow or End to accept the current inline suggestion
-Set-PSReadLineKeyHandler -Key RightArrow -Function ForwardWord
-
-# Up/Down search history by typed prefix (like zsh-history-substring-search)
-Set-PSReadLineKeyHandler -Key UpArrow   -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-
-# Tab shows scrollable menu (like zsh menuselect); overridden by PSFzf below if fzf present
-Set-PSReadLineKeyHandler -Key Tab -Function MenuComplete
 # }}}
 
 # {{{ PSFzf (Ctrl+R history search, Ctrl+T file finder, Tab fzf completion)

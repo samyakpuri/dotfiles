@@ -9,20 +9,25 @@ function e { & $env:EDITOR $args }
 function md  { New-Item -Type Directory -Path $args }
 function mcd { New-Item -Type Directory -Path $args[0] -Force | Out-Null; Set-Location $args[0] }
 
-if (Get-Command eza -ErrorAction SilentlyContinue) {
-    function ls  { eza --group-directories-first --icons $args }
-} else {
-    function ls  { Get-ChildItem $args }
+if ($Host.Name -eq 'ConsoleHost') {
+    if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+        function cd { if ($args) { z @args } else { z ~ } }
+    }
+
+    if (Get-Command eza -ErrorAction SilentlyContinue) {
+        function ls  { eza --group-directories-first --icons $args }
+    } else {
+        function ls  { Get-ChildItem $args }
+    }
+    function l   { ls -lh $args }
+    function ll  { ls -lah $args }
+    function la  { ls -la $args }
+    function sl  { ls $args }
 }
-function l   { ls -lh $args }
-function ll  { ls -lah $args }
-function la  { ls -la $args }
-function sl  { ls $args }
 # }}}
 
 # {{{ cat / bat / less
-# Note: shadows Get-Content alias 'cat' — use Get-Content for scripting
-if (Get-Command bat -ErrorAction SilentlyContinue) {
+if ($Host.Name -eq 'ConsoleHost' -and (Get-Command bat -ErrorAction SilentlyContinue)) {
     function cat  { bat --paging=never $args }
     function catt { bat $args }
     function less { bat $args }
