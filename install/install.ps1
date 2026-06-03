@@ -226,6 +226,20 @@ if (Test-Cmd wget) {
 }
 
 # ---------------------------------------------------------------------------
+# Windows Terminal  (%LOCALAPPDATA%\Packages\...\LocalState\settings.json)
+# ---------------------------------------------------------------------------
+if ($IsWindows) {
+    Write-Host "`nWindows Terminal..." -ForegroundColor Cyan
+    $wtState = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
+    if (Test-Path $wtState) {
+        New-Symlink -Target "$cfg\windows-terminal\settings.json" `
+                    -Link   "$wtState\settings.json"
+    } else {
+        Write-Host "  skipped: Windows Terminal not installed" -ForegroundColor DarkGray
+    }
+}
+
+# ---------------------------------------------------------------------------
 # Python  ($PYTHONSTARTUP → ~/.pythonrc)
 # ---------------------------------------------------------------------------
 if (Test-Cmd python) {
