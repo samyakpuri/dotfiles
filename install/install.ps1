@@ -3,7 +3,7 @@
 #
 #   Create symlinks for PowerShell / Windows dotfiles
 #   Run from the dotfiles directory (or anywhere — uses git root)
-#   Symlinks preferred; falls back to junctions (dirs) or stubs (files) without elevation
+#   Symlinks preferred; falls back to junctions (dirs) or hardlinks (files) without elevation
 #
 ################################################################################
 
@@ -15,6 +15,25 @@ if ($LASTEXITCODE -ne 0) {
 }
 $cfg = "$dotfilesDir\config"
 
+function Test-SymlinkSupport {
+    $tmp = Join-Path $env:TEMP "symlink-probe-$(New-Guid)"
+    try {
+        New-Item -ItemType SymbolicLink -Path $tmp -Target $env:TEMP -ErrorAction Stop | Out-Null
+        Remove-Item $tmp -Force
+        return $true
+    } catch {
+        return $false
+    }
+}
+
+$useSymlinks = Test-SymlinkSupport
+if (-not $useSymlinks) {
+    Write-Host ""
+    Write-Host "  WARNING: Symlinks unavailable — falling back to junctions (dirs) and hardlinks (files)." -ForegroundColor Yellow
+    Write-Host "  For proper symlinks: Settings -> System -> For developers -> Developer Mode, then re-run." -ForegroundColor DarkGray
+    Write-Host ""
+}
+
 function New-Symlink {
     param($Target, $Link)
     if (-not (Test-Path $Target)) {
@@ -23,20 +42,12 @@ function New-Symlink {
     }
     if (Test-Path $Link) {
         $existing = Get-Item $Link -Force
-        if ($existing.LinkType -eq 'SymbolicLink' -and $existing.Target -eq $Target) {
+        if ($existing.LinkType -in 'SymbolicLink', 'HardLink', 'Junction') {
             Write-Host "  already linked: $Link" -ForegroundColor DarkGray
             return
         }
-        # Stub .ps1: already forwards to target
-        if ($existing.Extension -eq '.ps1' -and -not $existing.LinkType) {
-            $stubLine = ". `"$Target`""
-            if ((Get-Content $Link -Raw) -match [regex]::Escape($stubLine)) {
-                Write-Host "  already stubbed: $Link" -ForegroundColor DarkGray
-                return
-            }
-        }
         # Safety: refuse to delete a real (non-symlink) directory
-        if ($existing.PSIsContainer -and -not $existing.LinkType) {
+        if ($existing.PSIsContainer) {
             Write-Warning "  skipped: real directory exists at $Link — remove manually first"
             return
         }
@@ -46,26 +57,16 @@ function New-Symlink {
     if (-not (Test-Path $linkParent)) {
         New-Item -Type Directory -Path $linkParent -Force | Out-Null
     }
-    $targetItem = Get-Item $Target
-    $isDir = $targetItem.PSIsContainer
-    # Try symlink first; fall back to junction (dirs) or stub (files) when elevation is required
-    try {
+    $isDir = (Get-Item $Target).PSIsContainer
+    if ($useSymlinks) {
         New-Item -ItemType SymbolicLink -Path $Link -Target $Target -ErrorAction Stop | Out-Null
         Write-Host "  linked: $Link -> $Target" -ForegroundColor Green
-    } catch {
-        if ($_ -match 'Administrator privilege') {
-            if ($isDir) {
-                New-Item -ItemType Junction -Path $Link -Target $Target | Out-Null
-                Write-Host "  junctioned: $Link -> $Target" -ForegroundColor Yellow
-            } elseif ([System.IO.Path]::GetExtension($Link) -eq '.ps1') {
-                Set-Content -Path $Link -Value ". `"$Target`"" -Encoding UTF8
-                Write-Host "  stubbed: $Link -> $Target" -ForegroundColor Yellow
-            } else {
-                Write-Warning "  skipped (needs elevation): $Link — enable Developer Mode or run as Admin to create file symlinks"
-            }
-        } else {
-            Write-Warning "  failed: $Link — $_"
-        }
+    } elseif ($isDir) {
+        New-Item -ItemType Junction -Path $Link -Target $Target | Out-Null
+        Write-Host "  junctioned: $Link -> $Target" -ForegroundColor Yellow
+    } else {
+        New-Item -ItemType HardLink -Path $Link -Target $Target | Out-Null
+        Write-Host "  hardlinked: $Link -> $Target" -ForegroundColor Yellow
     }
 }
 
