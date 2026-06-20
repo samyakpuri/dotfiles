@@ -1,0 +1,16 @@
+{{ if ne .chezmoi.os "linux" -}}
+# Linux-only configs (X11, WMs, Linux-specific shells)
+.config/dunst
+.config/i3
+.config/i3blocks
+.config/mpd
+.config/qtile
+.config/shell
+.config/sxhkd
+.config/tmux
+.config/X11
+.config/zathura
+.config/zsh
+.config/user-dirs.dirs
+.config/user-dirs.locale
+{{ end -}}

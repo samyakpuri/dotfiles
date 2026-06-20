@@ -15,6 +15,12 @@ if ($_self.LinkType) {
     $PSScriptDir = Split-Path -Parent $_self.FullName
 }
 
+# {{{ fnm (puts the active Node/npm on PATH)
+if (Get-Command fnm -ErrorAction SilentlyContinue) {
+    fnm env --use-on-cd | Out-String | Invoke-Expression
+}
+# }}}
+
 # Source aliases and functions
 . "$PSScriptDir\aliases.ps1"
 . "$PSScriptDir\functions.ps1"
@@ -89,3 +95,9 @@ if ((Get-Command fzf -ErrorAction SilentlyContinue) -and
     Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+t' -PSReadlineChordReverseHistory 'Ctrl+r' -TabExpansion
 }
 # }}}
+
+#f45873b3-b655-43a6-b217-97c00aa0db58 PowerToys CommandNotFound module
+if (Get-Module -ListAvailable -Name Microsoft.WinGet.CommandNotFound -ErrorAction SilentlyContinue) {
+    Import-Module -Name Microsoft.WinGet.CommandNotFound
+}
+#f45873b3-b655-43a6-b217-97c00aa0db58
