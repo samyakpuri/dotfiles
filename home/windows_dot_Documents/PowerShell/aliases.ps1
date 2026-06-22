@@ -10,12 +10,20 @@ function md  { New-Item -Type Directory -Path $args }
 function mcd { New-Item -Type Directory -Path $args[0] -Force | Out-Null; Set-Location $args[0] }
 
 if ($Host.Name -eq 'ConsoleHost') {
+    # Built-in aliases (ls -> Get-ChildItem, cd -> Set-Location) take precedence
+    # over same-named functions, so they must be removed first.
+    Remove-Item -Path Alias:ls, Alias:cd -Force -ErrorAction SilentlyContinue
+
     if (Get-Command zoxide -ErrorAction SilentlyContinue) {
         function cd { if ($args) { z @args } else { z ~ } }
     }
 
     if (Get-Command eza -ErrorAction SilentlyContinue) {
-        function ls  { eza --group-directories-first --icons $args }
+        # Legacy per-user junctions (Application Data, Cookies, etc.) are broken/
+        # self-referential reparse points on modern Windows; eza's long mode
+        # readlinks every entry (even hidden ones) and hangs/errors on them.
+        $ezaIgnore = 'Application Data|Cookies|Local Settings|My Documents|NetHood|PrintHood|Recent|SendTo|Start Menu|Templates'
+        function ls  { eza --group-directories-first --icons --ignore-glob $ezaIgnore $args }
     } else {
         function ls  { Get-ChildItem $args }
     }

@@ -63,6 +63,12 @@ if (Get-Command git -ErrorAction SilentlyContinue) {
 }
 # }}}
 
+# {{{ PSStyle (fix unreadable blue-background directory listings)
+if ($PSVersionTable.PSVersion.Major -ge 7) {
+    $PSStyle.FileInfo.Directory = "`e[1;34m"
+}
+# }}}
+
 # {{{ PSReadLine (inline suggestions + tab completion like zsh/fish)
 # PSReadLine is only available in ConsoleHost — not ISE, remoting, or constrained sessions.
 if ($Host.Name -eq 'ConsoleHost') {
