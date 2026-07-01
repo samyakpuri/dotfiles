@@ -1,5 +1,6 @@
 #!/usr/bin/env pwsh
 # chezmoi: runs on Windows when script content changes.
+if ($env:OS -ne 'Windows_NT') { exit 0 }
 # Creates junctions/symlinks from Windows tool paths to chezmoi-managed ~/.config/ locations.
 
 $cfg = "$env:USERPROFILE\.config"
@@ -41,10 +42,6 @@ $wtState = "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\L
 if (Test-Path $wtState) {
     New-Link "$cfg\windows-terminal\settings.json" "$wtState\settings.json"
 }
-
-# PS5 profile (WindowsPowerShell) → same file as PS7 (PowerShell)
-New-Link "$env:USERPROFILE\Documents\PowerShell\Microsoft.PowerShell_profile.ps1" `
-         "$env:USERPROFILE\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1"
 
 # Python: ~/.pythonrc → ~/.config/python/pythonrc  (set PYTHONSTARTUP=~/.pythonrc)
 New-Link "$cfg\python\pythonrc" "$env:USERPROFILE\.pythonrc"

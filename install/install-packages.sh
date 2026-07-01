@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 # chezmoi: run once on Linux — installs developer tools via the system package manager.
+[ "$(uname)" = "Linux" ] || exit 0
 
 PKGS_ARCH="git neovim zsh starship fzf zoxide bat eza fd ripgrep lazygit git-delta tmux
            alacritty kitty dunst i3-wm i3blocks sxhkd mpd python nodejs npm wget vim
