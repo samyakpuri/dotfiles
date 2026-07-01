@@ -1,3 +1,8 @@
+{{ if ne .chezmoi.os "windows" -}}
+# Windows-only configs
+Documents
+.config/windows-terminal
+{{ end -}}
 {{ if ne .chezmoi.os "linux" -}}
 # Linux-only configs (X11, WMs, Linux-specific shells)
 .config/dunst
