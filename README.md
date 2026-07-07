@@ -1,3 +1,5 @@
+# dotfiles
+
 My config files, managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Bootstrap
@@ -31,7 +33,8 @@ On first run, chezmoi prompts for your git name/email and writes them to `~/.git
 
 ### Already cloned this repo?
 
-If you cloned this repo yourself instead of letting chezmoi do it, point chezmoi at the existing checkout instead of re-cloning:
+If you cloned this repo yourself instead of letting chezmoi do it, point
+chezmoi at the existing checkout instead of re-cloning:
 
 ```sh
 chezmoi init --apply --source /path/to/dotfiles
@@ -45,12 +48,25 @@ chezmoi init --apply --source C:\path\to\dotfiles
 
 - `home/` — chezmoi source directory (set via `.chezmoiroot`)
   - `dot_config/` → `~/.config/*`, cross-platform configs
-  - `windows_dot_config/`, `windows_dot_Documents/` — Windows-only, applied only on Windows
-  - `linux_run_once_before_install-packages.sh` — installs tools via pacman/apt/dnf
-  - `windows_run_onchange_after_windows-links.ps1` — creates Windows AppData junctions for tools that don't read XDG paths
-  - `.chezmoiignore.tmpl` — excludes Linux-only configs (i3, qtile, dunst, etc.) on non-Linux
-- `install/install-tools.ps1` — winget package list (also invoked by chezmoi)
-- `install/ssh-shell.ps1` — configures Windows OpenSSH default shell (run manually, needs admin)
+  - `Documents/PowerShell/` → PowerShell profile and modules (Windows only)
+  - `dot_local/share/spuri/emoji` → `~/.local/share/spuri/emoji`, emoji
+    list read by [scripts](https://github.com/samyakpuri/scripts)
+    `dmenuunicode` (Linux only)
+  - `xorg/` — Xorg input confs, not deployed to `~`; installed to
+    `/etc/X11/xorg.conf.d/` by `run_onchange_after_xorg.sh.tmpl`
+    (needs sudo during `chezmoi apply`)
+  - `run_onchange_after_windows-links.ps1` — creates Windows AppData
+    junctions for tools that don't read XDG paths (no-ops off Windows)
+  - `.chezmoiignore.tmpl` — platform split: excludes Windows-only configs
+    on Linux and Linux-only configs (i3, qtile, dunst, zsh, etc.) elsewhere
+- `install/` — manual bootstrap scripts, not run by chezmoi
+  - `install-tools.ps1` — winget package list (Windows)
+  - `install-packages.sh` — pacman/apt/dnf package list (Linux)
+  - `ssh-shell.ps1` — configures Windows OpenSSH default shell (needs admin)
+- `share/wallpaper.jpg` — copy manually to `~/.local/share/sp/` (qtile globs `sp/wall*`)
+
+Keyboard layout (us-intl, CapsLock→Esc, Alt+CapsLock layout toggle) is set via
+`setxkbmap` in `home/dot_config/X11/xprofile`, not an Xorg conf.
 
 ## Updating
 
