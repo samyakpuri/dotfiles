@@ -1,0 +1,10 @@
+#!/bin/bash
+# File              : internet
+# Author            : Samyak Puri <samyakpuri@hotmail.com>
+# Date              : 21.10.2018
+# Last Modified Date: 02.04.2020 
+
+[ "$(cat /sys/class/net/w*/operstate)" = 'down' ] && wifiicon="📡" ||
+	wifiicon=$(grep "^\s*w" /proc/net/wireless | awk '{ print "📶", int($3 * 100 / 70) "%" }')
+
+printf "%s %s\n" "$wifiicon" "$(sed "s/down/❎/;s/up/🌐/" /sys/class/net/e*/operstate)"

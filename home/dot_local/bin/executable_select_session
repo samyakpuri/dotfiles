@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+
+WMS=(1 "i3wm"
+	2 "dwm"
+	3 "qtile")
+
+	if [ $(command -v dialog 2>/dev/null) ]
+	then
+		wm=$(dialog --stdout --no-cancel --ok-label 'start' --menu 'Select WM to start' 10 30 3 ${WMS[@]})
+	else
+		while :; do
+			clear
+			printf "%s %s\n" "${WMS[@]}"
+			printf "Select WM to start: "
+			read wm
+			[ "$wm" -ge 1 ] && [ "$wm" -le 3 ] && break
+		done
+fi
+
+exec startx "$XDG_CONFIG_HOME/X11/xinitrc" "$wm"
