@@ -4,13 +4,15 @@
 
 PKGS_ARCH="git neovim zsh starship fzf zoxide bat eza fd ripgrep lazygit git-delta tmux
            alacritty kitty dunst i3-wm i3blocks sxhkd mpd python nodejs npm wget vim
-           zathura python-psutil"
+           zathura python-psutil dmenu xclip pamixer mpc libnotify"
 
 PKGS_DEB="git neovim zsh fzf zoxide bat ripgrep tmux
-          alacritty kitty dunst i3 i3blocks sxhkd mpd python3 nodejs npm wget vim"
+          alacritty kitty dunst i3 i3blocks sxhkd mpd python3 nodejs npm wget vim
+          suckless-tools xclip pamixer mpc libnotify-bin"
 
 PKGS_DNF="git neovim zsh fzf zoxide bat eza fd-find ripgrep lazygit git-delta tmux
-          alacritty kitty dunst i3 i3blocks sxhkd mpd python3 nodejs npm wget vim"
+          alacritty kitty dunst i3 i3blocks sxhkd mpd python3 nodejs npm wget vim
+          dmenu xclip pamixer mpc libnotify"
 
 if command -v pacman > /dev/null 2>&1; then
     sudo pacman -S --noconfirm --needed $PKGS_ARCH
