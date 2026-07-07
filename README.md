@@ -49,9 +49,10 @@ chezmoi init --apply --source C:\path\to\dotfiles
 - `home/` — chezmoi source directory (set via `.chezmoiroot`)
   - `dot_config/` → `~/.config/*`, cross-platform configs
   - `Documents/PowerShell/` → PowerShell profile and modules (Windows only)
+  - `dot_local/bin/` → `~/.local/bin/*`, dmenu/i3/statusbar helper
+    scripts (Linux only; merged from the old scripts repo with history)
   - `dot_local/share/spuri/emoji` → `~/.local/share/spuri/emoji`, emoji
-    list read by [scripts](https://github.com/samyakpuri/scripts)
-    `dmenuunicode` (Linux only)
+    list read by `dmenuunicode` (Linux only)
   - `xorg/` — Xorg input confs, not deployed to `~`; installed to
     `/etc/X11/xorg.conf.d/` by `run_onchange_after_xorg.sh.tmpl`
     (needs sudo during `chezmoi apply`)
