@@ -1,0 +1,8 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/bin/sh
+# Renders empty on non-Linux; chezmoi skips empty scripts.
+# Re-runs when the conf changes: {{ include "xorg/40-touchpad.conf" | sha256sum }}
+set -e
+[ -d /etc/X11 ] || exit 0
+sudo install -D -m 644 "{{ .chezmoi.sourceDir }}/xorg/40-touchpad.conf" /etc/X11/xorg.conf.d/40-touchpad.conf
+{{ end -}}

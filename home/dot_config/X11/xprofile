@@ -2,6 +2,8 @@
 
 [ -f "$HOME/.config/shell/profile" ] && source "$HOME/.config/shell/profile"
 
+setxkbmap us -variant intl -option grp:alt_caps_toggle,caps:escape_shifted_capslock
+
 # gnome-keyring-daemon --start -- components=pkcs11,secrets,ssh >/dev/null 2>&1 &
 
 picom &          # xcompmgr for transparency
