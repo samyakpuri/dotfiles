@@ -80,8 +80,6 @@
 	# diff
 	d = diff						# diff unstaged changes
 	dc = diff --cached				# diff staged changes
-	last = diff HEAD^				# diff last committed change# diff unstaged changes
-	dc = diff --cached				# diff staged changes
 	last = diff HEAD^				# diff last committed change
 
 	# log
@@ -135,9 +133,7 @@
 	smudge = git-lfs smudge -- %f
 	required = true
 	process = git-lfs filter-process
-[user]
-	email = samyakpuri@hotmail.com
-	name = Samyak Puri
+
 [pull]
 	rebase = false
 [colors]

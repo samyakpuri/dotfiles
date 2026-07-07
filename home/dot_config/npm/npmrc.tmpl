@@ -1,0 +1,11 @@
+{{ if eq .chezmoi.os "windows" -}}
+prefix={{ .chezmoi.homeDir }}/.local/share/npm
+cache={{ .chezmoi.homeDir }}/.cache/npm
+init-module={{ .chezmoi.homeDir }}/.config/npm/config/npm-init.js
+logs-dir={{ .chezmoi.homeDir }}/.local/state/npm/logs
+{{ else -}}
+prefix=${XDG_DATA_HOME}/npm
+cache=${XDG_CACHE_HOME}/npm
+init-module=${XDG_CONFIG_HOME}/npm/config/npm-init.js
+logs-dir=${XDG_STATE_HOME}/npm/logs
+{{ end -}}

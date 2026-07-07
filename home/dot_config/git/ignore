@@ -63,3 +63,7 @@ tags
 *.lock
 
 **/.claude/settings.local.json
+
+# Planning and handoff documents (case-insensitive, works on Linux and Windows)
+*[Pp][Ll][Aa][Nn]*.md
+[Hh][Aa][Nn][Dd][Oo][Ff][Ff]*.md
